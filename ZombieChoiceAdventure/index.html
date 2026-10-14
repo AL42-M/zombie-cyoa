@@ -38,7 +38,8 @@
       <button id="btn-help-title" class="btn btn-ghost" type="button">How to play</button>
     </div>
 
-    <p class="credit">Plain HTML, CSS and JavaScript. Nothing to install. Progress is stored in this browser only.</p>
+    <p class="credit">Plain HTML, CSS and JavaScript. Nothing to install. Progress is stored in this browser only, when browser storage is available.</p>
+    <noscript><p class="warning">JavaScript is required to play. Open the game in a full browser with JavaScript enabled, not a file preview.</p></noscript>
   </div>
 </section>
 
@@ -81,7 +82,7 @@
 
   <main id="stage">
     <article id="passage" aria-live="polite"></article>
-    <button id="skip-hint" class="skip-hint" type="button" hidden>click to finish the text</button>
+    <button id="skip-hint" class="skip-hint" type="button" hidden>tap or click to finish the text</button>
     <nav id="choices" aria-label="Your choices"></nav>
   </main>
 
