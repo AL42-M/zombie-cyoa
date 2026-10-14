@@ -260,6 +260,14 @@ Checks used the already-installed Playwright browser automation library and head
 
 For each future UI change, repeat phone portrait/landscape and desktop checks; also check Begin/Continue, text reveal, locked choices, panels after scrolling in an infected state, save/reload, rewind, endings, touch, keyboard, enlarged text, and reduced motion.
 
+### Review and security results
+
+- Secret scanning of all three changed files found no secrets.
+- The required automated validation was requested. Its standard code-review executable was unavailable, so it did not provide an actual review despite reporting a success status.
+- A separate read-only code-review agent inspected the full change set and reported no significant issues.
+- CodeQL was skipped by the validation service because this change set contains only static HTML/CSS UI work and documentation. This is **not** a completed CodeQL scan or a security certification of the existing JavaScript.
+- No dependencies, executable JavaScript, external data handling, or hosting configuration were added.
+
 ## Design ground rules and roadmap
 
 This section records the requested next work and a **proposed working template**. It is not a claim that a redesign or a new tone has been approved.
@@ -347,10 +355,12 @@ Do not add separate planning files by default; keep the consolidated handoff her
   - A subsequent enlarged-text smoke check exposed additional overflow.
   - Made status grid tracks shrink and allowed panel headings/buttons to wrap.
   - Retesting at 200% root font sizing passed; additional keyboard, sound-toggle, ending persistence, blocked-storage and desktop direct-file smoke checks passed.
-- **Documentation entry — Expand README with project guide and commit-linked handoff**
+- **[`4a4fce6`](https://github.com/AL42-M/zombie-cyoa/commit/4a4fce6) — Expand README with project guide and commit-linked handoff**
   - Replaced the original one-paragraph README with operating instructions, implementation contracts, honest validation limits, proposed redesign ground rules, and this history.
-  - The exact documentation commit is discoverable with the README history command above; no self-referential hash is required.
-  - Automated review/security results will be recorded below once completed.
+  - The documentation commit is linked after its creation; no self-referential hash is required.
+- **Validation follow-up — Record final validation results and review limitations**
+  - Recorded the secret-scan result, unavailable standard review executable, independent read-only review, and CodeQL skip in the validation section.
+  - This documentation-only follow-up leaves the tested game files unchanged. Its commit is discoverable by the exact subject in Git history.
 
 **Left unchanged:** all runtime JavaScript and story passages; save schema; endings; procedural audio; ZIP archive; hosting configuration. The main UI/start-screen/action-flow redesign and tone decision remain open. No merge was performed.
 
