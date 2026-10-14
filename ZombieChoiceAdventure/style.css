@@ -147,6 +147,7 @@ body[data-infect="5"]{ --infection-filter:saturate(.48) hue-rotate(-22deg) contr
 .title-actions{ display:flex; flex-wrap:wrap; gap:.7rem; justify-content:center; margin-bottom:2.4rem; }
 
 .btn{
+  max-width:100%; overflow-wrap:anywhere;
   font-family:var(--mono); font-size:.76rem; letter-spacing:.17em; text-transform:uppercase;
   padding:.85rem 1.7rem; border:1px solid var(--line); background:transparent; color:var(--ink);
   cursor:pointer; transition:all .25s var(--ease); position:relative;
@@ -185,7 +186,7 @@ body[data-infect="5"]{ --infection-filter:saturate(.48) hue-rotate(-22deg) contr
 /* ---------------------- status meters ---------------------- */
 
 #status{
-  display:grid; grid-template-columns:repeat(4,1fr); gap:.75rem;
+  display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:.75rem;
   padding:.75rem clamp(.9rem,3vw,2rem) .4rem;
   max-width:78rem; margin:0 auto;
 }
@@ -387,10 +388,11 @@ body[data-infect="5"]{ --infection-filter:saturate(.48) hue-rotate(-22deg) contr
   box-shadow:0 30px 90px rgba(0,0,0,.8);
 }
 .panel-head{
-  display:flex; align-items:center; justify-content:space-between; gap:1rem;
+  display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:1rem;
   padding:.9rem 1.2rem; border-bottom:1px solid var(--line-soft); flex-shrink:0;
 }
 .panel-head h2{
+  min-width:0; overflow-wrap:anywhere;
   margin:0; font-family:var(--mono); font-size:.7rem; letter-spacing:.3em; text-transform:uppercase;
   color:var(--bone); font-weight:400;
 }
@@ -480,7 +482,7 @@ kbd{
 /* ---------------------- responsive ---------------------- */
 
 @media (max-width:720px){
-  #status{ grid-template-columns:repeat(2,1fr); gap:.6rem .9rem; }
+  #status{ grid-template-columns:repeat(2,minmax(0,1fr)); gap:.6rem .9rem; }
   #hud{ flex-wrap:wrap; }
   .hud-right{ width:100%; justify-content:flex-start; }
   .game-title{ letter-spacing:.03em; }
