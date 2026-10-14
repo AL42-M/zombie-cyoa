@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>THE HUSH — A Zombie Apocalypse Adventure</title>
+<meta name="description" content="A choice-driven survival horror narrative set forty-one days after the Hush." />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230b0c0b'/%3E%3Ccircle cx='11' cy='13' r='3' fill='%23c9c2b2'/%3E%3Ccircle cx='21' cy='13' r='3' fill='%23c9c2b2'/%3E%3Cpath d='M9 22q7 4 14 0' stroke='%238b2f24' stroke-width='2.2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body data-screen="title">
+
+<div id="grain" aria-hidden="true"></div>
+<div id="vignette" aria-hidden="true"></div>
+<div id="pulse" aria-hidden="true"></div>
+
+<!-- ============================== TITLE ============================== -->
+<section id="title-screen" class="screen is-active" aria-label="Title screen">
+  <div class="title-wrap">
+    <p class="kicker">Day forty-one after</p>
+    <h1 class="game-title" aria-label="The Hush">
+      <span class="t-word">THE</span><span class="t-word t-hum">HUSH</span>
+    </h1>
+    <p class="subtitle">A choice-driven descent &middot; no right answers &middot; no going back</p>
+
+    <div class="warning" role="note">
+      <h2>Content warning</h2>
+      <p>Graphic violence, body horror, medical and surgical horror, death of adults and children,
+        starvation, coercion, self-mutilation out of necessity, and sustained psychological distress.
+        Several choices are cruel. A few are unforgivable. That is the point of them.</p>
+      <p class="warning-foot">Written for adults. Nothing you choose in here says anything about who you are.</p>
+    </div>
+
+    <div class="title-actions">
+      <button id="btn-continue" class="btn btn-ghost" type="button" hidden>Continue <span class="btn-sub" id="continue-sub"></span></button>
+      <button id="btn-begin" class="btn btn-primary" type="button">Begin</button>
+      <button id="btn-endings-title" class="btn btn-ghost" type="button">Endings <span class="btn-sub" id="endings-count">0/12</span></button>
+      <button id="btn-help-title" class="btn btn-ghost" type="button">How to play</button>
+    </div>
+
+    <p class="credit">Plain HTML, CSS and JavaScript. Nothing to install. Progress is stored in this browser only.</p>
+  </div>
+</section>
+
+<!-- ============================== GAME =============================== -->
+<section id="game-screen" class="screen" aria-label="Game">
+
+  <header id="hud">
+    <div class="hud-left">
+      <div class="chapter" id="hud-chapter">I &mdash; The Hush</div>
+      <div class="place" id="hud-place">Rosco Drug &amp; Sundry</div>
+    </div>
+    <div class="hud-right">
+      <button class="icon-btn" id="btn-journal" type="button" title="Journal (J)">Journal</button>
+      <button class="icon-btn" id="btn-keepsakes" type="button" title="Keepsakes (K)">Keepsakes</button>
+      <button class="icon-btn" id="btn-sound" type="button" title="Ambience (M)" aria-pressed="false">Sound: off</button>
+      <button class="icon-btn" id="btn-menu" type="button" title="Menu (Esc)">Menu</button>
+    </div>
+  </header>
+
+  <div id="status" aria-label="Your condition">
+    <div class="stat" data-stat="health">
+      <div class="stat-head"><span class="stat-name">Body</span><span class="stat-word" id="w-health">Whole</span></div>
+      <div class="meter"><i id="m-health"></i></div>
+    </div>
+    <div class="stat" data-stat="infection">
+      <div class="stat-head"><span class="stat-name">Blood</span><span class="stat-word" id="w-infection">Clean</span></div>
+      <div class="meter meter-infect"><i id="m-infection"></i></div>
+    </div>
+    <div class="stat" data-stat="humanity">
+      <div class="stat-head"><span class="stat-name">Self</span><span class="stat-word" id="w-humanity">Still a person</span></div>
+      <div class="meter meter-self"><i id="m-humanity"></i></div>
+    </div>
+    <div class="stat" data-stat="trauma">
+      <div class="stat-head"><span class="stat-name">Weight</span><span class="stat-word" id="w-trauma">Bearable</span></div>
+      <div class="meter meter-weight"><i id="m-trauma"></i></div>
+    </div>
+  </div>
+
+  <div id="party-strip" aria-label="Who is still with you"></div>
+
+  <main id="stage">
+    <article id="passage" aria-live="polite"></article>
+    <button id="skip-hint" class="skip-hint" type="button" hidden>click to finish the text</button>
+    <nav id="choices" aria-label="Your choices"></nav>
+  </main>
+
+  <div id="toasts" aria-live="polite"></div>
+</section>
+
+<!-- ============================= ENDING ============================== -->
+<section id="end-screen" class="screen" aria-label="Ending">
+  <div class="end-wrap">
+    <p class="end-kicker" id="end-kicker">An ending</p>
+    <h2 class="end-title" id="end-title"></h2>
+    <div class="end-body" id="end-body"></div>
+    <div class="end-stats" id="end-stats"></div>
+    <div class="end-keepsakes" id="end-keepsakes"></div>
+    <div class="title-actions">
+      <button class="btn btn-primary" id="btn-again" type="button">Begin again</button>
+      <button class="btn btn-ghost" id="btn-rewind" type="button">Step back one choice</button>
+      <button class="btn btn-ghost" id="btn-endings-end" type="button">Endings found</button>
+      <button class="btn btn-ghost" id="btn-title" type="button">Title screen</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= PANELS ============================== -->
+<div id="overlay" class="overlay" hidden>
+  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="panel-title">
+    <div class="panel-head">
+      <h2 id="panel-title">Journal</h2>
+      <button class="icon-btn" id="btn-close-panel" type="button" aria-label="Close">Close</button>
+    </div>
+    <div class="panel-body" id="panel-body"></div>
+  </div>
+</div>
+
+<script src="audio.js"></script>
+<script src="story-core.js"></script>
+<script src="story-act1.js"></script>
+<script src="story-act2.js"></script>
+<script src="story-act3.js"></script>
+<script src="story-endings.js"></script>
+<script src="engine.js"></script>
+</body>
+</html>
