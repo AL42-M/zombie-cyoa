@@ -17,7 +17,15 @@ var window = {};
 });
 var Story = window.Story;
 
-function plain(h) { return String(h).replace(/<[^>]*>/g, ''); }
+function plain(h) {
+  var s = String(h), out = '', inTag = false;
+  for (var i = 0; i < s.length; i++) {
+    if (s.charAt(i) === '<') { inTag = true; continue; }
+    if (s.charAt(i) === '>') { inTag = false; continue; }
+    if (!inTag) out += s.charAt(i);
+  }
+  return out;
+}
 
 var rows = [], chars = [], paras = [];
 var s = new Story.GameState();
