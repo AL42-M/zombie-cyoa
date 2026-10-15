@@ -104,6 +104,14 @@ PROJECT CONTEXT
 
 VERSION HISTORY (newest first)
 
+v1.0 - 2026-10-15
+- At the user's request, designated the existing game as the v1.0 baseline,
+  as-is. This is a version label, not a claim of a new gameplay audit.
+- Added v1.0 to the title-screen credit and README. Gameplay, story, audio,
+  save-data handling, and the original uploaded ZIP archive are unchanged.
+- Future ordinary changes should increment from v1.0 to v1.1 and onward.
+- Changes remain local; the user has not authorized a push to GitHub.
+
 v0.1 - 2026-10-15
 - Established repository working instructions and this Captain's Log.
 - Added .github/copilot-instructions.md as a short pointer to this file, keeping
