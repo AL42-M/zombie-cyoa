@@ -405,9 +405,10 @@
     }
     var node = Story.get(id);
     state.node = id;
-    state.visits[id] = (state.visits[id] || 0) + 1;
-
-    if (typeof node.enter === 'function') node.enter(state);
+    if (!skipHistory) {
+      state.visits[id] = (state.visits[id] || 0) + 1;
+      if (typeof node.enter === 'function') node.enter(state);
+    }
     checkKeepsakes();
 
     if (node.isEnding) { showEnding(node); return; }

@@ -147,6 +147,11 @@ v1.2 - 2026-10-15
   revolver he keeps into the player's inventory.
 - The first exposure day is recorded so triage can acknowledge a late arrival
   after a long boat stay rather than claiming every infection is three days old.
+- Continue and Rewind now display saved passages without reapplying entry
+  effects (including day advances, wounds and item grants). Ordinary forward
+  choices still apply those effects once. Four deliberately different full
+  routes were trialled; a browser trial confirmed Continue and Rewind leave
+  day, visits and health unchanged, while a new choice still advances.
 - The original v1.0 ZIP remains untouched. No UI changes are included.
 
 v1.1 - 2026-10-15
