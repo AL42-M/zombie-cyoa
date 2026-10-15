@@ -312,7 +312,7 @@
       { label: 'Keep going. Fast. Everyone, now.', to: 'a2_quay',
         act: function (s) { s.hurt(6); s.scar(8); } },
       { label: 'Stop. Absolute stillness until they lose you.', tone: 'risk', to: 'a2_under_still' },
-      { label: 'Go back. Find another way.', to: 'a2_lane',
+      { label: 'Back out. Take your chances on Ferry Street instead.', to: 'a2_ferry',
         act: function (s) { s.scar(6); } },
       { label: 'Hum. Give them what they want and walk out the other side.', tone: 'rot',
         to: 'a2_quay',
@@ -502,12 +502,12 @@
       { c: 'whisper', t: 'She is checking whether her voice is still in there.' }
     ],
     choices: [
-      { label: 'Tell her it will come back.', tone: 'kind', to: 'a2_quay',
+      { label: 'Tell her it will come back. Take the river path with her.', tone: 'kind', to: 'a2_river',
         act: function (s) { s.trust('wren', 15); s.soften(5); } },
-      { label: 'Do not interrupt her. Let her have it.', tone: 'kind', to: 'a2_quay',
+      { label: 'Let her have the silence. Lead the group through the estate.', tone: 'kind', to: 'a2_estate',
         act: function (s) { s.trust('wren', 10); s.scar(4); } },
       { label: 'Ask her to try. Out loud. Once.', tone: 'risk', to: 'a2_wren_voice' },
-      { label: 'Wake everybody. The hour is up.', to: 'a2_quay' }
+      { label: 'Wake everybody. Take the culvert before the light goes.', to: 'a2_culvert' }
     ]
   });
 
@@ -529,12 +529,12 @@
       { c: 'hum', t: 'h m m m m m m m' }
     ],
     choices: [
-      { label: 'Get everyone up. Move. Now.', to: 'a2_quay',
+      { label: 'Get everyone up. Follow the river away from that sound.', to: 'a2_river',
         act: function (s) { s.trust('wren', 10); s.scar(8); s.set('wrenSpoke'); } },
-      { label: 'Tell her it was worth it. Mean it.', tone: 'kind', to: 'a2_quay',
+      { label: 'Tell her it was worth it. Take the river path beside her.', tone: 'kind', to: 'a2_river',
         act: function (s) { s.trust('wren', 30); s.soften(10); s.set('wrenSpoke'); s.set('worthIt'); },
         toast: ['She writes: "say that again when were not running". You do.', 'good'] },
-      { label: 'Tell her never to do that again.', tone: 'cruel', to: 'a2_quay',
+      { label: 'Tell her never to do that again. Cut through the estate.', tone: 'cruel', to: 'a2_estate',
         act: function (s) { s.trust('wren', -30); s.harden(10); s.set('wrenSpoke'); s.set('silencedHer'); },
         toast: ['She closes her mouth. She does not open it again for a long time.', 'bad'] }
     ]
@@ -669,8 +669,8 @@
         act: function (s) { s.set('boatWillKeep'); s.harden(5); } },
       { label: 'Hide the family aboard and go to the Mercy alone.', tone: 'risk',
         to: 'a2_boat_hold', act: function (s) { s.set('hollowayCard'); } },
-      { label: 'Cut up through the Fenwick estate. It is the short way from here.',
-        to: 'a2_estate', act: function (s) { s.set('hollowayCard'); s.set('boatWillKeep'); } }
+      { label: 'Take the card up the hill. The estate is behind you now.',
+        to: 'a2_mercy_approach', act: function (s) { s.set('hollowayCard'); s.set('boatWillKeep'); } }
     ]
   });
 
@@ -744,8 +744,36 @@
         act: function (s) { s.set('wentAlone'); s.set('boatWillKeep'); s.scar(8); s.soften(6); } },
       { label: 'Take Bram. Leave Odile and Wren with the boat.', to: 'a2_mercy_approach',
         act: function (s) { s.set('tookBram'); s.set('boatWillKeep'); } },
-      { label: 'Stay. Another day. One more.', tone: 'risk', to: 'a2_boat_hold',
+      { label: 'Stay one more day, then follow the others up to the Mercy.', tone: 'risk', to: 'a2_boat_lastnight',
         act: function (s) { s.hurt(10); s.scar(8); s.bump('daysWasted'); } }
+    ]
+  });
+
+  S.add({
+    id: 'a2_boat_lastnight',
+    chapter: CH,
+    place: 'The river path',
+    enter: function (s) { s.advance(1); s.set('boatWillKeep'); },
+    text: function (s) {
+      var lines = [
+        'You bargain for one more day. By afternoon the tins are empty. The paperback lies open ' +
+        'face-down in the cockpit, its pages swelling as the river mist comes in.',
+        'At dusk the humming starts on the far bank again. Nobody gets up to look. That is when ' +
+        'you understand what staying has bought you: not safety, only practice at ignoring it.'
+      ];
+      if (withTeddy(s)) {
+        lines.push('Teddy asks you to help him off the boat. He does not ask for the Mercy. ' +
+          'He looks at the path up the hill and waits for you to take his arm.');
+      }
+      return lines;
+    },
+    choices: [
+      { label: 'Help the others up the hill.', tone: 'kind', to: 'a2_mercy_approach',
+        act: function (s) { s.trust('wren', 10); s.soften(5); } },
+      { label: 'Go ahead alone. Find out if the beds are real.', tone: 'risk', to: 'a2_mercy_approach',
+        act: function (s) { s.set('wentAlone'); s.scar(6); } },
+      { label: 'Leave the boat behind without looking at it again.', to: 'a2_mercy_approach',
+        act: function (s) { s.harden(5); } }
     ]
   });
 
@@ -1194,8 +1222,8 @@
       { label: 'Go back down. All the way down. Now.', tone: 'kind', to: 'a2_mercy_approach',
         act: function (s) { s.soften(16); s.ease(6); s.set('turnedBackAtTheDoor'); },
         toast: ['Nobody says anything about it, then or ever.', 'good'] },
-      { label: 'Knock, and speak to them properly.', to: 'a2_estate_knock',
-        act: function (s) { s.soften(6); } },
+      { label: 'Knock. When no one opens, leave the door intact.', to: 'a2_mercy_approach',
+        act: function (s) { s.soften(6); s.set('turnedBackAtTheDoor'); } },
       { label: 'Take the door.', tone: 'cruel', to: 'a2_estate_breakin' },
       { label: 'Let Bram decide.', tone: 'risk', to: 'a2_estate_bramdecides' }
     ]

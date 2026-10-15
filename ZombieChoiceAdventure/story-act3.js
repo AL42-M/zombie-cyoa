@@ -54,8 +54,8 @@
       { label: 'Ask about a patient. Dennis Holloway, Ward Eleven.',
         show: function (s) { return s.flag('hollowayCard') || s.flag('knowsHolloway'); },
         to: 'a3_ask_holloway' },
-      { label: 'Say you have changed your mind, and back out of the door.', tone: 'kind',
-        to: 'a3_back' }
+      { label: 'Back out of the door and follow the service road instead.', tone: 'risk',
+        to: 'a3_service' }
     ]
   });
 
@@ -397,7 +397,8 @@
       { label: 'Go in. See it.', tone: 'risk', to: 'a3_ward11' },
       { label: 'Find the property room first.', to: 'a3_property' },
       { label: 'Follow the service road. See where the trolleys go.', tone: 'risk', to: 'a3_service' },
-      { label: 'Go round to the front and walk in like a human being.', to: 'a3_reception' },
+      { label: 'Go round to the front, give your names, and take the beds.', to: 'a3_triage',
+        act: function (s) { s.set('toldTheTruthOnTheForm'); } },
       { label: 'Get everyone out. This is enough. You have seen enough.', tone: 'kind',
         show: function (s) { return s.flag('knowsBoat'); }, to: 'a3_refuse' }
     ]
@@ -547,16 +548,41 @@
         to: 'a3_office', act: function (s) { s.set('tookTheEffects'); s.scar(10); } },
       { label: 'Go to Ward Eleven.', tone: 'risk', to: 'a3_ward11' },
       { label: 'Sit down in the back pew for a minute. Just a minute.', tone: 'kind',
-        to: 'a3_chapel', act: function (s) { s.ease(10); s.soften(5); s.bump('satInTheChapel'); } },
+        to: 'a3_chapel_exit', act: function (s) { s.ease(10); s.soften(5); s.bump('satInTheChapel'); } },
       { label: 'Take one thing. One, so that one of them gets out of this building.', tone: 'kind',
         hint: 'the hair slide. it is the smallest and that is the whole reason',
         show: function (s) { return !s.kept('hairslide'); },
-        to: 'a3_chapel',
+        to: 'a3_chapel_exit',
         act: function (s) {
           s.scar(6); s.soften(6);
           s.keep('hairslide', 'You did not read its label. You decided you would rather carry a stranger than a name you could fail.');
         },
         toast: ['You put it in the pocket with the others.', 'keepsake'] }
+    ]
+  });
+
+  S.add({
+    id: 'a3_chapel_exit',
+    chapter: CH,
+    place: 'The chapel',
+    text: function (s) {
+      var lines = [
+        'The building keeps humming beyond the chapel wall. Here the little objects stay quiet, ' +
+        'each in its labelled place, each waiting for someone who may never come.'
+      ];
+      if (s.kept('hairslide')) {
+        lines.push('The yellow duck on the hair slide presses against your palm through your pocket. ' +
+          'You did not read the name. You can still go back and learn it, but you do not.');
+      } else {
+        lines.push('You stand from the pew. The dust on the table has been wiped away by someone ' +
+          'who will come back tomorrow to do it again.');
+      }
+      return lines;
+    },
+    choices: [
+      { label: 'Find the person who wrote the labels.', to: 'a3_matron' },
+      { label: 'Go to the ward. See the people behind the names.', tone: 'risk', to: 'a3_ward11' },
+      { label: 'Find the records. Count what happened here.', to: 'a3_office' }
     ]
   });
 
@@ -1281,13 +1307,36 @@
       'and the plaster has a cartoon dinosaur on it because that is what the hospital has.'
     ],
     choices: [
-      { label: '"Now show me where the serum comes from."', to: 'a3_ward11',
+      { label: '"Now show me where the serum comes from."', to: 'a3_treatment_source',
         show: function (s) { return !s.flag('sawWard11'); } },
       { label: '"Now it ends. Tonight."', tone: 'risk', to: 'a3_final',
         act: function (s) { s.set('declaredTheEnd'); } },
       { label: '"Thank you." And mean it, and hate that you mean it.', to: 'a3_final',
         act: function (s) { s.scar(12); s.set('thankedHer'); } },
       { label: 'Ask for eight more for the road.', tone: 'cruel', to: 'a3_matron_eight' }
+    ]
+  });
+
+  S.add({
+    id: 'a3_treatment_source',
+    chapter: CH,
+    place: 'Ward 11',
+    enter: function (s) { s.set('sawWard11'); s.scar(12); },
+    text: [
+      'Matron takes you past the dispensing room to a window into Ward Eleven. The nurse inside ' +
+      'is cleaning a woman\u2019s mouth with a damp sponge. She stops to listen when the woman hums, ' +
+      'then goes on as gently as before.',
+      'There are ninety-four beds. Ninety-four charts. The small plaster on your hand is still ' +
+      'warm from the injection. You can put your hand against the glass, but you cannot give it back.',
+      'Matron stays beside you until you step away. Neither of you says thank you.'
+    ],
+    choices: [
+      { label: 'Ask that the patients be named in every account of this place.', tone: 'kind',
+        to: 'a3_final', act: function (s) { s.soften(8); s.set('askedForNames'); } },
+      { label: 'Tell Matron you will close the ward tonight.', tone: 'risk',
+        to: 'a3_final', act: function (s) { s.set('declaredTheEnd'); s.scar(6); } },
+      { label: 'Turn away. You needed the dose; you cannot look any longer.',
+        to: 'a3_final', act: function (s) { s.harden(6); s.scar(8); } }
     ]
   });
 
@@ -1330,13 +1379,38 @@
       { label: 'The river. The boat. Tonight.', show: function (s) { return s.has('keys'); },
         to: 'a3_final', act: function (s) { s.set('headingForTheBoat'); } },
       { label: 'Go back for the keys. You cannot do this without them.',
-        show: function (s) { return !s.has('keys'); }, to: 'a3_property' },
+        show: function (s) { return !s.has('keys'); }, to: 'a3_refuse_keys' },
       { label: 'The river anyway. You will break into the boat or sleep on it.',
         to: 'a3_final', act: function (s) { s.set('headingForTheBoat'); s.set('noKeys'); } },
       { label: 'Find somewhere with a door that locks from the inside.', tone: 'kind',
         to: 'a3_final', act: function (s) { s.set('lookingForTheDoor'); } },
       { label: 'Turn around. You cannot leave it standing.', tone: 'risk', to: 'a3_final',
         act: function (s) { s.set('declaredTheEnd'); } }
+    ]
+  });
+
+  S.add({
+    id: 'a3_refuse_keys',
+    chapter: CH,
+    place: 'The property room',
+    enter: function (s) { s.give('keys'); s.set('hasTheKeys'); },
+    text: [
+      'You slip back through the service door while the others wait at the end of the drive. ' +
+      'The property room has a card index. HOLLOWAY, D. is in the April section.',
+      'His wallet, ring, spectacles and boat keys are sealed in a labelled bag. You take the keys. ' +
+      'The paper tears at the staple and makes a small sound in a building full of larger ones.',
+      'Outside, Wren has kept her eyes on the door. She starts walking with you before you speak.'
+    ],
+    choices: [
+      { label: 'Take everyone to the boat.', tone: 'kind', to: 'a3_final',
+        act: function (s) { s.set('headingForTheBoat'); } },
+      { label: 'Keep the keys to yourself until the river.', to: 'a3_final',
+        act: function (s) { s.set('headingForTheBoat'); s.harden(5); } },
+      { label: 'Show the keys to Teddy. Let him choose whether to come.', tone: 'kind',
+        show: function (s) { return s.alive('teddy'); }, to: 'a3_final',
+        act: function (s) { s.set('headingForTheBoat'); s.trust('teddy', 10); } },
+      { label: 'Pocket them. Before the river, you must decide what happens to the ward.',
+        to: 'a3_final' }
     ]
   });
 
