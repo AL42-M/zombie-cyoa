@@ -1,0 +1,119 @@
+CAPTAIN'S LOG
+
+PROJECT WORKING INSTRUCTIONS
+
+Purpose
+- This file holds permanent working rules and concise project history so future
+  agents can continue without asking the user to explain previous work.
+- Read these instructions and relevant version entries before making changes.
+- .github/copilot-instructions.md directs supported Copilot agents to this file.
+
+Working with the user
+- The user is relatively new to GitHub, Git, and software-development workflows
+  and primarily builds projects by describing requirements to coding agents.
+- Work autonomously on routine programming and implementation decisions.
+- Explain unfamiliar Git/GitHub terminology in plain language when it affects
+  something the user needs to understand or decide.
+- Before requesting a decision, explain what the operation will do and the
+  practical consequences. Do not over-explain routine work.
+- Ask only when a meaningful choice substantially affects behavior, safety, or
+  maintainability, or when work cannot proceed safely.
+
+General behavior
+- When a change is requested, inspect the project, determine the best
+  implementation, make the change, and verify that it works.
+- Before editing, read this file, inspect relevant project files, and check
+  current Git state/history when useful.
+- Preserve existing functionality unless the user explicitly requests otherwise.
+- Do not silently remove features, data, or functionality to simplify a change.
+- Respect existing uncommitted work; do not overwrite or revert unrelated edits.
+- Suggested next steps in this log are context, not authorization to start
+  additional work beyond the user's current request.
+
+Versioning
+- Use simple numeric versions: vMAJOR.MINOR, such as v0.1, v1.0, or v1.1.
+- New projects begin at v0.1. Use v0.x during initial development.
+- The first version considered complete and usable becomes v1.0; do not declare
+  that milestone without evidence that the project is ready.
+- Increment MINOR for normal development changes: features, bug fixes, UI,
+  gameplay, quality-of-life improvements, and other ordinary modifications.
+- Increment MAJOR only for significant milestones or substantial changes.
+- Do not increment versions for inspections, commands, or discussion alone.
+  A version increment represents an actual project modification.
+- Never reuse or overwrite a previous version number.
+- When incrementing, update any version displayed or stored by the application,
+  if applicable, and add a corresponding entry to this log.
+- Commit completed changes with a concise description.
+- Do not make duplicate versioned or backup project files (for example,
+  game-v1.2.html or game-final-final.html). Git history preserves prior versions.
+
+Maintaining this log
+- Update this file after meaningful project changes.
+- Each version entry should include, where relevant: version number, summary,
+  important implementation decisions, reasons for non-obvious decisions, known
+  bugs or limitations, useful technical details, unfinished work, and next steps.
+- Keep entries concise and useful to a future agent.
+- Do not log routine file reads, searches, Git status checks, ordinary commands,
+  successful routine tests, or minor intermediate edits.
+- If an investigation or failed approach reveals something important, record
+  the conclusion rather than a step-by-step transcript.
+
+Git and source control
+- Use Git as the authoritative project history.
+- Create clear, concise commits representing completed logical changes.
+- Do not rewrite or destroy useful history without explicit user permission.
+- Never merge branches without explicit user authorization.
+- Never force-push without explicit user authorization.
+- Do not delete branches containing unmerged work without explicit permission.
+- Stop and ask before potentially destructive Git operations.
+- A commit saves a local checkpoint; a push uploads commits to GitHub. They are
+  separate operations. Respect requests to review files before pushing.
+- Do not assume permission to push from permission to edit or commit.
+
+Safety and verification
+- After modifying functionality, verify the project using appropriate available
+  tests, builds, or runtime checks.
+- Fix problems caused by your changes before calling the work complete.
+- If work risks damaging existing changes or data, explain and ask before
+  performing the destructive action.
+- State incomplete work, blockers, and known limitations plainly.
+
+Cloud handoffs
+- A local session cannot continue while its host laptop is off or asleep.
+- A cloud task works from files uploaded to GitHub, not unpushed local changes
+  or instructions that exist only in another session's conversation.
+- When a handoff is requested, record completed work, remaining work, important
+  decisions, and clear next steps here. Identify the branch the cloud task
+  should use when reporting the handoff to the user.
+- Uploading a branch does not start a cloud task or merge changes into main.
+- Do not claim a cloud task was launched unless its launch is confirmed.
+
+PROJECT CONTEXT
+
+- Repository: AL42-M/zombie-cyoa.
+- Game title: THE HUSH, a choice-driven zombie survival-horror browser game.
+- Active game files are in ZombieChoiceAdventure. The entry point is index.html;
+  style.css controls presentation, engine.js handles gameplay, audio.js handles
+  audio, and story-*.js files hold the narrative.
+- The game uses plain HTML, CSS, and JavaScript. Its title screen states that
+  progress is stored in the player's browser.
+- _audit.js is an existing Windows Script Host/JScript story validation harness;
+  its header documents running it with cscript //E:JScript.
+- ZombieChoiceAdventure.zip is an existing uploaded archive. Do not use it as a
+  substitute for editing the active source files or maintaining Git history.
+
+VERSION HISTORY (newest first)
+
+v0.1 - 2026-10-15
+- Established repository working instructions and this Captain's Log.
+- Added .github/copilot-instructions.md as a short pointer to this file, keeping
+  permanent rules in one place for local and cloud agents.
+- No version declaration was found in the current application source. v0.1
+  starts documented version tracking; it does not establish the original game's
+  release version or claim the game has been reviewed as complete.
+- No gameplay, UI, story, save-data, or archive changes were made.
+- The user requested reviewing these files before any push to GitHub. This
+  change is to remain local until the user authorizes uploading it.
+- Game behavior and existing validation scripts have not been evaluated as part
+  of this documentation-only task. No gameplay bugs have been confirmed.
+- Next: user review of these instructions. No further game work is assigned.
