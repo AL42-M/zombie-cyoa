@@ -78,6 +78,27 @@ Safety and verification
   performing the destructive action.
 - State incomplete work, blockers, and known limitations plainly.
 
+Execution location and local copies
+- The user controls creation of local copies of this repository. Do not clone,
+  download, or otherwise create a new local copy on the user's computer without
+  the user's explicit authorization for that copy. This also applies to new
+  worktrees, child sessions, and tools that automatically prepare local copies.
+- Permission to inspect or change code, push, open a pull request, or merge does
+  not authorize creating a local copy. Do not bypass this rule through another
+  agent, tool, archive download, or automatic fallback from cloud to local.
+- Existing local workspaces may be used for work the user requests there. Do not
+  delete or relocate them to enforce this rule.
+- At the start of a task, state whether execution is on the user's computer, in
+  a confirmed GitHub-hosted cloud environment, or on another remote host. Base
+  this on available session/host evidence, not the app name or GitHub access.
+- If execution location cannot be confirmed, say so and ask before creating a
+  workspace or starting work that the user expects to continue while offline.
+- A user-requested cloud task may check out the repository within its hosted
+  environment; this does not authorize a copy on the user's computer.
+- These instructions guide agents after they can read the repository. They
+  cannot prevent an app or platform from preparing a workspace before loading
+  them; the user must also control workspace creation in the app.
+
 Cloud handoffs
 - A local session cannot continue while its host laptop is off or asleep.
 - A cloud task works from files uploaded to GitHub, not unpushed local changes
@@ -104,6 +125,17 @@ PROJECT CONTEXT
   overwrite it. Work in the active source folder and use Git for history.
 
 VERSION HISTORY (newest first)
+
+v1.1 - 2026-10-15
+- Added the user's directive reserving control of new local repository copies,
+  including agent-created worktrees and delegated sessions, to the user.
+- Require evidence-based execution-location disclosure; no silent cloud-to-local
+  fallback. Existing workspaces remain usable and cloud-hosted checkouts are
+  distinct from copies on the user's computer.
+- Documented that repository instructions cannot block app-managed workspace
+  creation before the instructions are loaded.
+- Updated version labels; gameplay and the preserved v1.0 ZIP are unchanged.
+- The user authorized pushing and merging this directive into main.
 
 Archive labeling - 2026-10-15
 - Renamed ZombieChoiceAdventure.zip to
