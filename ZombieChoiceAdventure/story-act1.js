@@ -1159,7 +1159,9 @@
   for (var i = 0; i < S.order.length; i++) {
     var node = S.get(S.order[i]);
     for (var j = 0; j < node.choices.length; j++) {
-      if (node.choices[j].to === 'a1_hub') node.choices[j].to = 'a1_council';
+      if (node.id !== 'start' && node.choices[j].to === 'a1_hub') {
+        node.choices[j].to = 'a1_council';
+      }
     }
   }
 })();

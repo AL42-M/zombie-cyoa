@@ -552,8 +552,7 @@
         'It does not happen the way you had been quietly dreading, which was teeth, ' +
         'and a moment, and somebody\u2019s face going wrong above you.',
 
-        'It happens the way she said it would in the dispensary: ' +
-        'one room at a time, from the inside, reporting itself.',
+        'It happens one room at a time, from the inside, reporting itself.',
 
         'The back teeth. The jaw. The sinuses. The long bones of the arms. ' +
         'The floor of the pelvis. Places you did not know it had got to, ' +

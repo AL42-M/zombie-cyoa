@@ -1321,7 +1321,12 @@
     id: 'a3_treatment_source',
     chapter: CH,
     place: 'Ward 11',
-    enter: function (s) { s.set('sawWard11'); s.scar(12); },
+    enter: function (s) {
+      if (!s.flag('sawTreatmentSource')) {
+        s.set('sawTreatmentSource'); s.scar(12);
+      }
+      s.set('sawWard11');
+    },
     text: [
       'Matron takes you past the dispensing room to a window into Ward Eleven. The nurse inside ' +
       'is cleaning a woman\u2019s mouth with a damp sponge. She stops to listen when the woman hums, ' +
@@ -1393,13 +1398,17 @@
     id: 'a3_refuse_keys',
     chapter: CH,
     place: 'The property room',
-    enter: function (s) { s.give('keys'); s.set('hasTheKeys'); },
+    enter: function (s) {
+      if (!s.flag('hasTheKeys')) s.give('keys');
+      s.set('hasTheKeys');
+    },
     text: [
       'You slip back through the service door while the others wait at the end of the drive. ' +
       'The property room has a card index. HOLLOWAY, D. is in the April section.',
       'His wallet, ring, spectacles and boat keys are sealed in a labelled bag. You take the keys. ' +
       'The paper tears at the staple and makes a small sound in a building full of larger ones.',
-      'Outside, Wren has kept her eyes on the door. She starts walking with you before you speak.'
+      'Outside, the others have kept their eyes on the door. They start walking with you ' +
+      'before you speak.'
     ],
     choices: [
       { label: 'Take everyone to the boat.', tone: 'kind', to: 'a3_final',
@@ -1438,7 +1447,7 @@
           'now has to be done by somebody with hands.');
       } else if (s.flag('headingForTheBoat')) {
         lines.push('The hill is behind you. The river is ahead. It is the hour before dawn on ' +
-          'day forty-four, and whatever is going to be decided is going to be decided in the next one.');
+          'day ' + s.day + ', and whatever is going to be decided is going to be decided in the next one.');
       } else {
         lines.push('It comes down to this, in a corridor, at four in the morning, with a kettle ' +
           'boiling somewhere and ninety-four people humming at a ceiling two rooms away.');

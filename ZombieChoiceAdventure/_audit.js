@@ -83,6 +83,27 @@ for (var o = 0; o < Story.order.length; o++) {
   if (!seenStatic[Story.order[o]]) orphans.push(Story.order[o]);
 }
 
+/* A passage may converge with another, but must never lead back to a passage
+   the reader has already seen on this run. Dynamic final destinations are
+   exercised by the walks below. */
+var activePath = {}, finishedPath = {}, cycles = {};
+function checkCycles(id) {
+  activePath[id] = true;
+  var choices = Story.get(id).choices || [];
+  for (var ci = 0; ci < choices.length; ci++) {
+    var next = choices[ci].to;
+    if (typeof next !== 'string' || !Story.has(next)) continue;
+    if (activePath[next]) cycles[id + ' -> ' + next] = true;
+    else if (!finishedPath[next]) checkCycles(next);
+  }
+  delete activePath[id];
+  finishedPath[id] = true;
+}
+checkCycles(Story.START);
+for (var cycle in cycles) if (Object.prototype.hasOwnProperty.call(cycles, cycle)) {
+  problems.push('repeatable story path: ' + cycle);
+}
+
 /* ---------- fuzz walk ---------- */
 var endingsHit = {}, visited = {}, runtimeErrors = [], deadEnds = {}, countBad = {};
 var mementosSeen = {};
@@ -117,8 +138,14 @@ for (var w = 0; w < WALKS; w++) {
   var s = new Story.GameState();
   var node = Story.get(Story.START);
   var steps = 0;
+  var seenThisWalk = {};
 
   while (steps++ < 400) {
+    if (seenThisWalk[node.id]) {
+      runtimeErrors.push('revisited "' + node.id + '" in a single run');
+      break;
+    }
+    seenThisWalk[node.id] = true;
     visited[node.id] = true;
     for (var mk = 0; mk < s.keepsakes.length; mk++) mementosSeen[s.keepsakes[mk].id] = true;
     if (node.id === 'a3_final' && s.partyCount() < minPartyAtFinal) minPartyAtFinal = s.partyCount();

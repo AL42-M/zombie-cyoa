@@ -246,7 +246,9 @@
         to: 'a2_quay',
         act: function (s) { s.trust('bram', 25); s.set('bramSavedYou'); s.ease(6); s.scar(4); } },
       { label: 'Thank Bram. Out loud, in front of the others.', tone: 'kind', to: 'a2_quay',
-        act: function (s) { s.trust('bram', 35); s.set('bramSavedYou'); s.soften(6); } }
+        act: function (s) { s.trust('bram', 35); s.set('bramSavedYou'); s.soften(6); } },
+      { label: 'Stop resisting. Let them open your mouth.', tone: 'rot', to: 'end_turned',
+        act: function (s) { s.infect(80); s.set('letTheNoteIn'); } }
     ]
   });
 
@@ -753,7 +755,12 @@
     id: 'a2_boat_lastnight',
     chapter: CH,
     place: 'The river path',
-    enter: function (s) { s.advance(1); s.set('boatWillKeep'); },
+    enter: function (s) {
+      if (!s.flag('leftBoatAfterLastNight')) {
+        s.set('leftBoatAfterLastNight'); s.advance(1);
+      }
+      s.set('boatWillKeep');
+    },
     text: function (s) {
       var lines = [
         'You bargain for one more day. By afternoon the tins are empty. The paperback lies open ' +
