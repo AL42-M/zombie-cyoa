@@ -126,6 +126,22 @@ PROJECT CONTEXT
 
 VERSION HISTORY (newest first)
 
+v1.2 - 2026-10-15
+- Reworked the story into one-way passages: opening conversations now lead to
+  Teddy's council rather than returning to the same stockroom menu; route
+  detours and hospital investigations no longer send the reader back to a
+  passage they have already read in the same run.
+- Added distinct consequences for spending another night on the boat, pausing
+  in the chapel, viewing the ward after treatment, and returning for the keys.
+  The bone-turning ending is reachable through surrender inside the lorry.
+- Preserved the existing cast, endings, save-node identifiers and meaningful
+  choice effects. New entry effects are safe on Continue/Rewind. Existing saves
+  remain usable, though previously visited passages may have new exits.
+- The existing story audit now detects static cycles and repeated passages
+  during its playthroughs. Verified all twelve endings and no reachable
+  loops, dead ends, or missing links in 16,000 simulated walks.
+- The original v1.0 ZIP remains untouched. No UI changes are included.
+
 v1.1 - 2026-10-15
 - Added the user's directive reserving control of new local repository copies,
   including agent-created worktrees and delegated sessions, to the user.

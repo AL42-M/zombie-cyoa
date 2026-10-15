@@ -376,6 +376,24 @@ for (var fb = 0; fb < fin.choices.length; fb++) {
 WScript.Echo('  ' + (shownBare >= 3 ? 'pass' : 'FAIL') + '  worst-case a3_final shows ' + shownBare + ' choices (min 3)');
 if (shownBare < 3) targeted.push('a3_final worst case shows only ' + shownBare + ' choices');
 
+var sResume = new Story.GameState();
+var night = Story.get('a2_boat_lastnight');
+night.enter(sResume);
+var nightDay = sResume.day;
+night.enter(sResume);
+expect('continuing the last boat night does not advance again', String(sResume.day), String(nightDay));
+
+var source = Story.get('a3_treatment_source');
+source.enter(sResume);
+var sourceTrauma = sResume.trauma;
+source.enter(sResume);
+expect('continuing the ward visit does not scar again', String(sResume.trauma), String(sourceTrauma));
+
+var keys = Story.get('a3_refuse_keys');
+keys.enter(sResume);
+keys.enter(sResume);
+expect('continuing after finding the keys does not duplicate them', String(sResume.count('keys')), '1');
+
 WScript.Echo('');
 var total = probList.length + errList.length + deadList.length + countList.length +
             trulyUnreachable.length + missingEndings.length + targeted.length +

@@ -1,4 +1,4 @@
 # zombie-cyoa
-Current game version: **v1.1**.
+Current game version: **v1.2**.
 
 Game I made using copilot code, a choose your own adventure style zombie browser game like those when we had dialup connections. 
