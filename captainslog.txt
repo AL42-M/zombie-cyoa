@@ -140,6 +140,13 @@ v1.2 - 2026-10-15
 - The existing story audit now detects static cycles and repeated passages
   during its playthroughs. Verified all twelve endings and no reachable
   loops, dead ends, or missing links in 16,000 simulated walks.
+- Trial runs also exposed inventory-dependent prose errors: the shop's window
+  now offers a weapon the player can actually find, the Ferry Street fight
+  accounts for whether the cutters were collected, and burning the lorry
+  requires both alcohol and a lighter. Leaving Teddy no longer puts the
+  revolver he keeps into the player's inventory.
+- The first exposure day is recorded so triage can acknowledge a late arrival
+  after a long boat stay rather than claiming every infection is three days old.
 - The original v1.0 ZIP remains untouched. No UI changes are included.
 
 v1.1 - 2026-10-15

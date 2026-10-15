@@ -124,7 +124,7 @@
         act: function (s) { s.scar(10); s.set('closedThemIn'); },
         toast: ['The lever goes back over. Nothing follows you.', 'bad'] },
       { label: 'Burn it. Now, while they are still standing still.', tone: 'cruel',
-        show: function (s) { return s.has('lighter') || s.has('flask'); },
+        show: function (s) { return s.has('lighter') && s.has('flask'); },
         to: 'a2_burn_lorry' },
       { label: 'Walk in. Find out what they are waiting for.', tone: 'rot',
         to: 'a2_inside_lorry' },
@@ -240,7 +240,7 @@
       { label: 'Close the doors behind you first.', to: 'a2_quay',
         act: function (s) { s.trust('bram', 25); s.set('bramSavedYou'); s.set('closedThemIn'); s.scar(6); } },
       { label: 'Burn it before it follows.', tone: 'cruel',
-        show: function (s) { return s.has('lighter') || s.has('flask'); },
+        show: function (s) { return s.has('lighter') && s.has('flask'); },
         to: 'a2_burn_lorry', act: function (s) { s.trust('bram', 25); s.set('bramSavedYou'); } },
       { label: 'Sit down on the kerb and let your hands stop shaking first.',
         to: 'a2_quay',
@@ -378,7 +378,7 @@
       s.hurt(22); s.infect(12); s.scar(20);
       s.wound('bram');
     },
-    text: [
+    text: function (s) { return [
       'You take Ferry Street because there is no time and no better idea, and Ferry Street takes ' +
       'something from each of you in exchange.',
 
@@ -388,12 +388,13 @@
       'to get your face toward them, trying to get your mouth open.',
 
       'Bram goes down at the betting shop with three of them on him and comes up again with the ' +
-      'bolt cutters swinging and a <span class="wound">flap of his scalp hanging over one eye</span>. ' +
+      (s.has('cutters') ? 'bolt cutters' : 'broken length of railing') +
+      ' swinging and a <span class="wound">flap of his scalp hanging over one eye</span>. ' +
       'He does not stop moving. He does not make a sound. Eleven years of corrections.',
 
       'You come out at the Quay Road end with everyone still upright, which is more than you had ' +
       'any right to.'
-    ],
+    ]; },
     choices: [
       { label: 'Stop and get the scalp closed. Now, before he loses the eye.', tone: 'kind',
         to: 'a2_quay',
@@ -735,7 +736,7 @@
         lines.push('And on the second night the far bank fills up, and stays full, and the humming ' +
           'does not stop for nine hours, and you all stop pretending that the wall is a home.');
       }
-      lines.push('There is no food on this boat. There are no keys on this boat. ' +
+      lines.push('There is no food left on this boat. There are no keys on this boat. ' +
         'Everything you need is four miles north-east, in a lit building, on a hill.');
       return lines;
     },

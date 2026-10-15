@@ -295,7 +295,12 @@
   };
   P.hurt    = function (n) { return this.adj('health', -n); };
   P.heal    = function (n) { return this.adj('health', n); };
-  P.infect  = function (n) { return this.adj('infection', n); };
+  P.infect  = function (n) {
+    if (n > 0 && this.infection === 0 && this.flags.firstInfectionDay === undefined) {
+      this.set('firstInfectionDay', this.day);
+    }
+    return this.adj('infection', n);
+  };
   P.cure    = function (n) { return this.adj('infection', -n); };
   P.harden  = function (n) { return this.adj('humanity', -n); };
   P.soften  = function (n) { return this.adj('humanity', n); };

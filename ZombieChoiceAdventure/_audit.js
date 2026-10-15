@@ -394,6 +394,20 @@ keys.enter(sResume);
 keys.enter(sResume);
 expect('continuing after finding the keys does not duplicate them', String(sResume.count('keys')), '1');
 
+var sLate = new Story.GameState();
+sLate.infect(8);
+sLate.advance(5);
+Story.get('a3_triage').enter(sLate);
+expect('delayed triage acknowledges late infection',
+  String(Story.textOf(Story.get('a3_triage'), sLate).join(' ').indexOf('Beyond four days') >= 0), 'true');
+expect('first exposure day survives the delay', String(sLate.val('firstInfectionDay')), '41');
+
+var sFire = new Story.GameState();
+var fireChoice = Story.get('a2_lorry_open').choices[1];
+expect('burning the lorry needs accelerant', String(fireChoice.show(sFire)), 'false');
+sFire.give('flask');
+expect('burning the lorry is available with both supplies', String(fireChoice.show(sFire)), 'true');
+
 WScript.Echo('');
 var total = probList.length + errList.length + deadList.length + countList.length +
             trulyUnreachable.length + missingEndings.length + targeted.length +

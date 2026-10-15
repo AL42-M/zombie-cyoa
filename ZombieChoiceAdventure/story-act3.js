@@ -227,8 +227,16 @@
             '<span class="said">"You would be astonished how much difference that makes ' +
             'to what I can do for you."</span>');
         }
-        lines.push('<span class="said">"You are three days in, give or take. ' +
-          'That is well inside the window. I can stop this."</span>');
+        var daysIn = Math.max(0, s.day - s.val('firstInfectionDay', s.day - 3));
+        if (daysIn <= 4) {
+          lines.push('<span class="said">"You are ' +
+            (daysIn ? daysIn + ' day' + (daysIn === 1 ? '' : 's') : 'under a day') +
+            ' in, give or take. That is inside the window. I can stop this."</span>');
+        } else {
+          lines.push('<span class="said">"You are at least ' + daysIn + ' days in. ' +
+            'Beyond four days the treatment has failed people. I can try, but I will not ' +
+            'promise it will work."</span>');
+        }
         lines.push('A pause, and she puts the light down, and for the first time she looks ' +
           'like somebody about to do a difficult thing rather than a clinical one.');
         lines.push('<span class="said">"Before I offer you a treatment, you are entitled to ' +

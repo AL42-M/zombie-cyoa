@@ -460,7 +460,10 @@
       { label: 'Back away slowly. Do not add a second sound.', to: 'a1_hub',
         act: function (s) { s.scar(10); s.set('studiedThem'); s.set('tappedTheGlass'); },
         toast: ['It holds the note for forty minutes before it lets go.', 'bad'] },
-      { label: 'Drive the knife through the slats into its eye.', tone: 'cruel', to: 'a1_hub',
+      { label: function (s) {
+          return s.has('knife') ? 'Drive the knife through the slats into its eye.'
+            : 'Tear a shelf bracket loose and drive it through the slats into its eye.';
+        }, tone: 'cruel', to: 'a1_hub',
         act: function (s) { s.harden(10); s.scar(8); s.hurt(3); s.set('tappedTheGlass'); s.set('firstKill'); },
         toast: ['It is the first one you do up close. It is not the last.', 'bad'] },
       { label: 'Stand still and hum back at it.', tone: 'rot', to: 'a1_hum_back' },
@@ -981,7 +984,7 @@
       s.part('teddy', 'left at Rosco Drug & Sundry');
       s.harden(14); s.scar(16);
       s.trust('wren', -30); s.trust('odile', -15); s.trust('bram', 10);
-      if (!s.has('revolver')) s.give('revolver');
+      s.take('revolver');
       s.take('lighter');
       s.keep('fork', 'He pressed it into your hand at the end and said: it is no use to me, I already know the note.');
     },
