@@ -8,11 +8,6 @@
   var CH = 'I — The Hush';
   var PLACE = 'Rosco Drug & Sundry';
 
-  function explored(s) {
-    return (s.seen('a1_teddy') ? 1 : 0) + (s.seen('a1_odile') ? 1 : 0) +
-           (s.seen('a1_dispensary') ? 1 : 0) + (s.seen('a1_wren') ? 1 : 0);
-  }
-
   S.add({
     id: 'start',
     chapter: CH,
@@ -37,7 +32,9 @@
       { label: 'Check the front windows.', hint: 'count them', to: 'a1_window' },
       { label: 'Wake Odile.', hint: 'the only steady hands left', to: 'a1_odile' },
       { label: 'Search the dispensary.', hint: 'forty-one days and you still have not finished', to: 'a1_dispensary' },
-      { label: 'Sit with Wren.', hint: "she has not slept either", tone: 'kind', to: 'a1_wren' }
+      { label: 'Sit with Wren.', hint: "she has not slept either", tone: 'kind', to: 'a1_wren' },
+      { label: 'Call everyone together. The street is already listening.', to: 'a1_hub' },
+      { label: 'Crank the radio. Find out whether anyone else is still awake.', to: 'a1_radio' }
     ]
   });
 
@@ -45,33 +42,18 @@
     id: 'a1_hub',
     chapter: CH,
     place: PLACE,
-    text: function (s) {
-      var lines = [];
-      if (s.flag('toldAboutTeddy')) {
-        lines.push('The stockroom has got smaller since the thing was said out loud. Four people, ' +
-          'a shelf of expired cough syrup, and a decision standing in the middle of the floor ' +
-          'that nobody will walk around any more.');
-      } else {
-        lines.push('The stockroom smells of cardboard, old sugar and the sharp ghost of rubbing alcohol. ' +
-          'Someone has stacked incontinence pads into a mattress. Someone has written DAY 41 on the wall ' +
-          'in grease pencil, under DAY 40, under thirty-nine others.');
-      }
-      lines.push('Teddy breathes. The street breathes back.');
-      return lines;
-    },
+    text: [
+      'The stockroom smells of cardboard, old sugar and the sharp ghost of rubbing alcohol. ' +
+      'Someone has stacked incontinence pads into a mattress. Someone has written DAY 41 on the wall ' +
+      'in grease pencil, under DAY 40, under thirty-nine others.',
+      'You wake the others. Bram brings the wind-up torch; Wren brings her pad. Teddy breathes. ' +
+      'The street breathes back. There is no time to rehearse what you are about to say.'
+    ],
     choices: [
-      { label: 'Go to Teddy.', hint: 'he is awake and he knows', tone: 'kind',
-        show: function (s) { return !s.seen('a1_teddy'); }, to: 'a1_teddy' },
-      { label: 'Wake Odile.', hint: 'the only steady hands left',
-        show: function (s) { return !s.seen('a1_odile'); }, to: 'a1_odile' },
-      { label: 'Search the dispensary.', hint: 'there is always one more drawer',
-        show: function (s) { return !s.seen('a1_dispensary'); }, to: 'a1_dispensary' },
-      { label: 'Sit with Wren.', hint: 'she has not slept either', tone: 'kind',
-        show: function (s) { return !s.seen('a1_wren'); }, to: 'a1_wren' },
-      { label: 'Look through the grate.', hint: 'see how bad it is tonight', to: 'a1_window' },
-      { label: 'Crank the radio.', hint: 'one station, no words', to: 'a1_radio' },
-      { label: 'Call the others together.', hint: 'say the thing out loud', tone: 'cruel',
-        show: function (s) { return explored(s) >= 2; }, to: 'a1_council' }
+      { label: 'Let Teddy speak before anyone votes.', tone: 'kind', to: 'a1_teddy_votes' },
+      { label: 'Tell them you will carry him out tonight.', to: 'a1_depart',
+        act: function (s) { s.set('tookTeddy'); s.set('route', 'together'); s.trust('teddy', 15); } },
+      { label: 'Put every option on the table. Even the worst one.', to: 'a1_council' }
     ]
   });
 
@@ -612,9 +594,9 @@
       ];
     },
     choices: [
-      { label: 'Try again. There has to be a voice somewhere.', to: 'a1_radio' },
+      { label: 'Wind it once more. Bram hears you and comes over.', to: 'a1_bram' },
       { label: 'Put it away.', to: 'a1_hub' },
-      { label: 'Ask Bram what he thinks it is.', to: 'a1_bram' },
+      { label: 'Put it away and call everyone together.', to: 'a1_council' },
       { label: 'Hum along with it, quietly, just to see.', tone: 'rot',
         show: function (s) { return !s.flag('hummedBack'); }, to: 'a1_hum_back' }
     ]
@@ -791,12 +773,14 @@
     id: 'a1_council',
     chapter: CH,
     place: PLACE,
-    enter: function (s) { s.set('toldAboutTeddy'); },
+    enter: function (s) { s.set('toldAboutTeddy'); s.set('foundBackDoor'); },
     text: function (s) {
       var lines = [
-        'You call them together by the light of a single wind-up torch, which is the most formal thing ' +
-        'that has happened in this room in six weeks. Four faces. One of them is already crying and it ' +
-        'is not the one you would have guessed.'
+        'Bram pulls the wind-up torch from his coat and points it at the floor. He has found the ' +
+        'service door behind the staff toilet: a yard, a wall, an empty lane. Now there is a way out, ' +
+        'and no excuse to postpone choosing who goes through it.',
+        'You bring them together in that narrow pool of light. Four faces. One of them is already ' +
+        'crying, and it is not the one you would have guessed.'
       ];
       if (s.flag('agreedWithBram') || s.flag('claimedTheKilling')) {
         lines.push('Bram does the talking, because you have already told him he could. He is brief, ' +
@@ -1171,4 +1155,11 @@
         act: function (s) { s.take('photo'); s.give('_photoWithTeddy'); s.soften(6); s.trust('teddy', 15); s.scar(4); s.set('gavePhoto'); } }
     ]
   });
+
+  for (var i = 0; i < S.order.length; i++) {
+    var node = S.get(S.order[i]);
+    for (var j = 0; j < node.choices.length; j++) {
+      if (node.choices[j].to === 'a1_hub') node.choices[j].to = 'a1_council';
+    }
+  }
 })();
