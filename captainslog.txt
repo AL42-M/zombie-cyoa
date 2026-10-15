@@ -99,10 +99,18 @@ PROJECT CONTEXT
   progress is stored in the player's browser.
 - _audit.js is an existing Windows Script Host/JScript story validation harness;
   its header documents running it with cscript //E:JScript.
-- ZombieChoiceAdventure.zip is an existing uploaded archive. Do not use it as a
-  substitute for editing the active source files or maintaining Git history.
+- ZombieChoiceAdventure-1.0-donottouch.zip is the original uploaded archive,
+  renamed at the user's request. Preserve it unchanged; do not regenerate or
+  overwrite it. Work in the active source folder and use Git for history.
 
 VERSION HISTORY (newest first)
+
+Archive labeling - 2026-10-15
+- Renamed ZombieChoiceAdventure.zip to
+  ZombieChoiceAdventure-1.0-donottouch.zip at the user's request.
+- Archive contents are unchanged; it was not rebuilt from the labeled source.
+  The game remains v1.0 because this only labels the preserved original archive.
+- Changes remain local pending the user's authorization to push.
 
 v1.0 - 2026-10-15
 - At the user's request, designated the existing game as the v1.0 baseline,
