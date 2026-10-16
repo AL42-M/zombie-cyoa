@@ -138,6 +138,10 @@ v1.4 - 2026-10-16
   effects, node IDs and twelve endings remain intact.
 - Renamed the browser entry point to play.html and updated the launch
   instructions and displayed version. The original v1.0 archive is unchanged.
+- The Node story audit completed 16,000 walks with all twelve endings reachable.
+  Three contrasting complete route reads found no repeated passages, choice
+  sets or long dialogue lines; syntax and HTML asset-reference checks passed.
+  Browser automation was unavailable in this session.
 
 v1.3 - 2026-10-16
 - The river/boat, culvert, estate and Marlowe House choices now leave distinct
