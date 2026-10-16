@@ -118,13 +118,33 @@ PROJECT CONTEXT
   audio, and story-*.js files hold the narrative.
 - The game uses plain HTML, CSS, and JavaScript. Its title screen states that
   progress is stored in the player's browser.
-- _audit.js is an existing Windows Script Host/JScript story validation harness;
-  its header documents running it with cscript //E:JScript.
+- _audit.js is a story validation harness runnable with Node.js on any supported
+  platform or with Windows Script Host/JScript; its header and README document
+  both commands.
 - ZombieChoiceAdventure-1.0-donottouch.zip is the original uploaded archive,
   renamed at the user's request. Preserve it unchanged; do not regenerate or
   overwrite it. Work in the active source folder and use Git for history.
 
 VERSION HISTORY (newest first)
+
+v1.3 - 2026-10-16
+- The river/boat, culvert, estate and Marlowe House choices now leave distinct
+  marks at the Mercy gate; waiting with Teddy or taking from the children
+  creates additional arrival dialogue and choices. Major decisions continue
+  to echo at the final choice.
+- Reconciled the extra boat days with the supply count, Teddy's prognosis and
+  dialogue, the timing of triage, and the end-of-story clock. No ending or
+  existing route has been removed.
+- Added in-game instant/paragraph-paced reveal and larger story text settings
+  saved separately from game progress. The journal now expands entries to show
+  the full text as read at that moment, without advancing or altering state.
+  Older saves retain their existing short journal excerpts.
+- The existing audit runs under Node.js without extra packages, or under
+  Windows Script Host as before; it exits unsuccessfully on failed checks.
+  Route/timeline regression assertions supplement the 16,000 story walks.
+  Chromium trials verified instant reveal, larger text, expanded full journal
+  entries, and restoration of those preferences and passages after Continue.
+- The preserved v1.0 ZIP is untouched.
 
 v1.2 - 2026-10-15
 - Reworked the story into one-way passages: opening conversations now lead to

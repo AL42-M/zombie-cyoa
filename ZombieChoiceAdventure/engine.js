@@ -580,14 +580,14 @@
       var row = doc.createElement(entry.passage ? 'details' : 'div');
       row.className = 'jrow';
       var summary = entry.passage ? doc.createElement('summary') : row;
-      var head = doc.createElement('div');
+      var head = doc.createElement('span');
       head.className = 'jhead';
       head.textContent = 'Day ' + entry.day + (entry.chapter ? ' · ' + entry.chapter : '') +
         (entry.place ? ' · ' + entry.place : '');
-      var text = doc.createElement('div');
+      var text = doc.createElement('span');
       text.className = 'jtext';
       text.textContent = entry.text.length > 180 ? entry.text.slice(0, 180) + '…' : entry.text;
-      var choice = doc.createElement('div');
+      var choice = doc.createElement('span');
       choice.className = 'jchoice';
       choice.textContent = entry.choice;
       summary.appendChild(head); summary.appendChild(text); summary.appendChild(choice);

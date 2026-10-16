@@ -419,6 +419,22 @@ expect('burning the lorry needs accelerant', String(fireChoice.show(sFire)), 'fa
 sFire.give('flask');
 expect('burning the lorry is available with both supplies', String(fireChoice.show(sFire)), 'true');
 
+var sBoat = new Story.GameState();
+Story.get('a2_boat_hold').enter(sBoat);
+night.enter(sBoat);
+Story.get('a2_mercy_approach').enter(sBoat);
+expect('extra night advances chronology', String(sBoat.day), '45');
+expect('arrival recalls all three boat days',
+  String(Story.textOf(Story.get('a2_mercy_approach'), sBoat).join(' ').indexOf('three days') >= 0), 'true');
+expect('boat wait opens a Teddy-specific arrival choice',
+  String(Story.get('a2_mercy_approach').choices[5].show(sBoat)), 'true');
+var sEstate = new Story.GameState();
+sEstate.set('tookFromTheChildren');
+expect('estate route opens a distinct confession',
+  String(Story.get('a2_mercy_approach').choices[6].show(sEstate)), 'true');
+expect('estate route recalls the children in the final decision',
+  String(Story.textOf(fin, sEstate).join(' ').indexOf('six children') >= 0), 'true');
+
 WScript.Echo('');
 var total = probList.length + errList.length + deadList.length + countList.length +
             trulyUnreachable.length + missingEndings.length + targeted.length +
