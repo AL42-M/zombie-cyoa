@@ -201,6 +201,7 @@
     id: 'a3_triage',
     chapter: CH,
     place: 'Outpatients',
+    dateEntry: true,
     enter: function (s) {
       s.set('wasTriaged');
       s.advance(1);

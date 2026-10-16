@@ -385,7 +385,7 @@
     textOf: function (node, s) {
       var t = (typeof node.text === 'function') ? node.text(s) : node.text;
       if (typeof t === 'string') t = [t];
-      return t || [];
+      return node.dateEntry ? [{ c: 'dateline', t: 'Day ' + s.day }].concat(t || []) : (t || []);
     },
 
     choicesOf: function (node) {

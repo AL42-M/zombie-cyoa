@@ -714,6 +714,7 @@
     id: 'a2_boat_hold',
     chapter: CH,
     place: 'LUCKY II',
+    dateEntry: true,
     enter: function (s) { s.advance(2); s.set('heldAtTheBoat'); },
     text: function (s) {
       var lines = [
@@ -753,6 +754,7 @@
     id: 'a2_boat_lastnight',
     chapter: CH,
     place: 'The river path',
+    dateEntry: true,
     enter: function (s) {
       if (!s.flag('leftBoatAfterLastNight')) {
         s.set('leftBoatAfterLastNight'); s.advance(1);

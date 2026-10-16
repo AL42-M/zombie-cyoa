@@ -362,7 +362,7 @@
       day: state.day,
       place: node.place || '',
       chapter: node.chapter || '',
-      text: passage[0] || '',
+      text: passage[node.dateEntry ? 1 : 0] || '',
       passage: passage,
       choice: stripTags(choiceLabel || '')
     });

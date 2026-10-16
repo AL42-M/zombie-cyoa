@@ -868,6 +868,7 @@
     id: 'a1_wait',
     chapter: CH,
     place: PLACE,
+    dateEntry: true,
     enter: function (s) { s.advance(1); s.set('waited'); },
     text: [
       'I say: morning. Everyone agrees with the enormous relief of people who have been given ' +
