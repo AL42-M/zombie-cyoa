@@ -398,6 +398,7 @@ var sLoyal = new Story.GameState();
 sLoyal.set('atTheMercy');
 fin.enter(sLoyal);
 expect('loyal companions stay at a3_final', String(sLoyal.partyCount()), '4');
+expect('final decision does not invent an overnight stay', String(sLoyal.day), '41');
 
 /* a3_final must always offer a legal number of choices, even with nothing in your pockets */
 var sBare = new Story.GameState();
@@ -440,6 +441,19 @@ expect('delayed triage acknowledges late infection',
   String(Story.textOf(Story.get('a3_triage'), sLate).join(' ').indexOf('Beyond four days') >= 0), 'true');
 expect('first exposure day survives the delay', String(sLate.val('firstInfectionDay')), '41');
 
+var sOutsideBoat = new Story.GameState();
+sOutsideBoat.set('knowsBoat');
+var refuseText = Story.textOf(Story.get('a3_refuse'), sOutsideBoat).join(' ');
+expect('boat seen from shore has no invented fuel or cabin knowledge',
+  String(refuseText.indexOf('three-quarters of a tank') >= 0 ||
+    refuseText.indexOf('empty ignition barrel') >= 0), 'false');
+var sNoCutters = new Story.GameState();
+expect('estate door does not claim absent bolt cutters',
+  String(Story.textOf(Story.get('a2_estate_up'), sNoCutters).join(' ').indexOf('I have bolt cutters') >= 0), 'false');
+sNoCutters.give('cutters');
+expect('one available tool permits hotwire attempt',
+  String(Story.get('a2_boat').choices[2].show(sNoCutters)), 'true');
+
 var sFire = new Story.GameState();
 var fireChoice = Story.get('a2_lorry_open').choices[1];
 expect('burning the lorry needs accelerant', String(fireChoice.show(sFire)), 'false');
@@ -473,6 +487,10 @@ Story.get('a2_mercy_approach').enter(sScout);
 expect('party rejoins the scout at the gate', String(sScout.flag('groupCaughtUp')), 'true');
 var sEstate = new Story.GameState();
 sEstate.set('tookFromTheChildren');
+var sTagOnly = new Story.GameState();
+sTagOnly.set('knowsTheWards');
+expect('culvert tag does not invent a warning from the tower',
+  String(Story.textOf(Story.get('a2_mercy_approach'), sTagOnly).join(' ').indexOf('A woman in a tower block told me') >= 0), 'false');
 expect('estate route opens a distinct confession',
   String(Story.get('a2_mercy_approach').choices[6].show(sEstate)), 'true');
 expect('estate route recalls the children in the final decision',
@@ -490,6 +508,12 @@ var sWithoutOdile = new Story.GameState();
 sWithoutOdile.part('odile'); sWithoutOdile.give('morphine');
 expect('Teddy ending does not assign medicine to an absent Odile',
   String(Story.textOf(Story.get('end_mercy_teddy'), sWithoutOdile).join(' ').indexOf('Odile has the ampoule') >= 0), 'false');
+expect('door ending acknowledges Teddy when he came along',
+  String(Story.textOf(Story.get('end_door'), new Story.GameState()).join(' ').indexOf('Teddy comes with us') >= 0), 'true');
+expect('door ending does not invent an absent Teddy',
+  String(Story.textOf(Story.get('end_door'), sWithoutTeddy).join(' ').indexOf('Teddy comes with us') >= 0), 'false');
+expect('serum ending acknowledges surviving companions',
+  String(Story.textOf(Story.get('end_serum'), new Story.GameState()).join(' ').indexOf('others fall into step') >= 0), 'true');
 
 WScript.Echo('');
 var total = probList.length + errList.length + deadList.length + countList.length +

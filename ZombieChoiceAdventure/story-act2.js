@@ -659,7 +659,7 @@
       'Dennis Holloway\u2019s coat, they are four miles up the hill, in the only building with lights.'
     ]; },
     choices: [
-      { label: 'Take the card. The Mercy it is.', to: 'a2_mercy_approach',
+      { label: 'Take Holloway\u2019s appointment card to the Mercy.', to: 'a2_mercy_approach',
         act: function (s) { s.set('hollowayCard'); s.set('boatWillKeep'); },
         toast: ['Ward 11. A name. A room number.', 'item'] },
       { label: 'Take the card and tell nobody what it means.', tone: 'cruel',
@@ -669,7 +669,7 @@
         act: function (s) { s.set('boatWillKeep'); s.harden(5); } },
       { label: 'Hide the family aboard and go to the Mercy alone.', tone: 'risk',
         to: 'a2_boat_hold', act: function (s) { s.set('hollowayCard'); } },
-      { label: 'Take the card up the hill. The estate is behind you now.',
+      { label: 'Take the card up the hill. Leave the river behind.',
         to: 'a2_mercy_approach', act: function (s) { s.set('hollowayCard'); s.set('boatWillKeep'); } }
     ]
   });
@@ -1139,7 +1139,7 @@
       'away from the tower, away from the stairwell, away from six children and two under four.',
 
       'They come. All of them, out of the units, out of the dark, converging on the noise like water ' +
-      'finding the drain — and the drain is I.',
+      'finding the drain — and the drain is me.',
 
       'I get out through the bin store by eleven seconds and a torn coat and a line of ' +
       '<span class="wound">fingernail down the length of my back</span> that Odile will later ' +
@@ -1493,7 +1493,7 @@
           'between me and the sound in the east wing.');
       } else if (s.flag('tookEstate')) {
         lines.push('Somewhere below, a candle is still burning on the ninth floor. I have ' +
-          'come to the one place its keeper told me not to trust.');
+          'come to a place that says it takes in everyone.');
       }
       lines.push({ c: 'sep', t: '\u2042' });
       lines.push('St Amaranth Mercy is a Victorian infirmary with two modern wings, and every window ' +
@@ -1504,14 +1504,16 @@
         'paperback and waiting.');
       lines.push('Above the door, carved in 1874, the motto of the hospital:');
       lines.push({ c: 'note', t: 'WE TAKE IN ALL WHO COME' });
-      if (s.flag('warnedAboutFront') || s.flag('knowsTheWards')) {
+      if (s.flag('warnedAboutFront')) {
         lines.push('A woman in a tower block told me: <em>go in the back.</em>');
+      } else if (s.flag('knowsTheWards')) {
+        lines.push('The tag from the culvert said Ward Eleven. I cannot forget the face above it.');
       }
       return lines;
     },
     choices: [
       { label: 'Walk up the steps and through the front door.', hint: 'as invited', to: 'a3_reception' },
-      { label: 'Go round. Find the back.', tone: 'risk', hint: 'as warned',
+      { label: 'Go round. Find the back.', tone: 'risk', hint: 'away from reception',
         to: 'a3_back' },
       { label: 'Send one person in and keep the rest outside.', tone: 'risk', to: 'a3_split' },
       { label: 'Watch the building for an hour first.', to: 'a2_watch' },

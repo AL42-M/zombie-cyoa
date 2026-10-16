@@ -357,6 +357,10 @@
         'is not a person with nine vials in their coat. They are an institution. ' +
         'They are a triage desk with legs.'
       ];
+      if (survivors(s).length) {
+        lines.push('The others fall into step behind me. I hear the glass knock together inside ' +
+          'my coat, and nobody asks what I have taken.');
+      }
       lines.push({ c: 'sep', t: '\u2042' });
       lines.push('I give the first one away in a week, to a boy on the Hawksmoor Road, ' +
         'and it is the easiest thing I have ever done.');
@@ -444,6 +448,10 @@
         'a cast-iron door at the top of the cellar stairs, and a bolt on the inside ' +
         'that somebody fitted in about 1950 for reasons that had nothing to do with any of this.'
       ];
+      if (s.alive('teddy')) {
+        lines.push('Teddy comes with us. On the second evening he asks to rest. We stay beside him ' +
+          'until he is gone; when we set out in the morning, there is one fewer pair of footsteps.');
+      }
       lines.push({ c: 'dateline', t: 'Nine days later' });
       lines.push('The search has cost me the last of the tinned soup and most of the skin ' +
         'off both hands. Wren goes up the steps ahead of me.');

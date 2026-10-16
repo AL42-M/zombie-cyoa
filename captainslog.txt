@@ -127,6 +127,24 @@ PROJECT CONTEXT
 
 VERSION HISTORY (newest first)
 
+v1.6 - 2026-10-16
+- Five independent AI reader personas completed five story-engine runs each
+  (25 total, on the v1.5 baseline) for a spoiler-free playtest synthesis.
+  Their accounts are simulated passages/choices, not human or verified
+  browser-UI trials.
+- Repaired first-person grammar, equipment and exposure claims that could be
+  false on particular routes, and removed an unexplained day advance at the
+  last decision. The refusal passage distinguishes a boat seen from the bank
+  from one actually boarded.
+- A boat departure without keys now includes a distinct property-room passage
+  before ignition; treated readers cannot choose an ending requiring an active
+  hum, but can take the ledger when leaving. New targeted checks guard these
+  cases; a culvert discovery no longer invents a tower-block conversation.
+  Endings acknowledge surviving companions and Teddy where pertinent. The
+  story audit still checks loops, dead ends and all twelve endings.
+- Other route/day transitions and variable party reactions deserve a dedicated
+  later continuity pass. No user-interface changes or archive changes.
+
 v1.5 - 2026-10-16
 - Added unobtrusive day headings to passages that genuinely follow an overnight
   wait (the pharmacy, boat, and hospital triage); these use the run's saved day,
