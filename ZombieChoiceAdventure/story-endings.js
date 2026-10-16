@@ -468,7 +468,7 @@
       }
       if (s.alive('bram')) {
         lines.push('Bram goes east in the third week. He comes back in the fifth with a ' +
-          'nine-year-old asthmatic girl on his shoulders and a face me have not seen on him ' +
+          'nine-year-old asthmatic girl on his shoulders and a face I have not seen on him ' +
           'and will not see again, and he says only: <span class="said">"The grandmother had ' +
           'a cellar and a shotgun."</span>');
       }
@@ -546,7 +546,7 @@
     tag: 'TURNED',
     blurb: 'It got all the way in. Nobody had to decide anything in the end.',
     tease: 'The hum, in the bone. Most of you is still yours. Nearly theirs.',
-    place: 'Wherever you were standing',
+    place: 'Where I stood',
     text: function (s) {
       var lines = [
         'It does not happen the way I had been quietly dreading, which was teeth, ' +
@@ -593,7 +593,7 @@
     tag: 'FINISHED',
     blurb: 'It was not the hum in the end. It was blood loss, and exhaustion, and one more thing asked of a body that had none left.',
     tease: 'Finished. Failing. Coming apart. Badly used.',
-    place: 'Wherever you fell',
+    place: 'Where I fell',
     text: function (s) {
       var lines = [
         'In the end it is not the hum at all, which is its own small insult.',

@@ -576,7 +576,7 @@
         to: 'a3_chapel_exit',
         act: function (s) {
           s.scar(6); s.soften(6);
-          s.keep('hairslide', 'You did not read its label. You decided you would rather carry a stranger than a name you could fail.');
+          s.keep('hairslide', 'I did not read its label. I chose to carry a stranger rather than a name I might forget.');
         },
         toast: ['You put it in the pocket with the others.', 'keepsake'] }
     ]
@@ -638,7 +638,7 @@
         to: 'a3_matron',
         act: function (s) {
           s.set('tookTheRequest'); s.soften(7); s.scar(4);
-          s.keep('label', 'You have not promised anybody you will go. You have also not thrown it away.');
+          s.keep('label', 'I have not promised anybody I will go. I have also not thrown it away.');
         },
         toast: ['A dead man\u2019s last errand, now yours.', 'keepsake'] }
     ]
@@ -728,7 +728,7 @@
     enter: function (s) { s.soften(10); s.scar(14); s.set('didMouthCare'); },
     text: [
       'I do eleven beds. She does not thank me and she does not explain, and after the fourth ' +
-      'one she starts telling I the names without being asked.',
+      'one she starts telling me the names without being asked.',
 
       '<span class="said">"This is Margaret. She was a dinner lady at St Jude\u2019s. ' +
       'This is Oyelaran, he came in off the Hawksmoor Road in the second week with his arm already ' +
@@ -984,7 +984,7 @@
       s.set('unstrappedThem');
     },
     text: [
-      'I get four of them undone before anybody reaches I.',
+      'I get four of them undone before anybody reaches me.',
 
       'They do not get up. That is the first thing and it is almost funny — two months of ' +
       'muscle wastage in a bed does not produce a monster, it produces a person who cannot ' +
@@ -1353,7 +1353,7 @@
       'then goes on as gently as before.',
       'There are ninety-four beds. Ninety-four charts. The small plaster on my hand is still ' +
       'warm from the injection. I can put my hand against the glass, but I cannot give it back.',
-      'Matron stays beside me until I step away. Neither of me says thank me.'
+      'Matron stays beside me until I step away. Neither of us says thank you.'
     ],
     choices: [
       { label: 'Ask that the patients be named in every account of this place.', tone: 'kind',
@@ -1455,7 +1455,7 @@
       ['odile', 'bram', 'wren'].forEach(function (id) {
         if (s.alive(id) && s.who(id).trust <= 12 && !s.flag('left_' + id)) {
           s.set('left_' + id);
-          s.part(id, 'walked away from you before the end');
+          s.part(id, 'walked away from me before the end');
           s.scar(6);
         }
       });

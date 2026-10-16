@@ -24,7 +24,7 @@
         lines.push('Teddy has to stop every twenty yards. I have stopped pretending this is a rest for ' +
           'everybody. Odile counts his breaths with two fingers on his wrist and does not report the number.');
       } else {
-        lines.push('There are four of us now, and I am walking faster than me should, and nobody ' +
+        lines.push('There are four of us now, and I am walking faster than I should, and nobody ' +
           'has said a single word since the yard wall.');
       }
       lines.push('There is no way past it. There is over it, or through it, or back up the lane and out ' +
@@ -81,7 +81,7 @@
         hint: 'somebody loved that dog enough to tape it up',
         act: function (s) {
           s.set('leftItSealed'); s.soften(4); s.scar(3);
-          s.keep('dogphoto', 'You did not know him. You know the dog\u2019s face better than you know most of the living.');
+          s.keep('dogphoto', 'I did not know him. I know the dog\u2019s face better than I know most of the living.');
         },
         toast: ['You peel it off carefully, so as not to tear the corners.', 'keepsake'] },
       { label: 'Tear the biro line off the manifest and pocket it.', to: 'a2_lorry_climb',
@@ -360,7 +360,7 @@
           s.trust('teddy', 25); s.soften(6);
           if (s.has('gauze')) {
             s.take('gauze');
-            s.keep('gauzescrap', 'You kept the square you took off him. You have never been able to say why, only that throwing it away was not available to you.');
+            s.keep('gauzescrap', 'I kept the square I took off him. I cannot say why. I tried to throw it away and could not.');
           }
         } },
       { label: 'Out, and do not speak to anybody for an hour.', to: 'a2_quay',
@@ -731,7 +731,7 @@
           'closes her eyes.');
       } else {
         lines.push('And on the second night the far bank fills up, and stays full, and the humming ' +
-          'does not stop for nine hours, and I all stop pretending that the wall is a home.');
+          'does not stop for nine hours, and we all stop pretending that the wall is a home.');
       }
       lines.push('There is almost no food left on this boat. There are no keys on this boat. ' +
         'The lit building four miles north-east has both beds and people to answer to.');
@@ -764,7 +764,7 @@
         'I bargain for one more day. By afternoon the last tin is empty. The paperback lies open ' +
         'face-down in the cockpit, its pages swelling as the river mist comes in.',
         'At dusk the humming starts on the far bank again. Nobody gets up to look. That is when ' +
-        'I understand what staying has bought I: not safety, only practice at ignoring it.'
+        'I understand what staying has bought me: not safety, only practice at ignoring it.'
       ];
       if (withTeddy(s)) {
         lines.push('Teddy asks me to help him off the boat. He does not ask for the Mercy. ' +
@@ -1321,7 +1321,7 @@
     text: function (s) {
       var lines = [
         'The culvert takes the stream under Quay Road and the railway and comes out, according to ' +
-        'the sign nobody has read since 1987, on the far side of the embankment — which puts I ' +
+        'the sign nobody has read since 1987, on the far side of the embankment — which puts me ' +
         'two miles closer and saves me the open ground.',
 
         'It is four feet high. I go bent double in eight inches of cold water, in single file, ' +
@@ -1334,7 +1334,7 @@
       }
       lines.push('Four hundred yards in, my torch finds the first of them.');
       lines.push('It is standing in the water facing the wall, as though it walked in here and ran ' +
-        'out of instructions. It does not turn around. I all edge past it one at a time, close ' +
+        'out of instructions. It does not turn around. We edge past it one at a time, close ' +
         'enough to touch, and it does not turn around.');
       lines.push('There are nine more. All facing the walls. All humming.');
       lines.push({ c: 'hum', t: 'h m m m m m m m' });
@@ -1458,10 +1458,10 @@
         lines.push('Teddy makes it. Nobody expected it, least of all Odile, who has been walking at ' +
           'his shoulder for four miles with her hand ready at his elbow. At the gate he stops and ' +
           'straightens up as far as he can get and fixes his collar, because he is going into a ' +
-          'hospital and he is seventy-one and that is what I do.');
+          'hospital and he is seventy-one and that is what he does.');
       } else {
         lines.push('There are four of us at the gate, and there is a gap in the shape of a man ' +
-          'walking between me, and every one of us keeps the gap.');
+          'walking between us, and every one of us keeps the gap.');
       }
       if (s.flag('heldAtTheBoat')) {
         lines.push('The boat is still tied to the pontoon. I spent ' +
@@ -1474,13 +1474,13 @@
           ? 'Bram sees the word <em>Mercy</em> over the entrance. I left the tins on the ' +
             'landing at Marlowe House, but neither of us can stop hearing the children behind the door.'
           : 'Bram sees the word <em>Mercy</em> over the entrance and looks at the tins I ' +
-            'carried out of Marlowe House. Neither of me can call this building a refuge without ' +
+            'carried out of Marlowe House. Neither of us can call this building a refuge without ' +
             'thinking of the children I left behind.');
       } else if (s.flag('drewThemOff')) {
         lines.push('The scrape from the estate has bled through its dressing. Wren checks it ' +
           'without being asked. In the tower behind me, six children have had an hour of quiet.');
       } else if (s.flag('tookCulvert')) {
-        lines.push('my cuffs are still wet with culvert water. When the hum rises behind the ' +
+        lines.push('My cuffs are still wet with culvert water. When the hum rises behind the ' +
           'east wing, it finds the same note I heard beneath the road.');
       } else if (s.flag('tookRiver')) {
         lines.push('For most of the walk the river held them back. Up here there is no water ' +

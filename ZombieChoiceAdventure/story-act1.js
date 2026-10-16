@@ -218,7 +218,7 @@
       '<span class="said">"He is not an animal. So instead I lie here every night listening to a man ' +
       'I like drown an inch at a time, and I call that respecting him."</span>',
 
-      { c: 'whisper', t: 'She does not say: and I resent him for it. But it is in the room with you.' }
+      { c: 'whisper', t: 'She does not say: and I resent him for it. But it is in the room with me.' }
     ],
     choices: [
       { label: 'Tell her she is a good person.', tone: 'kind', to: 'a1_hub',
@@ -283,7 +283,7 @@
       'cough — which in this room makes her the most valuable person alive, and everyone knows it, ' +
       'and nobody has been cruel enough to say it except Bram, once, out loud, on day twenty.',
 
-      'She is awake. She passes I the pharmacy pad without being asked, the stub of pencil ' +
+      'She is awake. She passes me the pharmacy pad without being asked, the stub of pencil ' +
       'already threaded through the wire.',
 
       { c: 'whisper', t: 'you were going to ask me if im ok' },
@@ -359,7 +359,7 @@
       { label: 'Promise her that door.', tone: 'kind', to: 'a1_hub',
         act: function (s) {
           s.set('promisedTheDoor'); s.trust('wren', 20); s.soften(6); s.scar(3);
-          s.keep('padpage', 'She tore it off and gave it to you so that it would exist somewhere outside her own head.');
+          s.keep('padpage', 'She tore it off and gave it to me so that it would exist somewhere outside her own head.');
         },
         toast: ['She tears the page off and folds it into your hand.', 'keepsake'] },
       { label: 'Tell her there is no such place left.', tone: 'cruel', to: 'a1_hub',
@@ -490,7 +490,7 @@
       'body and without a single word, that <em>it is not an infection, it is a recruitment</em>, and that ' +
       'it has been very patient with me.',
 
-      'Then Odile has I by the collar and drags I down behind the counter and the spell comes off ' +
+      'Then Odile has me by the collar and drags me down behind the counter and the spell comes off ' +
       'like a wet coat. There is <span class="wound">blood in my mouth</span>. I have been humming ' +
       'hard enough to tear something.'
     ],
@@ -690,7 +690,7 @@
         hint: 'so that it is not only in one man\u2019s head',
         act: function (s) {
           s.trust('bram', 14); s.soften(5); s.scar(3);
-          s.keep('facts', 'He dictated. You wrote. Neither of you said why, because both of you knew why.');
+          s.keep('facts', 'He dictated. I wrote. Neither of us said why. We both knew.');
         },
         toast: ['Nine facts about a nine-year-old, in your handwriting.', 'keepsake'] }
     ]
@@ -756,7 +756,7 @@
       'He does not look triumphant. He looks like a man who has been holding a door shut and has ' +
       'just felt it stop pushing from the other side, and is now realising he must walk through it.',
       '<span class="said">"Right," he says. "Right."</span>',
-      'In the corner, Teddy coughs. Neither of me turns round. That is the first thing I do ' +
+      'In the corner, Teddy coughs. Neither of us turns round. That is the first thing I do ' +
       'together as accomplices: not turning round.'
     ],
     choices: [
@@ -986,7 +986,7 @@
       s.trust('wren', -30); s.trust('odile', -15); s.trust('bram', 10);
       s.take('revolver');
       s.take('lighter');
-      s.keep('fork', 'He pressed it into your hand at the end and said: it is no use to me, I already know the note.');
+      s.keep('fork', 'He pressed it into my hand at the end and said: it is no use to me, I already know the note.');
     },
     text: [
       'I leave him the revolver with its one chamber that matters, and the lighter, and the ' +
@@ -1021,13 +1021,13 @@
     chapter: CH,
     place: PLACE,
     enter: function (s) {
-      var how = s.flag('byMyHand') ? 'by your hand' : 'by Odile\u2019s hand';
+      var how = s.flag('byMyHand') ? 'by my hand' : 'by Odile\u2019s hand';
       s.kill('teddy', how);
       s.harden(s.flag('byMyHand') ? 24 : 16);
       s.scar(s.flag('byMyHand') ? 26 : 20);
       s.trust('wren', -40); s.trust('odile', s.flag('byMyHand') ? 5 : -20); s.trust('bram', 20);
       if (s.has('morphine')) s.take('morphine');
-      s.keep('fork', 'It was in his coat pocket, in the dark, afterwards. Nobody saw you take it and you have never explained it.');
+      s.keep('fork', 'It was in his coat pocket, in the dark, afterwards. Nobody saw me take it and I have never explained it.');
     },
     text: function (s) {
       var mine = s.flag('byMyHand');
