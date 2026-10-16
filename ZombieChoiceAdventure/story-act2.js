@@ -181,7 +181,7 @@
     place: 'Inside the trailer',
     enter: function (s) { s.infect(22); s.scar(20); s.set('wentInside'); },
     text: [
-      'I step up into the trailer and nobody stops I, and that includes the sixty.',
+      'I step up into the trailer and nobody stops me, and that includes the sixty.',
 
       'Inside, the humming is not a sound. It is a <em>pressure</em>, in the sinuses and the back ' +
       'teeth and the long bones, and walking into it is like walking chest-deep into a river.',
@@ -330,24 +330,22 @@
     enter: function (s) { s.scar(12); s.advance(0); },
     text: function (s) {
       var lines = [
-        'I stop. All of me. Flat on my backs in eleven inches of dark under fourteen tonnes of ' +
+        'We stop. All of us. Flat on our backs in eleven inches of dark under fourteen tonnes of ' +
         'standing dead.',
 
         'Forty minutes.',
 
-        'In forty minutes under a lorry I have time to understand several things about myself ' +
-        'that I had been outrunning. I think about June. I think about the four frames of a ' +
-        'photo booth at a county fair. I think about how long it has been since I said her name ' +
-        'out loud, and I realise the answer is nineteen days, and that is the moment something in ' +
-        'I quietly goes over.'
+        'Forty minutes under a lorry. I think of June in the photo booth at the county fair, ' +
+        'trying to fit both our heads into the fourth frame. I have not said her name aloud ' +
+        'for nineteen days. I count them twice to be sure.'
       ];
       if (withTeddy(s)) {
         lines.push('Teddy does not cough. Not once, in forty minutes. I will never know what that ' +
-          'cost him and he will never tell I, and when I finally crawl out he is grey to the lips ' +
+          'cost him and he will never tell me, and when I finally crawl out he is grey to the lips ' +
           'and smiling like a boy who has won something.');
         lines.push({ c: 'whisper', t: 'He has bitten through his own bottom lip to do it.' });
       }
-      lines.push('The footsteps overhead stop. Eventually. The way weather stops.');
+      lines.push('Eventually the footsteps overhead move away.');
       return lines;
     },
     choices: [
@@ -380,11 +378,11 @@
     },
     text: function (s) { return [
       'I take Ferry Street because there is no time and no better idea, and Ferry Street takes ' +
-      'something from each of me in exchange.',
+      'something from each of us in exchange.',
 
       'It is not a chase. I keep expecting it to become a chase and it never does — it is a ' +
       '<em>crowd</em>, and I am going the wrong way through it, and every single one of them is ' +
-      'reaching as I pass with that same patient unhurried grip, trying to turn I round, trying ' +
+      'reaching as I pass with that same slow grip, trying to turn me round, trying ' +
       'to get my face toward them, trying to get my mouth open.',
 
       'Bram goes down at the betting shop with three of them on him and comes up again with the ' +
@@ -392,8 +390,7 @@
       ' swinging and a <span class="wound">flap of his scalp hanging over one eye</span>. ' +
       'He does not stop moving. He does not make a sound. Eleven years of corrections.',
 
-      'I come out at the Quay Road end with everyone still upright, which is more than me had ' +
-      'any right to.'
+      'I come out at the Quay Road end with everyone still upright. None of us expected that.'
     ]; },
     choices: [
       { label: 'Stop and get the scalp closed. Now, before he loses the eye.', tone: 'kind',
@@ -423,7 +420,7 @@
       ];
       if (s.flag('sawTheLights')) {
         lines.push('Ahead and above it all, four miles north-east, St Amaranth Mercy is lit up like ' +
-          'a liner. I have all seen it now. Nobody has said what it means yet.');
+          'a liner. We have all seen it now. Nobody has said what it means yet.');
       } else {
         lines.push('And ahead, four miles north-east, up on the hill: lights. Electric lights, ' +
           'burning steadily, in a county with no power. St Amaranth Mercy.');
@@ -432,7 +429,7 @@
       }
       lines.push({ c: 'sep', t: '\u2042' });
       if (withTeddy(s)) {
-        lines.push('Odile takes I aside by the elbow. <span class="said">"Two miles," she says. ' +
+        lines.push('Odile takes me aside by the elbow. <span class="said">"Two miles," she says. ' +
           '"He has two miles in him, maybe three. Not four. I am telling you now, while it is still ' +
           'information and not an emergency."</span>');
       }
@@ -495,7 +492,7 @@
       'I give it an hour in the lee of an overturned skip, and the hour costs I the dark.',
 
       'Teddy sleeps sitting up against my shoulder and his breathing gets easier for a while, ' +
-      'and Odile sleeps for the first time in my presence in forty-one days, which tells I ' +
+      'and Odile sleeps for the first time in my presence in forty-one days, which tells me ' +
       'more about how bad she thinks it is than anything she has said.',
 
       'Wren does not sleep. Wren sits watching the river with her chin on her knees, and when I ' +
@@ -696,7 +693,7 @@
       { c: 'hum', t: 'h m m m m m m m' },
 
       'Hundreds. Not dozens. The far bank of the river has been full of them this entire time, ' +
-      'standing in the dark, and now every one of them is facing I.',
+      'standing in the dark, and now every one of them is facing me.',
 
       'They cannot cross. I am almost certain they cannot cross.'
     ],
@@ -770,7 +767,7 @@
         'I understand what staying has bought I: not safety, only practice at ignoring it.'
       ];
       if (withTeddy(s)) {
-        lines.push('Teddy asks I to help him off the boat. He does not ask for the Mercy. ' +
+        lines.push('Teddy asks me to help him off the boat. He does not ask for the Mercy. ' +
           'He looks at the path up the hill and waits for me to take his arm.');
       }
       return lines;
@@ -902,7 +899,7 @@
     place: 'Marlowe House',
     enter: function (s) { s.set('knowsTheWards'); },
     text: [
-      'She tells I. It takes ninety seconds and she does it in the flat, careful voice of a woman ' +
+      'She tells me. It takes ninety seconds and she does it in the flat, careful voice of a woman ' +
       'who has had to say it before to people who did not believe her.',
 
       '<span class="said">"They keep them alive. The turned ones. Strapped, fed, washed — properly ' +
@@ -1147,7 +1144,7 @@
 
       { c: 'sep', t: '\u2042' },
 
-      'Ninety yards clear, on the slip road, Bram stops I with a hand flat on my chest and ' +
+      'Ninety yards clear, on the slip road, Bram stops me with a hand flat on my chest and ' +
       'looks at me with an expression I have not seen on him before.',
 
       '<span class="said">"Do not ever do that again," </span> he says, and his voice is not steady, ' +
@@ -1285,7 +1282,7 @@
       'It takes nineteen minutes and it is the loudest nineteen minutes of the night, and nobody ' +
       'inside that flat stops screaming for any of it.',
 
-      'They do not fight I. That is what I was not ready for. A woman in her sixties stands in ' +
+      'They do not fight me. That is what I was not ready for. A woman in her sixties stands in ' +
       'front of six children with a bread knife held wrong, and when the barricade finally goes she ' +
       'says <span class="said">"take it, take it, take all of it, please just — "</span> and steps aside.',
 
@@ -1325,7 +1322,7 @@
       var lines = [
         'The culvert takes the stream under Quay Road and the railway and comes out, according to ' +
         'the sign nobody has read since 1987, on the far side of the embankment — which puts I ' +
-        'two miles closer and saves I the open ground.',
+        'two miles closer and saves me the open ground.',
 
         'It is four feet high. I go bent double in eight inches of cold water, in single file, ' +
         'in the dark, for six hundred yards.'
@@ -1375,7 +1372,7 @@
 
       { c: 'sep', t: '\u2042' },
 
-      'Nobody helps I. Nobody stops I either. Bram holds the torch at the correct angle for ' +
+      'Nobody helps me. Nobody stops me either. Bram holds the torch at the correct angle for ' +
       'twenty minutes without being asked, and that is a kind of participation, and both of us ' +
       'know it, and neither of us will ever describe it that way.',
 
@@ -1402,9 +1399,9 @@
     text: [
       'I put a hand on its shoulder — the fabric is sodden and underneath it the flesh is ' +
       '<span class="cold">cold and quite firm</span>, like meat out of a fridge — and I turn it ' +
-      'to face I.',
+      'to face me.',
 
-      'It lets I. It turns like a mannequin on a stand, and when it comes round, its face is ' +
+      'It lets me. It turns like a mannequin on a stand, and when it comes round, its face is ' +
       'four inches from mine in the torchlight.',
 
       'It is a woman of about thirty. The eyes have gone the way they all go. The jaw is slack and ' +
@@ -1490,7 +1487,7 @@
           'between me and the sound in the east wing.');
       } else if (s.flag('tookEstate')) {
         lines.push('Somewhere below, a candle is still burning on the ninth floor. I have ' +
-          'come to the one place its keeper told I not to trust.');
+          'come to the one place its keeper told me not to trust.');
       }
       lines.push({ c: 'sep', t: '\u2042' });
       lines.push('St Amaranth Mercy is a Victorian infirmary with two modern wings, and every window ' +
@@ -1502,7 +1499,7 @@
       lines.push('Above the door, carved in 1874, the motto of the hospital:');
       lines.push({ c: 'note', t: 'WE TAKE IN ALL WHO COME' });
       if (s.flag('warnedAboutFront') || s.flag('knowsTheWards')) {
-        lines.push('A woman in a tower block told I: <em>go in the back.</em>');
+        lines.push('A woman in a tower block told me: <em>go in the back.</em>');
       }
       return lines;
     },

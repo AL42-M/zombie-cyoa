@@ -170,7 +170,7 @@
     place: 'Reception',
     enter: function (s) { s.set('askedAboutHolloway'); },
     text: [
-      'He does not need to look it up, which tells I how many patients are left who have names.',
+      'He does not need to look it up, which tells me how many patients are left who have names.',
 
       '<span class="said">"Dennis. Ward Eleven."</span> A beat. <span class="said">"You are family?"</span>',
 
@@ -208,7 +208,7 @@
     },
     text: function (s) {
       var lines = [
-        'They give I a bed. An actual bed, with an actual sheet, in a six-bed bay with a radiator ' +
+        'They give me a bed. An actual bed, with an actual sheet, in a six-bed bay with a radiator ' +
         'under the window, and I sleep until morning without meaning to and wake up furious ' +
         'with myself for it.',
 
@@ -266,7 +266,7 @@
         lines.push('She spends forty minutes with Teddy. I can see them through the glass: ' +
           'the chest, the oxygen saturation, the long careful listening with the stethoscope ' +
           'moving a half-inch at a time.');
-        lines.push('When she comes out she closes the door behind her first, which tells I ' +
+        lines.push('When she comes out she closes the door behind her first, which tells me ' +
           'everything before she opens her mouth.');
         lines.push(s.flag('heldAtTheBoat')
           ? '<span class="said">"Those nights outside have cost him. Oxygen, steroids and a bed ' +
@@ -408,7 +408,7 @@
 
       { c: 'note', t: 'WARD 11 \u00b7 OCCUPANCY 94/96\nTURNS: 04:00 \u00b7 10:00 \u00b7 16:00 \u00b7 22:00\n' +
         'DRAW: 06:00 ONLY. DO NOT DRAW OFF-SCHEDULE.\nMOUTH CARE IS NOT OPTIONAL. THEY STILL FEEL IT.\n' +
-        'Be kind. They can hear I. \u2014 M.' },
+        'Be kind. They can hear me. \u2014 M.' },
 
       'Ninety-four of ninety-six. And underneath the hum, from behind the double doors at the end ' +
       'of the corridor, the sound of someone moving along a row of beds, talking quietly and ' +
@@ -703,7 +703,7 @@
       'a soft toothbrush. She is doing mouth care, bed by bed, and she is talking to each of them ' +
       'while she does it — the weather, the generator, somebody called Pav who has lost his boots.',
 
-      'She looks up and sees I and does not stop what she is doing.',
+      'She looks up and sees me and does not stop what she is doing.',
 
       '<span class="said">"If you are going to be sick, the sluice is through there," </span>she says, ' +
       '<span class="said">"and if you are going to say something clever about this, do not."</span>'
@@ -954,7 +954,7 @@
         'tying the bowline halfway through a bowline.');
       lines.push('That is the detail. Not the rest of it. <em>Halfway through.</em>');
       lines.push({ c: 'sep', t: '\u2042' });
-      lines.push('The woman with the sponge watches I do it from four beds away and does not move ' +
+      lines.push('The woman with the sponge watches me do it from four beds away and does not move ' +
         'and does not call out, and when it is over she comes and straightens his blanket and ' +
         'folds his hands and says, to him, not to me:');
       lines.push('<span class="said">"Right then, Dennis. That is you done."</span>');
@@ -1101,7 +1101,7 @@
     enter: function (s) { s.set('metTheMatron'); },
     text: function (s) {
       var lines = [
-        'She is about sixty-five, in a cardigan, holding two mugs of tea, and she gives I one of ' +
+        'She is about sixty-five, in a cardigan, holding two mugs of tea, and she gives me one of ' +
         'them before she says a single word.'
       ];
       if (s.flag('sheSawYouRead')) {
@@ -1113,13 +1113,12 @@
           'to hear and you are not to make it easier to say by nodding."</span>');
       }
       lines.push({ c: 'sep', t: '\u2042' });
-      lines.push('She tells I. It takes eleven minutes and she does not once use a soft word.');
-      lines.push('They take in all who come. The well ones are fed, housed and put to work. ' +
-        'The turned ones go into Ward Eleven and are kept — clean, fed, strapped, and drained at ' +
-        'six in the morning, every morning, for as long as their blood keeps yielding.');
-      lines.push('And from that blood, Doctor Aytoun makes a grey serum that stops the hum in a ' +
-        'recently bitten human being. It works. It has worked eleven times out of thirteen. ' +
-        'It is the only thing on this earth that works.');
+      lines.push('She talks for eleven minutes. I keep my tea in my hands until it goes cold.');
+      lines.push('They take in everyone. Those still well are fed, housed and put to work. ' +
+        'The turned go to Ward Eleven. They are washed and fed. They are strapped to their beds. ' +
+        'Every morning at six, the staff draw blood from them.');
+      lines.push('Doctor Aytoun uses that blood to make a grey serum. It has stopped the hum in ' +
+        'eleven of thirteen people who were bitten. I ask her to repeat the number. She does.');
       lines.push('<span class="said">"And since the fourth of June," </span>she says, ' +
         '<span class="said">"when the wards filled and the yield began to fall, we have been asking ' +
         'people to volunteer for the beds. Eleven have. I wrote the words that asked them. ' +
@@ -1279,7 +1278,7 @@
       'walk up that drive in the next few months with a bite on them, and you will never meet ' +
       'any of them, and they will die humming."</span>',
 
-      'She says it without weight. She is not trying to stop I.',
+      'She says it without weight. She is not trying to stop me.',
 
       '<span class="said">"I have made nine hundred decisions in this building and the only thing ' +
       'I have learned worth passing on is this: do not pretend the people you will never meet ' +
@@ -1322,7 +1321,7 @@
       'What is left behind is not health. It is an <span class="cold">absence</span>, ' +
       'precisely the shape of everything the hum had already taken, and I can feel the edges of it.',
 
-      'I will not get that back. She told I. She did not shade a word of it.',
+      'I will not get that back. She told me. She did not shade a word of it.',
 
       '<span class="said">"There," </span>she says, and puts a plaster on it, ' +
       'and the plaster has a cartoon dinosaur on it because that is what the hospital has.'
@@ -1349,7 +1348,7 @@
       s.set('sawWard11');
     },
     text: [
-      'Matron takes I past the dispensing room to a window into Ward Eleven. The nurse inside ' +
+      'Matron takes me past the dispensing room to a window into Ward Eleven. The nurse inside ' +
       'is cleaning a woman\u2019s mouth with a damp sponge. She stops to listen when the woman hums, ' +
       'then goes on as gently as before.',
       'There are ninety-four beds. Ninety-four charts. The small plaster on my hand is still ' +
@@ -1484,7 +1483,7 @@
       if (s.flag('tookFromTheChildren')) {
         lines.push(s.flag('gaveItBack')
           ? 'I left the stolen tins on the landing at Marlowe House. The sound of the ' +
-            'children behind the door has followed I into this corridor.'
+            'children behind the door has followed me into this corridor.'
           : 'The tins from Marlowe House are still with me. Before I decide what the ' +
             'hospital owes anyone, I have to admit what I took from six children.');
       }
@@ -1501,7 +1500,7 @@
       }
       if (withTeddy(s)) {
         lines.push('And I have Teddy, whose time is running out, and who has walked four miles, ' +
-          'and who has not once asked I for anything.');
+          'and who has not once asked me for anything.');
       }
       lines.push('Decide.');
       return lines;

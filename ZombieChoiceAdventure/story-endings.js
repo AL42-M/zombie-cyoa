@@ -30,14 +30,14 @@
           'one last time first — all ninety-four, which takes her two hours and eleven minutes, ' +
           'and nobody hurries her, and then she comes out and nods once and does not look back.');
       } else {
-        lines.push('Nobody stops I. That is the thing that will sit with me longest. ' +
+        lines.push('Nobody stops me. That is the thing that will sit with me longest. ' +
           'Forty members of staff watch a stranger walk out of the east wing with a jerrycan ' +
           'and not one of them puts a hand out, because every one of them has been waiting ' +
           'for somebody from outside to take the decision off them.');
       }
       lines.push({ c: 'sep', t: '\u2042' });
-      lines.push('It goes up at ten past five. The windows go first, all along the east wing, ' +
-        'one after another down the row like a line of applause.');
+      lines.push('It catches at ten past five. I see the first window break from the north field. ' +
+        'Then the others go, one after another along the east wing.');
       lines.push('And for about ninety seconds, over the noise of it, I can hear ' +
         'ninety-four people holding a note, going up the scale together, exactly the way ' +
         'the lorry did.');
@@ -56,8 +56,8 @@
           'That is the part I will go back to. Not the fire, not the note \u2014 ' +
           'the not knowing, which I chose, and which I could have ended with one more question.');
       }
-      lines.push('The county can see it for two days. People come to the ridge to look at it ' +
-        'the way people used to go and look at the sea.');
+      lines.push('Smoke hangs over the county for two days. People come to the ridge to watch. ' +
+        'I cannot tell whether they know what was inside.');
       return lines;
     }
   });
@@ -74,7 +74,7 @@
     text: function (s) {
       var lines = [
         'She hands it over the way I would hand over a dog I could no longer walk. ' +
-        'The keys, the index, the rota, the names of the four who would help I and ' +
+        'The keys, the index, the rota, the names of the four who would help me and ' +
         'the two who would not.',
 
         '<span class="said">"You will want to change things," </span>she says. ' +
@@ -128,7 +128,7 @@
     text: function (s) {
       var lines = [
         'I walk out of St Amaranth Mercy at dawn with four inches of hardbacked ledger ' +
-        'inside my coat and nobody tries to stop I, because the woman who wrote it ' +
+        'inside my coat and nobody tries to stop me, because the woman who wrote it ' +
         'has been waiting two months for somebody to take it away from her.'
       ];
       if (s.flag('tookTheEffects')) {
@@ -155,7 +155,7 @@
       lines.push('The book does not stop anything. The book only means that it happens ' +
         'with the names written down.');
       lines.push('I decide, eventually, that this is not nothing. ' +
-        'It takes I four years to decide it.');
+        'It takes me four years to decide it.');
       return lines;
     }
   });
@@ -178,9 +178,9 @@
       ];
       lines.push('Both banks fill up. Of course they do. Hundreds of them, out of the reeds, ' +
         'out of the boatyards, down the slipway \u2014 and they stop at the waterline exactly ' +
-        'as Wren said they would, shin-deep, facing I, holding the note as I go past.');
+        'as Wren said they would, shin-deep, facing me, holding the note as I go past.');
       lines.push({ c: 'hum', t: 'h m m m m m m m' });
-      lines.push('It follows I for two miles. It is the last I hear of the town.');
+      lines.push('It follows me for two miles. It is the last I hear of the town.');
       lines.push({ c: 'sep', t: '\u2042' });
       if (names.length) {
         lines.push('There are ' + (names.length + 1) + ' of me on a twenty-six foot boat: ' +
@@ -278,7 +278,7 @@
     text: function (s) {
       var lines = [
         'Teddy Alafuzo gets onto a boat under his own power on the morning of day forty-four, ' +
-        'which Odile will tell I afterwards was not medically possible, ' +
+        'which Odile will tell me afterwards was not medically possible, ' +
         'and which he does anyway, with one hand on the guard rail and both of us pretending ' +
         'not to be watching.',
 
@@ -339,9 +339,9 @@
     text: function (s) {
       var lines = [
         'Nine vials in a grey rubber tray, in a cold cabinet, in a hospital with a falling yield. ' +
-        'I put all nine in my coat and I walk down the lime avenue and nobody stops I.',
+        'I put all nine in my coat and I walk down the lime avenue and nobody stops me.',
 
-        'Matron watches I go from the steps with a mug of tea and does not say a word, ' +
+        'Matron watches me go from the steps with a mug of tea and does not say a word, ' +
         'and the not-saying is a judgement so complete that I feel it in the back of my neck ' +
         'for four hundred yards.',
 
@@ -369,7 +369,7 @@
         'in a church hall in Cleveholt, listening to a committee argue about a converted school.');
       lines.push('I became Matron. Without the building, without the ledger, ' +
         'without the fourth column to write in at night.');
-      lines.push('<em>Without the fourth column.</em> That is the part she would want I ' +
+      lines.push('<em>Without the fourth column.</em> That is the part she would want me ' +
         'to notice. She wrote hers down. I never wrote a single one of mine down, ' +
         'and so there is no book anywhere that says what I decided, ' +
         'and no one will ever read out my name in a church hall.');
@@ -468,7 +468,7 @@
       }
       if (s.alive('bram')) {
         lines.push('Bram goes east in the third week. He comes back in the fifth with a ' +
-          'nine-year-old asthmatic girl on his shoulders and a face I have not seen on him ' +
+          'nine-year-old asthmatic girl on his shoulders and a face me have not seen on him ' +
           'and will not see again, and he says only: <span class="said">"The grandmother had ' +
           'a cellar and a shotgun."</span>');
       }

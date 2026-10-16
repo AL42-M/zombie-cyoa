@@ -44,11 +44,11 @@
     chapter: CH,
     place: PLACE,
     text: [
-      'The stockroom smells of cardboard, old sugar and the sharp ghost of rubbing alcohol. ' +
-      'Someone has stacked incontinence pads into a mattress. Someone has written DAY 41 on the wall ' +
+      'The stockroom smells of cardboard and the rubbing alcohol I spilled on the floor last week. ' +
+      'Someone has stacked incontinence pads into a mattress. I wrote DAY 41 on the wall ' +
       'in grease pencil, under DAY 40, under thirty-nine others.',
       'I wake the others. Bram brings the wind-up torch; Wren brings her pad. Teddy breathes. ' +
-      'The street breathes back. There is no time to rehearse what I am about to say.'
+      'The street breathes back. I have nothing prepared to say.'
     ],
     choices: [
       { label: 'Let Teddy speak before anyone votes.', tone: 'kind', to: 'a1_teddy_votes' },
@@ -154,14 +154,13 @@
     chapter: CH,
     place: PLACE,
     text: [
-      'Odile is not asleep. Odile has not been asleep in my presence once in forty-one days, which ' +
-      'I suspect is a professional habit — I do not sleep in front of the animal I may have to hold down.',
+      'Odile is not asleep. I have never caught her asleep, though I have heard her snore through ' +
+      'the stockroom wall. She opens her eyes before I reach her.',
 
       '<span class="said">"He has got maybe four days," she says, before you ask. "Fluid. I can hear it ' +
       'shifting when he turns. I put down a collie last spring that sounded kinder than that."</span>',
 
-      'Thirty years of veterinary surgery have left her with a voice like a flat table — everything put ' +
-      'on it stays where I set it down.',
+      'She spent thirty years operating on animals. She gives a prognosis without dressing it up.',
 
       '<span class="said">"I have one ampoule of morphine in my coat. One. Ask me what it is for and ' +
       'I will tell you I do not know yet."</span>'
@@ -569,7 +568,7 @@
       var n = s.val('radioTries');
       if (n <= 1) {
         return [
-          'The crank radio takes ninety turns to give I ninety seconds. I have done this every night ' +
+          'The crank radio takes ninety turns to give me ninety seconds. I have done this every night ' +
           'for thirty-eight nights and I will do it tonight.',
           'Static. Static. Static. And then, at 1476 kHz, where there has never been anything, ' +
           'the thing that is always there now:',
@@ -612,8 +611,8 @@
     place: PLACE,
     enter: function (s) { s.set('spokeToBram'); },
     text: [
-      'Bram Kessler spent eleven years as a corrections officer, which he will tell I meant ' +
-      'keeping people safe, and which Wren will tell I meant deciding who got to eat.',
+      'Bram Kessler spent eleven years as a corrections officer, which he will tell me meant ' +
+      'keeping people safe, and which Wren will tell me meant deciding who got to eat.',
 
       'He is awake, sitting with his back to the shelves and the shutter in his sightline, ' +
       'the way he has sat every night. He does not look at me when he speaks.',
@@ -669,7 +668,7 @@
     chapter: CH,
     place: PLACE,
     text: [
-      'He does not have a photograph. He tells I about her instead, in a flat inventory of facts, ' +
+      'He does not have a photograph. He tells me about her instead, in a flat inventory of facts, ' +
       'the way a man recites something to keep it from going soft at the edges.',
       '<span class="said">"Nine. Asthmatic. Frightened of the hoover. Her mother and I are not — ' +
       'were not — </span> he stops, repairs it, carries on. <span class="said">"She will be at her ' +
@@ -1046,7 +1045,7 @@
       }
       lines.push(mine
         ? 'my hands. I insisted on that and I was right to insist and I will never be ' +
-          'glad of it. He does not fight. That is the part that comes back — <em>he helps I</em>, ' +
+          'glad of it. He does not fight. That is the part that comes back — <em>he helps me</em>, ' +
           'at the start, getting the angle right, the way a man holds a ladder steady for someone else.'
         : 'Odile\u2019s hands, thirty years practised, perfectly steady, and her face the whole time ' +
           'is doing something that is not calm but is wearing calm\u2019s clothes. Afterwards she ' +
