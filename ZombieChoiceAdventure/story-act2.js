@@ -489,7 +489,7 @@
     place: 'Quay Road',
     enter: function (s) { s.advance(1); s.ease(8); s.heal(6); s.set('rested'); },
     text: [
-      'I give it an hour in the lee of an overturned skip, and the hour costs I the dark.',
+      'I give it an hour in the lee of an overturned skip, and the hour costs me the dark.',
 
       'Teddy sleeps sitting up against my shoulder and his breathing gets easier for a while, ' +
       'and Odile sleeps for the first time in my presence in forty-one days, which tells me ' +
@@ -652,7 +652,7 @@
       'appointment card.',
 
       { c: 'note', t: 'ST AMARANTH MERCY \u00b7 RESPIRATORY OUTPATIENTS\nMR D. HOLLOWAY \u00b7 WARD 11 \u00b7 ' +
-        'THURS 09:40\nPLEASE BRING THIS CARD AND A LIST OF my MEDICATIONS' },
+        'THURS 09:40\nPLEASE BRING THIS CARD AND A LIST OF YOUR MEDICATIONS' },
 
       'Jean\u2019s husband took the keys to the hospital in his coat pocket on a Thursday morning, ' +
       'and the hospital is the place with the lights on, and this is either the luckiest thing that ' +
@@ -803,7 +803,7 @@
       'of A4 in forty-point type.',
 
       { c: 'note', t: 'WE HAVE CHILDREN IN HERE.\nWE HAVE NO FOOD TO SPARE AND NOTHING WORTH TAKING.\n' +
-        'IF I am WELL, PLEASE WALK ON.\nIF I am BITTEN, PLEASE WALK ON.\nWE ARE SORRY. ' +
+        'IF YOU ARE WELL, PLEASE WALK ON.\nIF YOU ARE BITTEN, PLEASE WALK ON.\nWE ARE SORRY. ' +
         'WE ARE SO SORRY. PLEASE WALK ON.' }
     ],
     choices: [
@@ -1109,7 +1109,7 @@
 
       { c: 'hum', t: 'h m m m m m m m' },
 
-      'Bram has I by the arm before the echo is finished.'
+      'Bram has me by the arm before the echo is finished.'
     ],
     choices: [
       { label: 'Run. North-east. Do not stop at the estate edge.', to: 'a2_mercy_approach',
@@ -1460,8 +1460,10 @@
           'straightens up as far as he can get and fixes his collar, because he is going into a ' +
           'hospital and he is seventy-one and that is what he does.');
       } else {
-        lines.push('There are four of us at the gate, and there is a gap in the shape of a man ' +
-          'walking between us, and every one of us keeps the gap.');
+        lines.push(s.partyCount()
+          ? 'There are ' + (s.partyCount() + 1) + ' of us at the gate. We have walked all this way ' +
+            'with a space where Teddy would have been. Nobody steps into it.'
+          : 'I reach the gate alone. I still leave room beside me for Teddy.');
       }
       if (s.flag('heldAtTheBoat')) {
         lines.push('The boat is still tied to the pontoon. I spent ' +

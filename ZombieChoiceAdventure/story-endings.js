@@ -16,7 +16,7 @@
     title: 'Everything That Was Left',
     kicker: 'An ending \u00b7 fire',
     tag: 'THE FIRE',
-    blurb: 'You burned St Amaranth Mercy with everyone in it, and the county could see it for two days.',
+    blurb: 'I burned St Amaranth Mercy with everyone in it, and the county could see the smoke for two days.',
     tease: 'Something in this county still has a generator and a full tank of diesel.',
     place: 'The north field',
     text: function (s) {
@@ -68,7 +68,7 @@
     title: 'The Fourth Column',
     kicker: 'An ending \u00b7 the chair',
     tag: 'THE LEDGER KEEPER',
-    blurb: 'You took the chair, and you kept the book, and you wrote in the fourth column every night before you slept.',
+    blurb: 'I took the chair and kept the book. I wrote in the fourth column every night.',
     tease: 'Somebody has to sign the forms. There is a chair, and a kettle, and a hockey team from 1991.',
     place: "The Matron's office",
     text: function (s) {
@@ -122,7 +122,7 @@
     title: 'Nine Hundred Names',
     kicker: 'An ending \u00b7 the record',
     tag: 'THE WITNESS',
-    blurb: 'You carried the book out and spent what was left of your life making people read it.',
+    blurb: 'I carried the book out and spent the years after making people read it.',
     tease: 'Nine hundred names in a neat hand, each with a date and a yield.',
     place: 'The road west',
     text: function (s) {
@@ -166,7 +166,7 @@
     title: 'The Water Is A Wall',
     kicker: 'An ending \u00b7 the tide',
     tag: 'OUT ON THE TIDE',
-    blurb: 'You got what was left of them onto the water, and the water held.',
+    blurb: 'I got the others onto the water. The water held.',
     tease: 'They stop at the edge of it. Wren watched. Wren was right.',
     place: 'LUCKY II',
     text: function (s) {
@@ -183,7 +183,7 @@
       lines.push('It follows me for two miles. It is the last I hear of the town.');
       lines.push({ c: 'sep', t: '\u2042' });
       if (names.length) {
-        lines.push('There are ' + (names.length + 1) + ' of me on a twenty-six foot boat: ' +
+        lines.push('There are ' + (names.length + 1) + ' of us on a twenty-six foot boat: ' +
           names.join(', ') + ', and I.');
       }
       if (s.alive('wren')) {
@@ -220,7 +220,7 @@
     title: 'Three Quarters Of A Tank',
     kicker: 'An ending \u00b7 the tide',
     tag: 'ALONE ON THE WATER',
-    blurb: 'You made it onto the water. There was nobody left to make it with you.',
+    blurb: 'I made it onto the water. There was nobody left to make it with me.',
     tease: 'A boat that takes four people is a very large boat for one.',
     place: 'LUCKY II',
     text: function (s) {
@@ -272,7 +272,7 @@
     title: 'A Reason For Good Things',
     kicker: 'An ending \u00b7 the compact',
     tag: 'THE PROMISE KEPT',
-    blurb: 'You carried him the whole way, and when he said it was time, you did not argue.',
+    blurb: 'I carried Teddy the whole way. When he said it was time, I did not argue.',
     tease: 'I want to be the one who says so, and I want one of you to not argue with me.',
     place: 'LUCKY II',
     text: function (s) {
@@ -333,7 +333,7 @@
     title: 'The Last Nine Doses',
     kicker: 'An ending \u00b7 the grey',
     tag: 'NINE VIALS',
-    blurb: 'You walked out with every dose that will ever exist, and that made you the hospital.',
+    blurb: 'I walked out with every dose that will ever exist. That made me the hospital.',
     tease: 'Nine vials in a rack in a cold cabinet. There will never be any more.',
     place: 'The lime avenue',
     text: function (s) {
@@ -383,17 +383,17 @@
     title: 'Bed Ninety-Five',
     kicker: 'An ending \u00b7 verbal, witnessed',
     tag: 'THE VOLUNTEER',
-    blurb: 'You signed the form, and they put you in the bed, and they were kind about it the whole way.',
+    blurb: 'I signed the form. They put me in the bed and were kind about it.',
     tease: 'CONSENT: VERBAL, WITNESSED (2). COMPENSATION: FAMILY PLACED, EAST BLOCK.',
     place: 'Ward 11',
     text: function (s) {
       var names = survivors(s);
       var lines = [
-        'Matron does not try to talk I out of it, which I had expected her to do, ' +
+        'Matron does not try to talk me out of it, which I had expected her to do, ' +
         'and which she does not do because she has learned that it is a kind of theatre ' +
         'that only makes it worse.',
 
-        'She reads I the whole thing instead. Twice. What it will be like at the start, ' +
+        'She reads me the whole thing instead. Twice. What it will be like at the start, ' +
         'what it will be like in the middle, how long, what it will feel like when the hum ' +
         'gets into the bone, what I will and will not be aware of by the second week.',
 
@@ -404,7 +404,7 @@
         lines.push('The compensation is real and it is written down: ' + names.join(', ') +
           ' placed in the east block, Category A rations, for as long as this building stands.');
         lines.push('They have to witness it. That is the rule and she will not bend it. ' +
-          'Two signatures from people who know I.');
+          'Two signatures from people who know me.');
         if (s.alive('odile')) {
           lines.push('Odile signs. Her hand does not shake, because of course it does not, ' +
             'and afterwards she goes out into the north field on her own for two hours.');
@@ -417,18 +417,12 @@
       }
       lines.push({ c: 'sep', t: '\u2042' });
       lines.push('The sheepskin is softer than it looks. Somebody worked out that it had to be, ' +
-        'and then did the work, and that is the last clear thought I have that is entirely ' +
-        'my own shape.');
-      lines.push('They do the mouths twice a day. They talk to me about the weather and the ' +
-        'generator and a man called Pav who has lost his boots. ' +
-        'They open the window when I like the window open.');
-      lines.push('I am bed ninety-five. I yield eleven units, which is good, ' +
-        'which is very good, which is nearly Dennis Holloway.');
+        'and then did the work. They say they will talk to me while they wash me. ' +
+        'I asked them to open the window if I ask for it.');
+      lines.push('BED 95 is written above the frame. I can still read it from here.');
       lines.push({ c: 'hum', t: 'h m m m m m m m' });
-      lines.push('Somebody writes my name in a ledger in a neat hand, with a date and a yield, ' +
-        'and that night, before she sleeps, she fills in the fourth column.');
-      lines.push('For I, she writes: <em>NO.</em>');
-      lines.push('And under it: <em>MINE.</em>');
+      lines.push('Matron has promised to put these pages with the ledger. I did not ask ' +
+        'what she would write in the fourth column.');
       return lines;
     }
   });
@@ -439,7 +433,7 @@
     title: 'A Door That Locks From The Inside',
     kicker: 'An ending \u00b7 the room',
     tag: 'THE DOOR',
-    blurb: 'You found her the door. You let her be the one who locked it.',
+    blurb: 'I found Wren the door. She was the one who locked it.',
     tease: 'and i want to be the one who locks it',
     place: 'Somewhere with a door',
     text: function (s) {
@@ -491,7 +485,7 @@
     title: 'It Was Never An Infection',
     kicker: 'An ending \u00b7 the note',
     tag: 'THE RECRUITMENT',
-    blurb: 'You stopped holding it down. It had been very patient with you.',
+    blurb: 'I stopped holding it down. It had been very patient with me.',
     tease: 'It is not an infection. It is a recruitment.',
     place: 'The lime avenue',
     text: function (s) {
@@ -545,12 +539,12 @@
     kicker: 'An ending \u00b7 the bone',
     tag: 'TURNED',
     blurb: 'It got all the way in. Nobody had to decide anything in the end.',
-    tease: 'The hum, in the bone. Most of you is still yours. Nearly theirs.',
+    tease: 'The hum, in the bone. Most of me is still mine. Nearly theirs.',
     place: 'Where I stood',
     text: function (s) {
       var lines = [
         'It does not happen the way I had been quietly dreading, which was teeth, ' +
-        'and a moment, and somebody\u2019s face going wrong above I.',
+        'and a moment, and somebody\u2019s face going wrong above me.',
 
         'It happens one room at a time, from the inside, reporting itself.',
 
@@ -578,9 +572,8 @@
       lines.push('It is about a shopping list in a chemist\u2019s coat pocket. ' +
         '<em>Milk. Bin bags. Ring Mum.</em>');
       lines.push({ c: 'hum', t: 'h m m m m m m m' });
-      lines.push('And then I am standing somewhere facing a wall, in exactly the right place, ' +
-        'and I am part of something eleven weeks from finished, ' +
-        'and the last of us that was ever going to be frightened has already stopped.');
+      lines.push('The pencil keeps moving with the note. I have tried to write something else ' +
+        'three times. My hand keeps bringing me back to the same word: <em>here</em>.');
       return lines;
     }
   });
@@ -615,22 +608,20 @@
           'and she has always been better than the rest of us at knowing that.');
       }
       if (s.alive('bram')) {
-        lines.push('Bram stands in the doorway with his back to the room and watches the road, ' +
-          'which is the only thing he has ever known how to do for anybody, ' +
-          'and he does it for nine hours.');
+        lines.push('Bram stands in the doorway with his back to the room and watches the road. ' +
+          'He says he will stay there.');
       }
       if (s.partyCount() === 0) {
         lines.push('There is nobody. I had arranged that, in a number of small decisions ' +
           'that each seemed reasonable at the time.');
       }
       lines.push({ c: 'sep', t: '\u2042' });
-      lines.push('It is not frightening. That is worth writing down somewhere, ' +
-        'for whoever comes next: at the very end of it the fear goes out first, ' +
-        'well before anything else, like staff leaving a building.');
-      lines.push('What is left after the fear goes is a shopping list, and four frames of a ' +
+      lines.push('I thought I would be frightened. I am not, and I want that written down ' +
+        'for whoever comes next.');
+      lines.push('What I can still picture is a shopping list, and four frames of a ' +
         'photo booth at a county fair, and the particular weight of a seventy-one-year-old man ' +
         'with an arm over my shoulder who weighed almost nothing at all.');
-      lines.push('Forty-four days. I got four miles.');
+      lines.push('Day ' + s.day + '. There is hardly any space left on this page.');
       return lines;
     }
   });

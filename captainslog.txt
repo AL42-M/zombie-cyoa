@@ -113,7 +113,7 @@ PROJECT CONTEXT
 
 - Repository: AL42-M/zombie-cyoa.
 - Game title: THE HUSH, a choice-driven zombie survival-horror browser game.
-- Active game files are in ZombieChoiceAdventure. The entry point is index.html;
+- Active game files are in ZombieChoiceAdventure. The entry point is play.html;
   style.css controls presentation, engine.js handles gameplay, audio.js handles
   audio, and story-*.js files hold the narrative.
 - The game uses plain HTML, CSS, and JavaScript. Its title screen states that
@@ -126,6 +126,18 @@ PROJECT CONTEXT
   overwrite it. Work in the active source folder and use Git for history.
 
 VERSION HISTORY (newest first)
+
+v1.4 - 2026-10-16
+- Recast the narrative as a first-person found survival journal beginning on
+  day 41. Kept Wren's written notes and spoken dialogue in their original
+  voices; choices still record one irreversible version of the narrator's past.
+- Three editorial passes: journal framing and narrative voice; restrained,
+  concrete line edits at key decisions and revelations; conditional route,
+  keepsake and ending continuity, including stopping first-person testimony
+  before the narrator can no longer plausibly write it. Existing story links,
+  effects, node IDs and twelve endings remain intact.
+- Renamed the browser entry point to play.html and updated the launch
+  instructions and displayed version. The original v1.0 archive is unchanged.
 
 v1.3 - 2026-10-16
 - The river/boat, culvert, estate and Marlowe House choices now leave distinct

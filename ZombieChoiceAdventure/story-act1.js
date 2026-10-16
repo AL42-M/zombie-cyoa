@@ -993,8 +993,8 @@
       'unopened bottle of water, and I arrange these things on a shelf beside him like an offering ' +
       'at a shrine I do not believe in.',
 
-      'He says thank me. That is the detail that will not come out of me afterwards, not with ' +
-      'drink, not with time, not with anything. <em>He says thank me,</em> and he means it, ' +
+      'He says thank you. That is the detail that will not come out of me afterwards, not with ' +
+      'drink, not with time, not with anything. <em>He says thank you,</em> and he means it, ' +
       'and he pats my hand twice.',
 
       { c: 'sep', t: '\u2042' },
@@ -1044,7 +1044,7 @@
           'a knee, and it takes much, much longer than eleven seconds.');
       }
       lines.push(mine
-        ? 'my hands. I insisted on that and I was right to insist and I will never be ' +
+        ? 'My hands. I insisted on that and I was right to insist and I will never be ' +
           'glad of it. He does not fight. That is the part that comes back — <em>he helps me</em>, ' +
           'at the start, getting the angle right, the way a man holds a ladder steady for someone else.'
         : 'Odile\u2019s hands, thirty years practised, perfectly steady, and her face the whole time ' +
@@ -1137,7 +1137,7 @@
       'The lane is empty and cold and smells of old fat from the chip shop extractors. At the far end, ' +
       'white across the opening, the refrigerated lorry waits with its doors shut.',
 
-      'Teddy is between me and Odile with an arm over each of my shoulders. He weighs almost nothing. ' +
+      'Teddy is between me and Odile with an arm over each of our shoulders. He weighs almost nothing. ' +
       'That is somehow the worst discovery of the night — six weeks of rationing have made a seventy-one ' +
       'year old man into something I can carry one-handed.',
 

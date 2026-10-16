@@ -408,7 +408,7 @@
 
       { c: 'note', t: 'WARD 11 \u00b7 OCCUPANCY 94/96\nTURNS: 04:00 \u00b7 10:00 \u00b7 16:00 \u00b7 22:00\n' +
         'DRAW: 06:00 ONLY. DO NOT DRAW OFF-SCHEDULE.\nMOUTH CARE IS NOT OPTIONAL. THEY STILL FEEL IT.\n' +
-        'Be kind. They can hear me. \u2014 M.' },
+        'Be kind. They can hear you. \u2014 M.' },
 
       'Ninety-four of ninety-six. And underneath the hum, from behind the double doors at the end ' +
       'of the corridor, the sound of someone moving along a row of beds, talking quietly and ' +
@@ -620,7 +620,7 @@
 
       { c: 'note', t: 'HOLLOWAY, DENNIS \u00b7 WARD 11 \u00b7 ADMITTED 23.04\nKEYS (BOAT). ' +
         'HE ASKED THAT THESE GO TO HIS WIFE JEAN AT 14 ESTUARY VIEW.\nI HAVE NOT BEEN ABLE TO ' +
-        'GET THERE. IF I CAN, PLEASE. \u2014 M.' },
+        'GET THERE. IF YOU CAN, PLEASE. \u2014 M.' },
 
       'I stand in a cold chapel holding a dead man\u2019s boat keys and a dead man\u2019s last ' +
       'request, and four hundred yards away there is a trench with his neighbours in it, ' +
@@ -1076,7 +1076,7 @@
         'I will tell the next person who walks in here. Whoever they are. I will tell them all of it ' +
         'and I will not shade a word of it, and then I will abide by what they say, because I have ' +
         'proven conclusively that I cannot be trusted to be the one who decides.\n\n' +
-        'If I am reading this, I am the next person who walked in here.\n\u2014 M.' },
+        'If you are reading this, you are the next person who walked in here.\n\u2014 M.' },
 
       { c: 'sep', t: '\u2042' },
 
