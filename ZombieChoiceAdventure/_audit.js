@@ -1,4 +1,11 @@
-/* Temporary validation harness for THE HUSH. Run with cscript //E:JScript. Not part of the game. */
+/* Story validation for THE HUSH. Run with node _audit.js or cscript //E:JScript _audit.js. */
+
+if (typeof WScript === 'undefined') {
+  var WScript = {
+    Echo: function (message) { console.log(message); },
+    Quit: function (code) { process.exit(code); }
+  };
+}
 
 /* ---- ES5 polyfills for the JScript engine ---- */
 if (!Array.prototype.forEach) {
@@ -18,6 +25,9 @@ if (!Object.keys) {
 }
 
 function readFile(path) {
+  if (typeof require === 'function') {
+    return require('fs').readFileSync(path, 'utf8').replace(/^\uFEFF/, '');
+  }
   var st = new ActiveXObject('ADODB.Stream');
   st.Type = 2; st.Charset = 'utf-8'; st.Open(); st.LoadFromFile(path);
   var s = st.ReadText(); st.Close();
@@ -25,7 +35,8 @@ function readFile(path) {
   return s;
 }
 
-var DIR = WScript.ScriptFullName.replace(/\\[^\\]*$/, '\\');
+var DIR = typeof require === 'function' ? __dirname + require('path').sep :
+  WScript.ScriptFullName.replace(/\\[^\\]*$/, '\\');
 var window = {};
 var problems = [];
 var files = ['story-core.js', 'story-act1.js', 'story-act2.js', 'story-act3.js', 'story-endings.js'];
@@ -413,3 +424,4 @@ var total = probList.length + errList.length + deadList.length + countList.lengt
             trulyUnreachable.length + missingEndings.length + targeted.length +
             unobtainable.length;
 WScript.Echo(total === 0 ? 'RESULT: clean' : 'RESULT: ' + total + ' issue(s)');
+if (total > 0) WScript.Quit(1);

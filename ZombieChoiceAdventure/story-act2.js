@@ -736,8 +736,8 @@
         lines.push('And on the second night the far bank fills up, and stays full, and the humming ' +
           'does not stop for nine hours, and you all stop pretending that the wall is a home.');
       }
-      lines.push('There is no food left on this boat. There are no keys on this boat. ' +
-        'Everything you need is four miles north-east, in a lit building, on a hill.');
+      lines.push('There is almost no food left on this boat. There are no keys on this boat. ' +
+        'The lit building four miles north-east has both beds and people to answer to.');
       return lines;
     },
     choices: [
@@ -764,7 +764,7 @@
     },
     text: function (s) {
       var lines = [
-        'You bargain for one more day. By afternoon the tins are empty. The paperback lies open ' +
+        'You bargain for one more day. By afternoon the last tin is empty. The paperback lies open ' +
         'face-down in the cockpit, its pages swelling as the river mist comes in.',
         'At dusk the humming starts on the far bank again. Nobody gets up to look. That is when ' +
         'you understand what staying has bought you: not safety, only practice at ignoring it.'
@@ -1041,7 +1041,7 @@
     place: 'Marlowe House',
     text: [
       'You tell her about Teddy. You do not perform it. You just say it: seventy-one, one lung, ' +
-      'four days, and we are trying to get him four miles uphill.',
+      'less breath each night, and we are trying to get him four miles uphill.',
 
       'The stairwell is quiet for a long time.',
 
@@ -1459,6 +1459,29 @@
         lines.push('There are four of you at the gate, and there is a gap in the shape of a man ' +
           'walking between you, and every one of you keeps the gap.');
       }
+      if (s.flag('heldAtTheBoat')) {
+        lines.push('The boat is still tied to the pontoon. You spent ' +
+          (s.flag('leftBoatAfterLastNight') ? 'three days' : 'two days') +
+          ' pretending its canopy was a roof; now the warmth in the windows is an accusation. ' +
+          (s.alive('teddy') ? 'Teddy keeps his eyes on the light, not on you.' :
+            'Nobody asks whether the extra nights would have changed anything.'));
+      } else if (s.flag('tookFromTheChildren')) {
+        lines.push('Bram sees the word <em>Mercy</em> over the entrance and looks at the tins you ' +
+          'carried out of Marlowe House. Neither of you can call this building a refuge without ' +
+          'thinking of the children you left behind.');
+      } else if (s.flag('drewThemOff')) {
+        lines.push('The scrape from the estate has bled through its dressing. Wren checks it ' +
+          'without being asked. In the tower behind you, six children have had an hour of quiet.');
+      } else if (s.flag('tookCulvert')) {
+        lines.push('Your cuffs are still wet with culvert water. When the hum rises behind the ' +
+          'east wing, it finds the same note you heard beneath the road.');
+      } else if (s.flag('tookRiver')) {
+        lines.push('For most of the walk the river held them back. Up here there is no water ' +
+          'between you and the sound in the east wing.');
+      } else if (s.flag('tookEstate')) {
+        lines.push('Somewhere below, a candle is still burning on the ninth floor. You have ' +
+          'come to the one place its keeper told you not to trust.');
+      }
       lines.push({ c: 'sep', t: '\u2042' });
       lines.push('St Amaranth Mercy is a Victorian infirmary with two modern wings, and every window ' +
         'in it is lit, and there is a generator running somewhere behind the kitchens with the deep ' +
@@ -1480,7 +1503,15 @@
       { label: 'Send one person in and keep the rest outside.', tone: 'risk', to: 'a3_split' },
       { label: 'Watch the building for an hour first.', to: 'a2_watch' },
       { label: 'Turn around. Go back to the river.', tone: 'kind',
-        show: function (s) { return s.flag('knowsBoat'); }, to: 'a3_refuse' }
+        show: function (s) { return s.flag('knowsBoat'); }, to: 'a3_refuse' },
+      { label: 'Ask for a bed for Teddy before you ask for one for yourself.', tone: 'kind',
+        show: function (s) { return s.flag('heldAtTheBoat') && s.alive('teddy'); },
+        to: 'a3_reception',
+        act: function (s) { s.set('askedForTeddysBed'); s.trust('teddy', 12); s.scar(4); } },
+      { label: 'Tell the receptionist what happened at Marlowe House.', tone: 'risk',
+        show: function (s) { return s.flag('tookFromTheChildren'); },
+        to: 'a3_reception',
+        act: function (s) { s.set('confessedAtReception'); s.trust('wren', 8); s.scar(8); } }
     ]
   });
 

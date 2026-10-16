@@ -35,6 +35,16 @@
           'He says it the way a professional says it. <span class="said">"We can do something ' +
           'about that. Genuinely, we can. Sit."</span>');
       }
+      if (s.flag('askedForTeddysBed')) {
+        lines.push('You ask for his bed first. The man writes Teddy\u2019s name at the top of the ' +
+          'clipboard before he asks yours; Teddy watches the pen instead of looking at you.');
+      }
+      if (s.flag('confessedAtReception')) {
+        lines.push('You tell him about the tins taken from the children at Marlowe House. ' +
+          'He pauses with the pen in his hand. <span class="said">"They are still up there?"</span> ' +
+          'You nod. He writes the address on a separate sheet for the morning shift. ' +
+          'It is not forgiveness, but it is an address somebody here might use.');
+      }
       lines.push({ c: 'sep', t: '\u2042' });
       lines.push('<span class="said">"Right. Names when you are ready, no rush, no documents needed. ' +
         'Everyone gets a wash and a bed tonight and we do the medical in the morning when ' +
@@ -199,7 +209,7 @@
     text: function (s) {
       var lines = [
         'They give you a bed. An actual bed, with an actual sheet, in a six-bed bay with a radiator ' +
-        'under the window, and you sleep for nine hours without meaning to and wake up furious ' +
+        'under the window, and you sleep until morning without meaning to and wake up furious ' +
         'with yourself for it.',
 
         'There is porridge. There is tea. A boy of about nineteen takes your boots away and brings ' +
@@ -207,7 +217,7 @@
 
         { c: 'sep', t: '\u2042' },
 
-        'Doctor Aytoun does the medical at ten. She is about forty-five, grey with exhaustion, ' +
+        'Doctor Aytoun does the medical after breakfast. She is about forty-five, grey with exhaustion, ' +
         'and she is thorough in a way that nobody has been thorough with you since the world ended ' +
         '\u2014 blood pressure, chest, pupils, lymph nodes, and every inch of skin, ' +
         'slowly, with a light.'
@@ -258,10 +268,13 @@
           'moving a half-inch at a time.');
         lines.push('When she comes out she closes the door behind her first, which tells you ' +
           'everything before she opens her mouth.');
-        lines.push('<span class="said">"I can give him a fortnight," </span>she says. ' +
-          '<span class="said">"Oxygen, steroids, a bed and somebody listening. ' +
-          'Not longer. I want to be honest with you rather than kind, because kind runs out ' +
-          'and honest does not."</span>');
+        lines.push(s.flag('heldAtTheBoat')
+          ? '<span class="said">"Those nights outside have cost him. Oxygen, steroids and a bed ' +
+            'might give him some time. I cannot tell you how much."</span>'
+          : '<span class="said">"I can give him a fortnight," </span>she says. ' +
+            '<span class="said">"Oxygen, steroids, a bed and somebody listening. ' +
+            'Not longer. I want to be honest with you rather than kind, because kind runs out ' +
+            'and honest does not."</span>');
         lines.push('<span class="said">"He has asked me a question. I have told him I will not ' +
           'answer it until he has told you he asked it. He says he will tell you tonight."</span>');
       }
@@ -307,7 +320,7 @@
       'He laughs, and it turns into the cough, and he rides it out with both hands flat on ' +
       'the blanket.',
 
-      '<span class="said">"Forty-one days I have been the reason you could not do things. ' +
+      '<span class="said">"All these weeks I have been the reason you could not do things. ' +
       'And the one time it would have bought you something \u2014 the one time being used up ' +
       'would have been <em>worth</em> something \u2014 I am not even good enough for that."</span>',
 
@@ -1117,7 +1130,7 @@
         lines.push('She looks past you, through the open door, down the corridor to where Teddy is ' +
           'sitting in a chair with a blanket somebody has put over his knees.');
         lines.push('<span class="said">"And before you ask me about your friend: yes. ' +
-          'He is exactly who I would ask. He is dying, he knows it, he has four days, and a man ' +
+          'He is exactly who I would ask. He is dying, he knows it, and a man ' +
           'in his position yields nothing at all — one unit, perhaps two."</span>');
         lines.push('<span class="said">"Which is why I am not going to ask him. ' +
           'I want you to notice that I could, and that it would be easy, and that I am not."</span>');
@@ -1454,13 +1467,24 @@
         lines.push('You have said it out loud, and saying it out loud has made it a thing that ' +
           'now has to be done by somebody with hands.');
       } else if (s.flag('headingForTheBoat')) {
-        lines.push('The hill is behind you. The river is ahead. It is the hour before dawn on ' +
-          'day ' + s.day + ', and whatever is going to be decided is going to be decided in the next one.');
+        lines.push('The hill is behind you. The river is ahead. It is day ' + s.day +
+          ', and whatever is going to be decided is going to be decided before you reach the water.');
       } else {
-        lines.push('It comes down to this, in a corridor, at four in the morning, with a kettle ' +
+        lines.push('It comes down to this, in a corridor before the next shift, with a kettle ' +
           'boiling somewhere and ninety-four people humming at a ceiling two rooms away.');
       }
       lines.push({ c: 'sep', t: '\u2042' });
+      if (s.flag('heldAtTheBoat')) {
+        lines.push('The boat is still there, but the days you spent on it have gone into Teddy\u2019s ' +
+          'breathing. Wren has stopped asking how long he has left.');
+      }
+      if (s.flag('tookFromTheChildren')) {
+        lines.push(s.flag('gaveItBack')
+          ? 'You left the stolen tins on the landing at Marlowe House. The sound of the ' +
+            'children behind the door has followed you into this corridor.'
+          : 'The tins from Marlowe House are still with you. Before you decide what the ' +
+            'hospital owes anyone, you have to admit what you took from six children.');
+      }
       lines.push('Everything you have is in your pockets and everyone you have is in this building ' +
         'or on the road below it.');
       var kit = [];
@@ -1473,7 +1497,7 @@
         lines.push('You have: ' + kit.join(', ') + '.');
       }
       if (withTeddy(s)) {
-        lines.push('And you have Teddy, who has four days, and who has walked four miles, ' +
+        lines.push('And you have Teddy, whose time is running out, and who has walked four miles, ' +
           'and who has not once asked you for anything.');
       }
       lines.push('Decide.');
