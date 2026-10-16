@@ -12,6 +12,8 @@
 
   var SAVE_KEY = 'hush.save.v1';
   var FOUND_KEY = 'hush.endings.v1';
+  var READING_KEY = 'hush.reading.instant';
+  var LARGE_TEXT_KEY = 'hush.reading.large';
   var MAX_HISTORY = 80;
 
   /* ---------------------------------------------------------- helpers */
@@ -34,7 +36,8 @@
     ['title-screen', 'game-screen', 'end-screen', 'hud-chapter', 'hud-place', 'party-strip',
      'passage', 'choices', 'skip-hint', 'toasts', 'overlay', 'panel-title', 'panel-body',
      'btn-begin', 'btn-continue', 'continue-sub', 'btn-endings-title', 'endings-count',
-     'btn-help-title', 'btn-journal', 'btn-keepsakes', 'btn-sound', 'btn-menu', 'btn-close-panel',
+     'btn-help-title', 'btn-journal', 'btn-keepsakes', 'btn-reading', 'btn-text-size',
+     'btn-sound', 'btn-menu', 'btn-close-panel',
      'end-kicker', 'end-title', 'end-body', 'end-stats', 'end-keepsakes', 'btn-again', 'btn-rewind',
      'btn-endings-end', 'btn-title', 'pulse'].forEach(function (id) {
       el[id] = $(id);
@@ -52,6 +55,30 @@
   var revealing = false;
   var pendingChoices = [];
   var lastSnapshot = null;
+  var instantText = false;
+  var largeText = false;
+
+  function syncReading() {
+    doc.body.classList.toggle('reading-instant', instantText);
+    doc.body.classList.toggle('reading-large', largeText);
+    el['btn-reading'].textContent = 'Text: ' + (instantText ? 'instant' : 'paced');
+    el['btn-reading'].setAttribute('aria-pressed', String(instantText));
+    el['btn-text-size'].textContent = 'Text size: ' + (largeText ? 'large' : 'regular');
+    el['btn-text-size'].setAttribute('aria-pressed', String(largeText));
+  }
+
+  function toggleReading() {
+    instantText = !instantText;
+    store(READING_KEY, instantText ? '1' : '0');
+    syncReading();
+    if (instantText && revealing) skipReveal();
+  }
+
+  function toggleTextSize() {
+    largeText = !largeText;
+    store(LARGE_TEXT_KEY, largeText ? '1' : '0');
+    syncReading();
+  }
 
   /* ---------------------------------------------------------- screens */
   function showScreen(name) {
@@ -92,6 +119,12 @@
   /* Reveal prose one paragraph at a time, then show the choices. */
   function revealPassage(lines) {
     var paras = renderProse(el.passage, lines, true, false);
+    if (instantText || (root.matchMedia && root.matchMedia('(prefers-reduced-motion: reduce)').matches)) {
+      revealing = false;
+      if (el['skip-hint']) el['skip-hint'].hidden = true;
+      showChoices();
+      return;
+    }
     paras.forEach(function (p) { p.style.visibility = 'hidden'; });
 
     el.choices.classList.add('is-hidden');
@@ -322,21 +355,18 @@
 
   /* ---------------------------------------------------------- journal */
   function logEntry(node, choiceLabel) {
+    var passage = Story.textOf(node, state).map(function (line) {
+      return stripTags(line && typeof line === 'object' ? line.t || '' : String(line));
+    });
     state.log.push({
       day: state.day,
       place: node.place || '',
       chapter: node.chapter || '',
-      text: stripTags(firstLine(node)),
+      text: passage[0] || '',
+      passage: passage,
       choice: stripTags(choiceLabel || '')
     });
     if (state.log.length > 120) state.log.shift();
-  }
-
-  function firstLine(node) {
-    var lines = Story.textOf(node, state);
-    if (!lines.length) return '';
-    var l = lines[0];
-    return (l && typeof l === 'object') ? (l.t || '') : String(l);
   }
 
   function stripTags(html) {
@@ -547,18 +577,31 @@
     }
     for (var i = state.log.length - 1; i >= 0; i--) {
       var entry = state.log[i];
-      var row = doc.createElement('div');
+      var row = doc.createElement(entry.passage ? 'details' : 'div');
       row.className = 'jrow';
+      var summary = entry.passage ? doc.createElement('summary') : row;
       var head = doc.createElement('div');
       head.className = 'jhead';
-      head.textContent = 'Day ' + entry.day + (entry.place ? ' · ' + entry.place : '');
+      head.textContent = 'Day ' + entry.day + (entry.chapter ? ' · ' + entry.chapter : '') +
+        (entry.place ? ' · ' + entry.place : '');
       var text = doc.createElement('div');
       text.className = 'jtext';
       text.textContent = entry.text.length > 180 ? entry.text.slice(0, 180) + '…' : entry.text;
       var choice = doc.createElement('div');
       choice.className = 'jchoice';
       choice.textContent = entry.choice;
-      row.appendChild(head); row.appendChild(text); row.appendChild(choice);
+      summary.appendChild(head); summary.appendChild(text); summary.appendChild(choice);
+      if (entry.passage) {
+        row.appendChild(summary);
+        var full = doc.createElement('div');
+        full.className = 'jpassage';
+        entry.passage.forEach(function (line) {
+          var p = doc.createElement('p');
+          p.textContent = line;
+          full.appendChild(p);
+        });
+        row.appendChild(full);
+      }
       body.appendChild(row);
     }
   }
@@ -679,6 +722,10 @@
       '<ul><li><b>1</b>–<b>7</b> choose</li><li><b>J</b> journal</li><li><b>K</b> keepsakes</li>' +
       '<li><b>M</b> ambience</li>' +
       '<li><b>Esc</b> menu, or close a panel</li><li><b>Space</b> finish the text</li></ul>' +
+      '<p>Use Text: paced/instant to control how passages appear and Text size to enlarge ' +
+      'story and journal text. These preferences remain in this browser. Expand a journal ' +
+      'entry to reread the passage without changing your choices. Older saves may have only ' +
+      'a short excerpt.</p>' +
       '<h3>Keepsakes</h3>' +
       '<p>Some choices let you pick up a small thing that is of no use to anybody — a photograph, ' +
       'a torn page, a tuning fork. They do nothing. They cannot be spent, traded or lost. ' +
@@ -801,6 +848,8 @@
     el['btn-endings-title'].addEventListener('click', function () { openPanel('Endings', buildEndings); });
     el['btn-journal'].addEventListener('click', function () { openPanel('Journal', buildJournal); });
     el['btn-keepsakes'].addEventListener('click', function () { openPanel('Keepsakes', buildKeepsakes); });
+    el['btn-reading'].addEventListener('click', toggleReading);
+    el['btn-text-size'].addEventListener('click', toggleTextSize);
     el['btn-menu'].addEventListener('click', function () { openPanel('Menu', buildMenu); });
     el['btn-sound'].addEventListener('click', toggleSound);
     el['btn-close-panel'].addEventListener('click', closePanel);
@@ -819,6 +868,9 @@
   function init() {
     if (!Story) { console.error('[THE HUSH] story core failed to load.'); return; }
     cacheElements();
+    instantText = recall(READING_KEY) === '1';
+    largeText = recall(LARGE_TEXT_KEY) === '1';
+    syncReading();
     wire();
     auditStory();
     updateEndingCount();
