@@ -1475,8 +1475,11 @@
       }
       lines.push({ c: 'sep', t: '\u2042' });
       if (s.flag('heldAtTheBoat')) {
-        lines.push('The boat is still there, but the days you spent on it have gone into Teddy\u2019s ' +
-          'breathing. Wren has stopped asking how long he has left.');
+        lines.push(s.alive('teddy')
+          ? 'The boat is still there, but the days you spent on it have gone into Teddy\u2019s ' +
+            'breathing. Wren has stopped asking how long he has left.'
+          : 'The boat is still there. You spent days holding to its mooring while the ' +
+            'water kept the dead away; here there is no such boundary.');
       }
       if (s.flag('tookFromTheChildren')) {
         lines.push(s.flag('gaveItBack')

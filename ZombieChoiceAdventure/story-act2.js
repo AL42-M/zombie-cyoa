@@ -743,7 +743,7 @@
     choices: [
       { label: 'Everyone goes to the Mercy. Together.', to: 'a2_mercy_approach',
         act: function (s) { s.set('boatWillKeep'); s.soften(4); } },
-      { label: 'Go alone. Leave them here where it is safe.', tone: 'risk', to: 'a2_mercy_approach',
+      { label: 'Scout the hill alone. Tell them to follow when the road is clear.', tone: 'risk', to: 'a2_mercy_approach',
         act: function (s) { s.set('wentAlone'); s.set('boatWillKeep'); s.scar(8); s.soften(6); } },
       { label: 'Take Bram. Leave Odile and Wren with the boat.', to: 'a2_mercy_approach',
         act: function (s) { s.set('tookBram'); s.set('boatWillKeep'); } },
@@ -1442,6 +1442,7 @@
     enter: function (s) {
       s.set('atTheMercy');
       s.advance(1);
+      if (s.flag('wentAlone')) s.set('groupCaughtUp');
       if (s.alive('teddy')) s.set('teddyMadeIt');
     },
     text: function (s) {
@@ -1450,6 +1451,12 @@
         'been pruning, and that detail — <em>somebody has been pruning</em> — does something to the ' +
         'back of your neck that four miles of dead city did not.'
       ];
+      if (s.flag('groupCaughtUp')) {
+        lines.push('You reach the gate ahead of the others. When you turn to signal the road is ' +
+          'clear, they are already coming through the limes. ' +
+          (s.alive('teddy') ? 'Bram has Teddy\u2019s arm; ' : 'Wren has the torch; ') +
+          'none of them wanted to wait for your permission to finish the walk.');
+      }
       if (s.alive('teddy')) {
         lines.push('Teddy makes it. Nobody expected it, least of all Odile, who has been walking at ' +
           'his shoulder for four miles with her hand ready at his elbow. At the gate he stops and ' +
@@ -1466,9 +1473,12 @@
           (s.alive('teddy') ? 'Teddy keeps his eyes on the light, not on you.' :
             'Nobody asks whether the extra nights would have changed anything.'));
       } else if (s.flag('tookFromTheChildren')) {
-        lines.push('Bram sees the word <em>Mercy</em> over the entrance and looks at the tins you ' +
-          'carried out of Marlowe House. Neither of you can call this building a refuge without ' +
-          'thinking of the children you left behind.');
+        lines.push(s.flag('gaveItBack')
+          ? 'Bram sees the word <em>Mercy</em> over the entrance. You left the tins on the ' +
+            'landing at Marlowe House, but neither of you can stop hearing the children behind the door.'
+          : 'Bram sees the word <em>Mercy</em> over the entrance and looks at the tins you ' +
+            'carried out of Marlowe House. Neither of you can call this building a refuge without ' +
+            'thinking of the children you left behind.');
       } else if (s.flag('drewThemOff')) {
         lines.push('The scrape from the estate has bled through its dressing. Wren checks it ' +
           'without being asked. In the tower behind you, six children have had an hour of quiet.');
@@ -1505,7 +1515,10 @@
       { label: 'Turn around. Go back to the river.', tone: 'kind',
         show: function (s) { return s.flag('knowsBoat'); }, to: 'a3_refuse' },
       { label: 'Ask for a bed for Teddy before you ask for one for yourself.', tone: 'kind',
-        show: function (s) { return s.flag('heldAtTheBoat') && s.alive('teddy'); },
+        show: function (s) {
+          return s.flag('heldAtTheBoat') && s.alive('teddy') &&
+            (!s.flag('wentAlone') || s.flag('groupCaughtUp'));
+        },
         to: 'a3_reception',
         act: function (s) { s.set('askedForTeddysBed'); s.trust('teddy', 12); s.scar(4); } },
       { label: 'Tell the receptionist what happened at Marlowe House.', tone: 'risk',

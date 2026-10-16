@@ -428,12 +428,25 @@ expect('arrival recalls all three boat days',
   String(Story.textOf(Story.get('a2_mercy_approach'), sBoat).join(' ').indexOf('three days') >= 0), 'true');
 expect('boat wait opens a Teddy-specific arrival choice',
   String(Story.get('a2_mercy_approach').choices[5].show(sBoat)), 'true');
+var sScout = new Story.GameState();
+sScout.set('heldAtTheBoat'); sScout.set('wentAlone');
+expect('scout cannot request a bed for an absent Teddy',
+  String(Story.get('a2_mercy_approach').choices[5].show(sScout)), 'false');
+Story.get('a2_mercy_approach').enter(sScout);
+expect('party rejoins the scout at the gate', String(sScout.flag('groupCaughtUp')), 'true');
 var sEstate = new Story.GameState();
 sEstate.set('tookFromTheChildren');
 expect('estate route opens a distinct confession',
   String(Story.get('a2_mercy_approach').choices[6].show(sEstate)), 'true');
 expect('estate route recalls the children in the final decision',
   String(Story.textOf(fin, sEstate).join(' ').indexOf('six children') >= 0), 'true');
+sEstate.set('gaveItBack');
+expect('returned supplies are not described as carried to the Mercy',
+  String(Story.textOf(Story.get('a2_mercy_approach'), sEstate).join(' ').indexOf('looks at the tins') >= 0), 'false');
+var sWithoutTeddy = new Story.GameState();
+sWithoutTeddy.part('teddy'); sWithoutTeddy.set('heldAtTheBoat');
+expect('final boat reflection does not describe an absent Teddy breathing',
+  String(Story.textOf(fin, sWithoutTeddy).join(' ').indexOf('Teddy\u2019s breathing') >= 0), 'false');
 
 WScript.Echo('');
 var total = probList.length + errList.length + deadList.length + countList.length +
