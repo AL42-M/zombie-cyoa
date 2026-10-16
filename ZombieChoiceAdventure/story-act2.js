@@ -640,8 +640,9 @@
     chapter: CH,
     place: 'LUCKY II',
     enter: function (s) { s.set('searchedBoat'); },
-    text: [
-      'I take the cabin apart in eleven minutes with four people and one wind-up torch.',
+    text: function (s) { return [
+      'I take the cabin apart in eleven minutes with ' + (s.partyCount() + 1) +
+      ' of us and one wind-up torch.',
 
       'Where they always are turns out to mean: not here. Not in the galley drawer, not in the chart ' +
       'table, not in the pocket of the oilskin, not taped under the wheel, not in the tin marked TEA.',
@@ -654,10 +655,9 @@
       { c: 'note', t: 'ST AMARANTH MERCY \u00b7 RESPIRATORY OUTPATIENTS\nMR D. HOLLOWAY \u00b7 WARD 11 \u00b7 ' +
         'THURS 09:40\nPLEASE BRING THIS CARD AND A LIST OF YOUR MEDICATIONS' },
 
-      'Jean\u2019s husband took the keys to the hospital in his coat pocket on a Thursday morning, ' +
-      'and the hospital is the place with the lights on, and this is either the luckiest thing that ' +
-      'has ever happened to me or the shape of something closing around me.'
-    ],
+      'The card has the same name as the note in the locker. If the keys are still in ' +
+      'Dennis Holloway\u2019s coat, they are four miles up the hill, in the only building with lights.'
+    ]; },
     choices: [
       { label: 'Take the card. The Mercy it is.', to: 'a2_mercy_approach',
         act: function (s) { s.set('hollowayCard'); s.set('boatWillKeep'); },

@@ -871,8 +871,8 @@
     dateEntry: true,
     enter: function (s) { s.advance(1); s.set('waited'); },
     text: [
-      'I say: morning. Everyone agrees with the enormous relief of people who have been given ' +
-      'permission to not be the one.',
+      'I said we would wait until morning. Nobody argued. Bram put the torch down ' +
+      'and Wren took her shoes off again.',
 
       'Nobody sleeps. At four, Teddy\u2019s breathing changes — thicker, and with a catch at the ' +
       'top of each one, a tiny click like a key turning.',
@@ -881,9 +881,9 @@
 
       { c: 'sep', t: '\u2042' },
 
-      'It does not fade. It <em>stops</em>, all of it, all at once, fifty throats closing on the same ' +
-      'beat, and the silence that comes down is the exact shape and weight of the Hush itself, ' +
-      'and every person in this room has heard that silence before.',
+      'It does not fade. It <em>stops</em>, fifty throats on the same beat. ' +
+      'For a moment I hear the radiator cooling and Teddy trying to breathe. ' +
+      'The last time the world went this quiet was the Hush.',
 
       'Wren is already up with her shoes on. She was always the fastest to understand.'
     ],

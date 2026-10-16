@@ -244,6 +244,10 @@ body.reading-instant #passage p,body.reading-instant .choice{ animation:none; }
   color:var(--muted); border-bottom:1px solid var(--line-soft); padding-bottom:.5rem;
   margin:0 0 1.6rem;
 }
+.end-body .dateline{
+  font-family:var(--mono); font-size:.7rem; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--muted); margin:1.8rem 0 1.2rem;
+}
 #passage .said{ color:var(--ink-bright); }
 #passage .whisper{
   display:block; font-style:italic; color:var(--bruise); opacity:.85;

@@ -108,9 +108,8 @@
         lines.push({ c: 'whisper', t: 'you found one. you just stood on the wrong side of it' });
       }
       lines.push({ c: 'sep', t: '\u2042' });
-      lines.push('The last vial goes into a stranger on day sixty-six. ' +
-        'After that St Amaranth Mercy is ninety-four people in beds, a generator, ' +
-        'and the forty of us who have made yourselves into the sort of people who did this.');
+      lines.push('By the sixth week the last vial is long gone. St Amaranth Mercy is ' +
+        'ninety-four people in beds, a generator, and forty of us who signed the forms.');
       lines.push('I keep the mouths. I keep them for a long time.');
       return lines;
     }
@@ -137,9 +136,10 @@
           'anybody has carried out of that building.');
       }
       lines.push({ c: 'sep', t: '\u2042' });
+      lines.push({ c: 'dateline', t: 'The following spring' });
       lines.push('It turns out that the world does not end all at once, and that pockets of it ' +
         'go on having meetings.');
-      lines.push('I find the first one in Cleveholt in the spring: two hundred people, ' +
+      lines.push('I find the first one in Cleveholt: two hundred people, ' +
         'a working mill, a committee. I stand up in a church hall and I read out ' +
         'forty-one names and dates and yields, and then I read out the fourth column, ' +
         'and a man near the back stands up and asks the only question that matters.');
@@ -190,13 +190,12 @@
         lines.push('Wren sits in the bow the whole way out with her face into the wind, ' +
           'and about a mile past the harbour wall she turns round and says something.');
         lines.push('Out loud. With her voice. It is cracked and ugly and about four words long ' +
-          'and the engine is too loud for anybody to hear a syllable of it.');
+          'and the engine is too loud for me to hear a syllable of it.');
         lines.push({ c: 'whisper', t: 'She refuses, then and ever afterwards, to repeat it.' });
       }
       if (s.alive('odile')) {
         lines.push('Odile finds the half bottle of supermarket ros\u00e9 in the galley locker ' +
-          'and opens it at six in the morning and pours it into four enamel mugs without asking ' +
-          'anybody whether they want any.');
+          'and opens it at six in the morning. She sets out enough enamel mugs for everyone aboard.');
       }
       if (s.alive('bram')) {
         lines.push('Bram asks, once, about the road east to Thornbury, and then looks at the water ' +
@@ -207,7 +206,7 @@
       lines.push('The estuary opens out at about seven. The sky over the sea is the ordinary ' +
         'pink of an ordinary morning in an ordinary year, and three-quarters of a tank is ' +
         'enough to get somewhere, and nobody on this boat knows where, and for the first time ' +
-        'in forty-four days that is a <em>pleasant</em> thing not to know.');
+        'since the Hush that is a <em>pleasant</em> thing not to know.');
       lines.push('There is no hum out here. There is just water, and an engine, ' +
         'and the sound of people not holding their breath.');
       return lines;
@@ -229,7 +228,7 @@
         'cabin cruiser down a black river at five in the morning entirely on my own.',
 
         'Both banks fill up and hold the note and stop at the waterline, and I go past them ' +
-        'close enough to see faces, and it costs I nothing at all, because there is nobody ' +
+        'close enough to see faces. There is nobody ' +
         'aboard whose hand I have to hold while it happens.',
 
         { c: 'hum', t: 'h m m m m m m m' },
@@ -251,7 +250,7 @@
       if (s.has('photo')) {
         lines.push({ c: 'sep', t: '\u2042' });
         lines.push('Somewhere past the harbour wall I take out four frames of a photo booth at ' +
-          'a county fair \u2014 I and June, laughing, laughing, laughing, blurred \u2014 ' +
+          'a county fair \u2014 June and me, laughing in the first three and blurred in the last \u2014 ' +
           'and I hold it, and I do not put it in the water, which I had half intended to do.');
         lines.push('I say her name out loud over an engine, to nobody, and it is the first time ' +
           'in a long time, and there is nobody aboard to pretend not to hear it.');
@@ -277,7 +276,8 @@
     place: 'LUCKY II',
     text: function (s) {
       var lines = [
-        'Teddy Alafuzo gets onto a boat under his own power on the morning of day forty-four, ' +
+        'Teddy Alafuzo gets onto a boat under his own power on the morning of day ' +
+        Math.floor(Number(s.day)) + ', ' +
         'which Odile will tell me afterwards was not medically possible, ' +
         'and which he does anyway, with one hand on the guard rail and both of us pretending ' +
         'not to be watching.',
@@ -298,9 +298,9 @@
       ];
       if (s.alive('wren')) {
         lines.push('Wren hums for him. Quietly, badly, off the note \u2014 ' +
-          'the first sound she has made on purpose in forty-four days \u2014 ' +
+          'the first sound she has made on purpose since the third day \u2014 ' +
           'and he does not stop or open his eyes, he just brings her in with two fingers ' +
-          'on the second bar, the way I would with a nervous chorister, ' +
+          'on the second bar, the way he once did with nervous choristers, ' +
           'and keeps going as if he had been expecting her.');
       }
       lines.push({ c: 'sep', t: '\u2042' });
@@ -312,10 +312,12 @@
         'I hold his hand and I let a seventy-one-year-old man be the one who says so, ' +
         'and it takes about an hour, and it is quiet, and it is on the water, ' +
         'and nobody in the world is coming for the sound of it.');
-      if (s.has('morphine') || s.flag('odileKeepsMorphine')) {
-        lines.push('Odile has the ampoule she has been carrying since Ferry Street. ' +
+      if (s.alive('odile') && (s.has('morphine') || s.flag('odileKeepsMorphine'))) {
+        lines.push('Odile has the ampoule from Rosco\u2019s. ' +
           'She asks him first. He says yes. She does it properly and she cries afterwards ' +
           'in the cabin where she thinks nobody can hear, and everybody can hear.');
+      } else if (s.has('morphine')) {
+        lines.push('I have the ampoule from Rosco\u2019s. I ask him first. He says yes.');
       }
       lines.push({ c: 'sep', t: '\u2042' });
       lines.push('I put him over the side at dawn off a sandbank with the sun coming up ' +
@@ -442,16 +444,16 @@
         'a cast-iron door at the top of the cellar stairs, and a bolt on the inside ' +
         'that somebody fitted in about 1950 for reasons that had nothing to do with any of this.'
       ];
-      lines.push('I do not find it quickly. It takes nine days and it costs I ' +
-        'the last of the tinned soup and most of the skin off both hands.');
+      lines.push({ c: 'dateline', t: 'Nine days later' });
+      lines.push('The search has cost me the last of the tinned soup and most of the skin ' +
+        'off both hands. Wren goes up the steps ahead of me.');
       lines.push({ c: 'sep', t: '\u2042' });
-      lines.push('But I find it. And I stand back. And I let Wren go up the steps first ' +
-        'and put her hand on the bolt, and I watch a fourteen-year-old girl look at a piece ' +
-        'of iron for a long moment before she slides it across.');
+      lines.push('I stand back and watch her put her hand on the bolt. She waits a long ' +
+        'moment before she slides it across.');
       lines.push('It makes a good sound. A heavy, stupid, completely final sound, ' +
         'the sound of a thing designed by somebody who assumed the world would go on being ordinary.');
       lines.push({ c: 'whisper', t: 'She writes on the pad and holds it up, and she is crying, ' +
-        'and she is also doing something with her face that neither of us have seen in forty-four days.' });
+        'and she is also doing something with her face I have not seen since the third day.' });
       lines.push({ c: 'whisper', t: 'thats it then' });
       lines.push({ c: 'whisper', t: 'thats the whole thing i wanted' });
       lines.push({ c: 'sep', t: '\u2042' });

@@ -409,6 +409,8 @@ var sLate = new Story.GameState();
 sLate.infect(8);
 sLate.advance(5);
 Story.get('a3_triage').enter(sLate);
+expect('triage is dated to the morning after arrival',
+  Story.textOf(Story.get('a3_triage'), sLate)[0].t, 'Day ' + sLate.day);
 expect('delayed triage acknowledges late infection',
   String(Story.textOf(Story.get('a3_triage'), sLate).join(' ').indexOf('Beyond four days') >= 0), 'true');
 expect('first exposure day survives the delay', String(sLate.val('firstInfectionDay')), '41');
@@ -421,7 +423,11 @@ expect('burning the lorry is available with both supplies', String(fireChoice.sh
 
 var sBoat = new Story.GameState();
 Story.get('a2_boat_hold').enter(sBoat);
+expect('boat wait starts a new dated entry',
+  Story.textOf(Story.get('a2_boat_hold'), sBoat)[0].t, 'Day 43');
 night.enter(sBoat);
+expect('last night on the boat uses the next day',
+  Story.textOf(night, sBoat)[0].t, 'Day 44');
 Story.get('a2_mercy_approach').enter(sBoat);
 expect('extra night advances chronology', String(sBoat.day), '45');
 expect('arrival recalls all three boat days',
@@ -445,6 +451,8 @@ expect('returned supplies are not described as carried to the Mercy',
   String(Story.textOf(Story.get('a2_mercy_approach'), sEstate).join(' ').indexOf('looks at the tins') >= 0), 'false');
 var sWithoutTeddy = new Story.GameState();
 sWithoutTeddy.part('teddy'); sWithoutTeddy.set('heldAtTheBoat');
+expect('boat search counts only present companions',
+  String(Story.textOf(Story.get('a2_boat_search'), sWithoutTeddy)[0].indexOf('4 of us') >= 0), 'true');
 expect('final boat reflection does not describe an absent Teddy breathing',
   String(Story.textOf(fin, sWithoutTeddy).join(' ').indexOf('Teddy\u2019s breathing') >= 0), 'false');
 
