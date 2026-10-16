@@ -300,12 +300,12 @@
         'through the chassis, through the floor pan, through the six inches of panel directly above ' +
         'my face. Sixty of them, standing on the other side of that panel.',
 
-        'And then, above I, through the steel: a sound like a shoe placed carefully down.',
+        'And then, above me, through the steel: a sound like a shoe placed carefully down.',
         'And then another.',
-        '<em>They are following I along the trailer.</em>'
+        '<em>They are following me along the trailer.</em>'
       ];
       if (withTeddy(s)) {
-        lines.push('Behind I in the dark, Teddy is coming through on his elbows, and his breathing ' +
+        lines.push('Behind me in the dark, Teddy is coming through on his elbows, and his breathing ' +
           'in this enclosed space is the loudest thing in the county.');
       }
       return lines;
@@ -628,7 +628,7 @@
       { label: 'Search the boat properly for the keys.', to: 'a2_boat_search' },
       { label: 'Leave it. Come back with the keys from somewhere.', to: 'a2_mercy_approach',
         act: function (s) { s.set('boatWillKeep'); } },
-      { label: 'Hotwire it. You have bolt cutters and a knife and no patience.', tone: 'risk',
+      { label: 'Try to hotwire it with what you have.', tone: 'risk',
         show: function (s) { return s.has('cutters') || s.has('knife'); }, to: 'a2_boat_hotwire' },
       { label: 'Move everyone aboard and hold here. Let the Mercy wait.', tone: 'risk',
         to: 'a2_boat_hold' }
@@ -679,8 +679,9 @@
     chapter: CH,
     place: 'LUCKY II',
     enter: function (s) { s.hurt(5); s.scar(6); },
-    text: [
-      'I get the panel off with the knife and I get my hand into a loom of forty-year-old ' +
+    text: function (s) { return [
+      'I get the panel off with ' + (s.has('knife') ? 'the knife' : 'the bolt cutters') +
+      ' and I get my hand into a loom of forty-year-old ' +
       'marine wiring and I learn, over the following twenty minutes, that a diesel inboard with ' +
       'an electronic cut-off is not a Vauxhall Astra.',
 
@@ -696,7 +697,7 @@
       'standing in the dark, and now every one of them is facing me.',
 
       'They cannot cross. I am almost certain they cannot cross.'
-    ],
+    ]; },
     choices: [
       { label: 'Get off the boat and get to the Mercy. Fast.', to: 'a2_mercy_approach',
         act: function (s) { s.scar(10); s.set('soundedTheHorn'); } },
@@ -1209,7 +1210,7 @@
     chapter: CH,
     place: 'Marlowe House',
     enter: function (s) { s.set('wentUpTheTower'); },
-    text: [
+    text: function (s) { return [
       'Nine floors of stairwell in the dark, and at the top, a fire door, and behind the fire door ' +
       'a barricade of furniture that six adults built in a hurry in the first week and have been ' +
       'improving ever since.',
@@ -1217,14 +1218,15 @@
       'I can hear them through it. Somebody is whispering a child through a nightmare. Somebody ' +
       'else is counting, very quietly, over and over, which is either a game or a way of not screaming.',
 
-      'The door will come. Not quickly, not quietly, but it will come — I have bolt cutters and ' +
-      'leverage and there are four of us.',
+      'The door will come. Not quickly, not quietly, but it will come — ' +
+      (s.has('cutters') ? 'I have bolt cutters' : 'I can work at the hinges') +
+      ' and leverage, and the others are here to help.',
 
       { c: 'sep', t: '\u2042' },
 
       'On the other side of that door there are nine tins of soup, a torch with a working battery, ' +
       'four capsules of something, and six children.'
-    ],
+    ]; },
     choices: [
       { label: 'Go back down. All the way down. Now.', tone: 'kind', to: 'a2_mercy_approach',
         act: function (s) { s.soften(16); s.ease(6); s.set('turnedBackAtTheDoor'); },
@@ -1417,7 +1419,7 @@
       { c: 'note', t: 'On a cord around her neck, under the collar: ST AMARANTH MERCY \u00b7 ' +
         'DONOR \u00b7 WARD 11 \u00b7 H-0441' },
 
-      'Donor. Ward Eleven. And a number with four digits, and the first two are the day they started.'
+      'Donor. Ward Eleven. And a number with four digits that somebody thought worth stamping into metal.'
     ],
     choices: [
       { label: 'Take the tag. Show the others.', to: 'a2_mercy_approach',

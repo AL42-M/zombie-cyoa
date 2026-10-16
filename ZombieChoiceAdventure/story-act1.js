@@ -454,7 +454,7 @@
 
       'I am close enough to smell it. Wet copper and sugar, like a butcher\u2019s bin in July.',
 
-      'Behind I, Bram says a word I have not heard him use. Teddy has both hands over his own mouth.'
+      'Behind me, Bram says a word I have not heard him use. Teddy has both hands over his own mouth.'
     ],
     choices: [
       { label: 'Back away slowly. Do not add a second sound.', to: 'a1_hub',

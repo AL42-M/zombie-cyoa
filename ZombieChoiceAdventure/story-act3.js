@@ -1005,7 +1005,7 @@
       'She is crying. She re-straps all four of them herself, checking each one for skin damage ' +
       'as she goes, apologising to each of them by name.',
 
-      'my scalp is bleeding. Something went into the graze on my arm. I feel the hum settle ' +
+      'My scalp is bleeding. Something went into the graze on my arm. I feel the hum settle ' +
       'in my back teeth and <em>stay</em>.'
     ],
     choices: [
@@ -1139,7 +1139,7 @@
     },
     choices: [
       { label: '"Why are you telling me this?"', to: 'a3_matron_why' },
-      { label: '"Give me the treatment. I have been bitten."', tone: 'risk',
+      { label: '"Give me the treatment. I am infected."', tone: 'risk',
         show: function (s) { return s.infection > 0; }, to: 'a3_matron_treat' },
       { label: '"This ends tonight. All of it."', tone: 'risk', to: 'a3_final',
         act: function (s) { s.set('declaredTheEnd'); } },
@@ -1378,16 +1378,21 @@
         'behind me and nothing in front of me but four miles of dark and a river.'
       ];
       if (s.flag('knowsBoat')) {
-        lines.push('There is a boat. Riding high, canopy zipped, three-quarters of a tank, ' +
-          'on a river that they will not cross.');
+        lines.push(s.flag('foundBoat')
+          ? 'There is a boat. Riding high, canopy zipped, three-quarters of a tank, ' +
+            'on a river that they will not cross.'
+          : 'There is a boat at the sailing club, riding high on a river that they will not cross. ' +
+            'I have not been inside it.');
       }
       if (s.has('keys')) {
         lines.push('And there are keys in my pocket on a foam fob shaped like a fish, ' +
           'and the word on the fob is LUCKY, and I have not decided yet whether that is a joke ' +
           'the world is making at my expense.');
-      } else {
+      } else if (s.flag('foundBoat')) {
         lines.push('There are no keys. There is a boat with an empty ignition barrel and ' +
-          'a note from a man to his wife, and a hospital on a hill that has his coat in a labelled bag.');
+          'a note from a man to his wife. If he ever came to this hospital, they may have kept his coat.');
+      } else if (s.flag('knowsBoat')) {
+        lines.push('I have no keys. I have only seen the boat from the bank.');
       }
       lines.push({ c: 'sep', t: '\u2042' });
       if (withTeddy(s)) {
@@ -1405,9 +1410,13 @@
       { label: 'The river. The boat. Tonight.', show: function (s) { return s.has('keys'); },
         to: 'a3_final', act: function (s) { s.set('headingForTheBoat'); } },
       { label: 'Go back for the keys. You cannot do this without them.',
-        show: function (s) { return !s.has('keys'); }, to: 'a3_refuse_keys' },
+        show: function (s) { return !s.has('keys') && s.flag('knowsBoat'); }, to: 'a3_refuse_keys' },
       { label: 'The river anyway. You will break into the boat or sleep on it.',
+        show: function (s) { return s.flag('knowsBoat'); },
         to: 'a3_final', act: function (s) { s.set('headingForTheBoat'); s.set('noKeys'); } },
+      { label: 'Wait for the others at the foot of the hill before deciding.',
+        show: function (s) { return !s.flag('knowsBoat'); },
+        to: 'a3_final', act: function (s) { s.soften(4); s.set('lookingForTheDoor'); } },
       { label: 'Find somewhere with a door that locks from the inside.', tone: 'kind',
         to: 'a3_final', act: function (s) { s.set('lookingForTheDoor'); } },
       { label: 'Turn around. You cannot leave it standing.', tone: 'risk', to: 'a3_final',
@@ -1451,7 +1460,6 @@
     place: 'St Amaranth Mercy',
     enter: function (s) {
       s.set('atTheEnd');
-      s.advance(1);
       /* people you drove away do not wait around for the last decision */
       ['odile', 'bram', 'wren'].forEach(function (id) {
         if (s.alive(id) && s.who(id).trust <= 12 && !s.flag('left_' + id)) {
@@ -1517,15 +1525,18 @@
         show: function (s) { return s.flag('metTheMatron') || s.flag('atTheMercy'); },
         to: 'end_matron' },
 
-      { label: 'Walk out with the ledger and make the world read it.',
+      { label: 'Take the ledger and make the world read it.',
         hint: 'nine hundred names and a fourth column',
-        show: function (s) { return s.has('ledger'); },
-        to: 'end_ledger' },
+        show: function (s) { return s.has('ledger') || s.flag('tookTheTreatment'); },
+        to: 'end_ledger', act: function (s) {
+          if (!s.has('ledger')) { s.give('ledger'); s.set('tookTheLedger'); }
+        } },
 
       { label: 'Take everyone to the boat and go out on the tide.',
         hint: 'the water is a wall', tone: 'kind',
         show: function (s) { return s.flag('knowsBoat') || s.flag('headingForTheBoat'); },
         to: function (s) {
+          if (!s.has('keys')) return 'a3_boat_lastkeys';
           if (s.alive('teddy') && s.flag('theCompact')) return 'end_mercy_teddy';
           /* with nobody left there is nothing to decide; with somebody left
              there is, and it gets its own beat on the slipway */
@@ -1544,7 +1555,37 @@
 
       { label: 'Walk out into the dark and stop holding the note down.',
         hint: 'it has been very patient with you', tone: 'rot',
+        show: function (s) { return !s.flag('arrested'); },
         to: 'end_hush' }
+    ]
+  });
+
+  S.add({
+    id: 'a3_boat_lastkeys',
+    chapter: 'III — The last of it',
+    place: 'The property room',
+    enter: function (s) { if (!s.has('keys')) s.give('keys'); s.set('hasTheKeys'); },
+    text: function (s) { return [
+      'The river will not start an engine for me. I turn back once, through the service door' +
+      (s.partyCount() ? ', while the others wait out on the road.' : ', with nobody left to wait for me.'),
+      'The property room has a card index. HOLLOWAY, D. is in the April section. ' +
+      'His boat keys are sealed with his wallet and spectacles. The foam fish on the fob says LUCKY.',
+      'I take them. The staple tears the paper with a small sound. Outside, the river is still ' +
+      'four miles away.'
+    ]; },
+    choices: [
+      { label: 'Take the keys down to the slip and cast off before dawn.', tone: 'kind',
+        to: function (s) {
+          if (s.alive('teddy') && s.flag('theCompact')) return 'end_mercy_teddy';
+          return s.partyCount() ? 'a3_boat_who' : 'end_boat_alone';
+        }, act: function (s) { s.soften(5); } },
+      { label: 'Keep the keys in my pocket until we reach the water.',
+        to: function (s) {
+          if (s.alive('teddy') && s.flag('theCompact')) return 'end_mercy_teddy';
+          return s.partyCount() ? 'a3_boat_who' : 'end_boat_alone';
+        }, act: function (s) { s.harden(5); } },
+      { label: 'Put the keys away. Stay and take responsibility for this place.',
+        tone: 'risk', to: 'end_matron', act: function (s) { s.scar(8); } }
     ]
   });
 

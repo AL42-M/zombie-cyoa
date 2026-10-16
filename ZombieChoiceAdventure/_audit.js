@@ -325,12 +325,13 @@ if (!boat) {
 } else {
   var sAlone = new Story.GameState();
   sAlone.part('odile'); sAlone.part('bram'); sAlone.part('wren'); sAlone.part('teddy');
-  sAlone.set('knowsBoat');
+  sAlone.set('knowsBoat'); sAlone.give('keys');
   expect('nobody left -> end_boat_alone', boat.to(sAlone), 'end_boat_alone');
   expect('boat choice visible with knowsBoat', String(boat.show(sAlone)), 'true');
 
   var sTog = new Story.GameState();
   sTog.part('teddy');
+  sTog.give('keys');
   expect('companions alive -> slipway decision', boat.to(sTog), 'a3_boat_who');
 
   /* the slipway is the only way end_boat_alone can be chosen rather than defaulted into */
@@ -355,11 +356,35 @@ if (!boat) {
   }
 
   var sComp = new Story.GameState();
-  sComp.set('theCompact');
+  sComp.set('theCompact'); sComp.give('keys');
   expect('teddy + compact -> end_mercy_teddy', boat.to(sComp), 'end_mercy_teddy');
 
   var sNoBoat = new Story.GameState();
   expect('boat choice hidden without knowsBoat', String(boat.show(sNoBoat)), 'false');
+
+  var sMissingKeys = new Story.GameState();
+  sMissingKeys.set('knowsBoat');
+  expect('boat without keys -> property room, not ignition', boat.to(sMissingKeys), 'a3_boat_lastkeys');
+  var lastKeys = Story.get('a3_boat_lastkeys');
+  lastKeys.enter(sMissingKeys);
+  expect('property room supplies the missing boat keys', String(sMissingKeys.has('keys')), 'true');
+  expect('property room onward path reaches the slipway', lastKeys.choices[0].to(sMissingKeys), 'a3_boat_who');
+  lastKeys.enter(sMissingKeys);
+  expect('returning to property room does not duplicate keys',
+    String(sMissingKeys.count('keys')), '1');
+
+  var sTreated = new Story.GameState();
+  sTreated.infect(30);
+  Story.get('a3_matron_treat').enter(sTreated);
+  expect('treatment arrests the infection', String(sTreated.flag('arrested') && sTreated.infection === 0), 'true');
+  expect('treated reader cannot surrender to an active note',
+    String(fin.choices[fin.choices.length - 1].show(sTreated)), 'false');
+  var ledgerChoice = fin.choices.filter(function (choice) {
+    return choice.to === 'end_ledger' && choice.show(sTreated);
+  });
+  expect('treated reader can take the ledger on leaving', String(ledgerChoice.length), '1');
+  ledgerChoice[0].act(sTreated);
+  expect('ledger ending receives the book', String(sTreated.has('ledger')), 'true');
 }
 
 /* companions you have alienated should actually leave at the last node */
