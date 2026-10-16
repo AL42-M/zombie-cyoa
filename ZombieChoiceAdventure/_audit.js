@@ -368,6 +368,8 @@ if (!boat) {
   var lastKeys = Story.get('a3_boat_lastkeys');
   lastKeys.enter(sMissingKeys);
   expect('property room supplies the missing boat keys', String(sMissingKeys.has('keys')), 'true');
+  expect('keys route from inside Mercy stays inside until leaving',
+    String(Story.textOf(lastKeys, sMissingKeys)[0].indexOf('service corridor') >= 0), 'true');
   expect('property room onward path reaches the slipway', lastKeys.choices[0].to(sMissingKeys), 'a3_boat_who');
   lastKeys.enter(sMissingKeys);
   expect('returning to property room does not duplicate keys',

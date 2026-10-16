@@ -1477,6 +1477,9 @@
       } else if (s.flag('headingForTheBoat')) {
         lines.push('The hill is behind me. The river is ahead. It is day ' + s.day +
           ', and whatever is going to be decided is going to be decided before I reach the water.');
+      } else if (s.flag('refusedTheMercy')) {
+        lines.push('I stop at the end of the avenue, with the hospital behind me and the road ahead. ' +
+          'I can still turn back. I can still keep walking.');
       } else {
         lines.push('It comes down to this, in a corridor before the next shift, with a kettle ' +
           'boiling somewhere and ninety-four people humming at a ceiling two rooms away.');
@@ -1566,8 +1569,12 @@
     place: 'The property room',
     enter: function (s) { if (!s.has('keys')) s.give('keys'); s.set('hasTheKeys'); },
     text: function (s) { return [
-      'The river will not start an engine for me. I turn back once, through the service door' +
-      (s.partyCount() ? ', while the others wait out on the road.' : ', with nobody left to wait for me.'),
+      (s.flag('headingForTheBoat')
+        ? 'The river will not start an engine for me. I turn back once, through the service door'
+        : 'The river will not start an engine for me. I take the service corridor to the property room') +
+      (s.partyCount()
+        ? (s.flag('headingForTheBoat') ? ', while the others wait out on the road.' : ', while the others wait nearby.')
+        : ', with nobody left to wait for me.'),
       'The property room has a card index. HOLLOWAY, D. is in the April section. ' +
       'His boat keys are sealed with his wallet and spectacles. The foam fish on the fob says LUCKY.',
       'I take them. The staple tears the paper with a small sound. Outside, the river is still ' +
