@@ -422,6 +422,10 @@ sFire.give('flask');
 expect('burning the lorry is available with both supplies', String(fireChoice.show(sFire)), 'true');
 
 var sBoat = new Story.GameState();
+var sWait = new Story.GameState();
+Story.get('a1_wait').enter(sWait);
+expect('pharmacy wait begins the next dated entry',
+  Story.textOf(Story.get('a1_wait'), sWait)[0].t, 'Day 42');
 Story.get('a2_boat_hold').enter(sBoat);
 expect('boat wait starts a new dated entry',
   Story.textOf(Story.get('a2_boat_hold'), sBoat)[0].t, 'Day 43');
@@ -430,6 +434,8 @@ expect('last night on the boat uses the next day',
   Story.textOf(night, sBoat)[0].t, 'Day 44');
 Story.get('a2_mercy_approach').enter(sBoat);
 expect('extra night advances chronology', String(sBoat.day), '45');
+expect('Teddy ending uses the actual departure day',
+  String(Story.textOf(Story.get('end_mercy_teddy'), sBoat).join(' ').indexOf('day 45') >= 0), 'true');
 expect('arrival recalls all three boat days',
   String(Story.textOf(Story.get('a2_mercy_approach'), sBoat).join(' ').indexOf('three days') >= 0), 'true');
 expect('boat wait opens a Teddy-specific arrival choice',
@@ -455,6 +461,10 @@ expect('boat search counts only present companions',
   String(Story.textOf(Story.get('a2_boat_search'), sWithoutTeddy)[0].indexOf('4 of us') >= 0), 'true');
 expect('final boat reflection does not describe an absent Teddy breathing',
   String(Story.textOf(fin, sWithoutTeddy).join(' ').indexOf('Teddy\u2019s breathing') >= 0), 'false');
+var sWithoutOdile = new Story.GameState();
+sWithoutOdile.part('odile'); sWithoutOdile.give('morphine');
+expect('Teddy ending does not assign medicine to an absent Odile',
+  String(Story.textOf(Story.get('end_mercy_teddy'), sWithoutOdile).join(' ').indexOf('Odile has the ampoule') >= 0), 'false');
 
 WScript.Echo('');
 var total = probList.length + errList.length + deadList.length + countList.length +

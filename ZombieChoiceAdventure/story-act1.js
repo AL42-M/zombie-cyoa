@@ -676,7 +676,7 @@
       'which right now I consider the finest combination of qualities in England."</span>',
       'He looks at the shutter.',
       '<span class="said">"Asthmatic," he says again. "She would sound like him."</span>',
-      { c: 'whisper', t: 'And there it is. The real arithmetic, laid out on the floor between you.' }
+      { c: 'whisper', t: 'And there it is. The real arithmetic, laid out on the floor between us.' }
     ],
     choices: [
       { label: '"Then you know exactly why we carry Teddy."', tone: 'kind', to: 'a1_hub',
@@ -756,8 +756,8 @@
       'He does not look triumphant. He looks like a man who has been holding a door shut and has ' +
       'just felt it stop pushing from the other side, and is now realising he must walk through it.',
       '<span class="said">"Right," he says. "Right."</span>',
-      'In the corner, Teddy coughs. Neither of us turns round. That is the first thing I do ' +
-      'together as accomplices: not turning round.'
+      'In the corner, Teddy coughs. Neither of us turns round. That is the first thing ' +
+      'Bram and I do together as accomplices.'
     ],
     choices: [
       { label: 'Take it back. Immediately.', tone: 'kind', to: 'a1_hub',

@@ -127,6 +127,21 @@ PROJECT CONTEXT
 
 VERSION HISTORY (newest first)
 
+v1.5 - 2026-10-16
+- Added unobtrusive day headings to passages that genuinely follow an overnight
+  wait (the pharmacy, boat, and hospital triage); these use the run's saved day,
+  without adding another state effect. Long ending time jumps use relative
+  headings. Journal summaries still begin with prose, while expanded entries
+  retain their headings. Older saved entries remain as recorded.
+- Editorial review found fixed day references that contradicted longer routes,
+  a medication timeline inconsistent within one ending, group-size prose that
+  assumed four survivors, and an absent Odile administering morphine. Revised
+  those passages and tightened several figurative and repetitive sentences.
+  Choice links, state effects and all twelve endings remain unchanged.
+- The Node audit passed 16,000 walks and targeted heading, date and companion
+  checks. Three contrasting complete trial routes had no repeated nodes or
+  choice sets; browser automation was unavailable during this session.
+
 v1.4 - 2026-10-16
 - Recast the narrative as a first-person found survival journal beginning on
   day 41. Kept Wren's written notes and spoken dialogue in their original
