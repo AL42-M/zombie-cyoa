@@ -1575,8 +1575,11 @@
       (s.partyCount()
         ? (s.flag('headingForTheBoat') ? ', while the others wait out on the road.' : ', while the others wait nearby.')
         : ', with nobody left to wait for me.'),
-      'The property room has a card index. HOLLOWAY, D. is in the April section. ' +
-      'His boat keys are sealed with his wallet and spectacles. The foam fish on the fob says LUCKY.',
+      'The property room has a card index. ' +
+      (s.flag('hollowayCard') || s.flag('knowsHolloway') || s.flag('askedAboutHolloway')
+        ? 'HOLLOWAY, D. is in the April section. '
+        : 'I work through the April cards until I find BOAT KEYS beside HOLLOWAY, D. ') +
+      'His keys are sealed with his wallet and spectacles. The foam fish on the fob says LUCKY.',
       'I take them. The staple tears the paper with a small sound. Outside, the river is still ' +
       'four miles away.'
     ]; },
