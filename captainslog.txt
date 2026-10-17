@@ -19,6 +19,44 @@ Working with the user
 - Ask only when a meaningful choice substantially affects behavior, safety, or
   maintainability, or when work cannot proceed safely.
 
+Reports to the user
+- After meaningful work, give the user a detailed report of ALL changes made,
+  with exactly two sections, in this order:
+  1. PENDING YOUR REVIEW (top of the report). Every item that needs the user's
+     decision, approval or permission, and nothing else. Number items
+     hierarchically by topic (1.1, 1.2, 2.1, ...) so the user can answer
+     "yes 1.1, no 2.3". Each item must state very clearly: what was changed or
+     is proposed, why, what happens if the user says yes or no, and what stays
+     in place if they do not answer. No decision may be hidden in section 2.
+  2. CHANGELOG. Everything else, written as a game changelog: version heading,
+     then grouped entries (Added / Changed / Fixed / Removed), concise and
+     player-facing, with concrete before/after examples where useful.
+
+Writing standards (all player-facing text: story, choices, hints, toasts,
+keepsakes, endings, menus, help, title screen, and documentation)
+- American English: American spelling, vocabulary, punctuation and date format
+  (M/D). The user does not want British English.
+- Setting: the game takes place in the United States (relocated in v1.9). Keep
+  distinctive, cool-sounding proper names (characters, towns, streets,
+  buildings such as Thornbury, Ferry Street, Marlowe House, St. Amaranth Mercy)
+  rather than replacing them with generic American ones.
+- Natural, idiomatic prose; vivid but restrained description; distinct
+  character voices; no cliches, repetitive phrasing or melodrama.
+- No obvious AI phrasing: "it's not X, it's Y" / "not X but Y" reveals,
+  "not X, not Y - Z" triads, paradoxes that sound deep but mean nothing (for
+  example "a kindness shaped like abandonment"), "something like", "a kind of",
+  stacked "the way a ..." similes, aphoristic one-line closers.
+- Choice hints and italic text must be plain and concrete, never edgy or
+  riddling: a hint tells the player something real about the choice.
+- Prose must stay true on every route that can reach it: never reference
+  events, people, items or knowledge the reader may not have in that run.
+
+Story structure standard
+- Every passage must be reachable through a sensible route and appear in at
+  least 1% of uniformly random playthroughs. Rarer passages are allowed only
+  as exceptions the user has approved; record approved exceptions here and in
+  the audit's allowlist.
+
 General behavior
 - When a change is requested, inspect the project, determine the best
   implementation, make the change, and verify that it works.
@@ -133,6 +171,46 @@ PROJECT CONTEXT
   overwrite it. Work in the active source folder and use Git for history.
 
 VERSION HISTORY (newest first)
+
+v1.9 - 2026-10-17
+- Language and setting: all player-facing text rewritten in American English
+  and the story relocated to the US (user decision). Kept distinctive names
+  (characters, Thornbury, Ferry Street, Marlowe House, St. Amaranth Mercy);
+  "Matron" kept as the staff's title, glossed as head of nursing. Lime trees
+  became lindens (US readers read "lime" as citrus); the estate is the Fenwick
+  Houses; dates are M/D (manifest 4/11); 400 L became 100 gallons.
+- Second editorial pass removing AI-style phrasing ("it's not X, it's Y",
+  triads, paradox hints such as "a kindness shaped like abandonment"); two
+  reviewers checked every hint, toast, italic aside, keepsake note and ending
+  blurb/tease. UI text (help, menus, toasts, stat words, content warning,
+  keepsakes, items) follows the same rules.
+- Discrepancies: prose made true on every route, using new flags where needed
+  (Act 1: bramIntro, calledTogether, askedTeddy, atTheGlass, sawTheYard,
+  breached, wentToTeddy, barricaded, teddyMorphine; Act 2: bramHasRailing,
+  sentThemToWater; Act 3: heardNineWeeks, pressedTheDesk, keysFromLocker,
+  hollowayMethod). No node, item, flag or memento ids were renamed or removed.
+- Reachability standard adopted (see Story structure standard). Routing was
+  reworked in all three acts; uniformly random play went from 1 unreachable +
+  19 other passages under 1% to 0 unreachable and only end_body_failed (0.02%)
+  and end_turned (0.32%) under 1%. Both are in the audit's RARE_OK list as
+  PENDING the user's approval (v1.9 report items 1.1/1.2); remove them from
+  RARE_OK if the user declines and the endings are made more reachable.
+- Audit: fuzz RNG replaced (old LCG gave correlated opening picks); new
+  reachability section (10,000 uniform walks, fails below 1% unless in
+  RARE_OK); British anchor phrases updated ("looks at the cans", "A woman in a
+  high-rise told me"). Audit clean; four browser playthroughs reached four
+  different endings with no errors.
+- Kept "She has filled it in nine hundred times" in a3_office (40 pages can
+  hold 900 entries; the number echoes the ledger's nine hundred names).
+- Open decisions and every applied change needing approval are in the v1.9
+  report's PENDING YOUR REVIEW section (session file V1.9_REPORT.md). Notable
+  open questions: rare endings, "shop" vs "store" for Rosco's, Act 2 still
+  reads as night on dawn routes, the no-op atlas choice, a dead choice in
+  a1_wren_wants, distinct styling for Wren's pad notes, and the missing
+  "X is dead" toast for deaths applied in enter().
+- Saves: existing saves load (ids unchanged; new flags default to false). A
+  run started in an older version may show text written for routes it did not
+  take until the next passage; start a new run for full consistency.
 
 v1.8 - 2026-10-17
 - Full prose line edit of all player-facing story text (story-act1/2/3, endings,

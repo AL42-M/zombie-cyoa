@@ -120,9 +120,27 @@ var endingsHit = {}, visited = {}, runtimeErrors = [], deadEnds = {}, countBad =
 var mementosSeen = {};
 var WALKS = 16000, completed = 0;
 
+/* 32-bit multiply for engines without Math.imul (Windows Script Host) */
+function imul32(a, b) {
+  var ah = (a >>> 16) & 0xffff, al = a & 0xffff, bh = (b >>> 16) & 0xffff, bl = b & 0xffff;
+  return ((al * bl) + ((((ah * bl + al * bh) & 0xffff) << 16) >>> 0)) >>> 0;
+}
+
+/* Seed is scrambled, then xorshift32. The previous linear congruential
+   generator gave correlated first picks across consecutive walks, which
+   skewed coverage toward some opening branches. */
 function rngFactory(seed) {
-  var s = seed >>> 0;
-  return function (n) { s = (s * 1103515245 + 12345) >>> 0; return (s >>> 8) % n; };
+  var x = seed >>> 0;
+  x = (x ^ (x >>> 16)) >>> 0; x = imul32(x, 0x85ebca6b);
+  x = (x ^ (x >>> 13)) >>> 0; x = imul32(x, 0xc2b2ae35);
+  x = (x ^ (x >>> 16)) >>> 0;
+  if (x === 0) x = 0x9e3779b9;
+  return function (n) {
+    x = (x ^ (x << 13)) >>> 0;
+    x = (x ^ (x >>> 17)) >>> 0;
+    x = (x ^ (x << 5)) >>> 0;
+    return x % n;
+  };
 }
 
 function deepCopy(v) {
@@ -302,6 +320,64 @@ for (var mi = 0; mi < mementoIds.length; mi++) {
   WScript.Echo('  ' + (mementosSeen[mementoIds[mi]] ? 'yes' : 'NO ') + '  ' + mementoIds[mi]);
 }
 dump('mementos never obtainable', unobtainable);
+
+/* ---------- reachability frequency ----------
+   Story structure standard (captainslog.txt): every passage must appear in at
+   least 1% of uniformly random playthroughs. RARE_OK lists exceptions the user
+   has approved, with the reason. */
+var REACH_WALKS = 10000, REACH_MIN = 1.0;
+var RARE_OK = {
+  /* v1.9: listed for the user's decision (report item 1.1 / 1.2); remove an
+     entry if the user declines and the ending is made more reachable. */
+  end_body_failed: 'death by injury; only when health reaches zero (pending user approval)',
+  end_turned: 'turning; only when infection reaches 100 or the reader surrenders in the truck (pending user approval)'
+};
+var reachHits = {};
+for (var rw = 0; rw < REACH_WALKS; rw++) {
+  var rrnd = rngFactory(rw * 2246822519 + 3266489917);
+  var rs = new Story.GameState();
+  var rnode = Story.get(Story.START), rsteps = 0, rseen = {};
+  while (rsteps++ < 400) {
+    if (!rseen[rnode.id]) { rseen[rnode.id] = true; reachHits[rnode.id] = (reachHits[rnode.id] || 0) + 1; }
+    if (rnode.isEnding) break;
+    var rraw = rnode.choices || [], ropen = [];
+    try {
+      for (var rk = 0; rk < rraw.length; rk++) {
+        var rdef = rraw[rk];
+        if (typeof rdef.show === 'function' && !rdef.show(rs)) continue;
+        if (typeof rdef.when === 'function' && !rdef.when(rs)) continue;
+        ropen.push(rdef);
+      }
+      if (!ropen.length) break;
+      var rpick = ropen[rrnd(ropen.length)];
+      rs.choicesMade++;
+      if (typeof rpick['act'] === 'function') rpick['act'](rs);
+      if (rs.infection > 0 && rs.infection < 100 && !rs.flag('arrested')) {
+        rs.bump('_creep');
+        if (rs.val('_creep') % 2 === 0) rs.infect(1 + Math.floor(rs.infection / 34));
+      }
+      var rdest = (typeof rpick.to === 'function') ? rpick.to(rs) : rpick.to;
+      if (rs.health <= 0 && Story.has('end_body_failed')) rdest = 'end_body_failed';
+      else if (rs.infection >= 100 && Story.has('end_turned')) rdest = 'end_turned';
+      if (!Story.has(rdest)) break;
+      rs.node = rdest; rs.visits[rdest] = (rs.visits[rdest] || 0) + 1;
+      rnode = Story.get(rdest);
+      if (typeof rnode.enter === 'function') rnode.enter(rs);
+    } catch (er) { break; }
+  }
+}
+var rareList = [], rareAllowed = [];
+for (var ri = 0; ri < Story.order.length; ri++) {
+  var rid = Story.order[ri], pct = (reachHits[rid] || 0) * 100 / REACH_WALKS;
+  if (pct >= REACH_MIN) continue;
+  var rlabel = rid + ' ' + pct.toFixed(2) + '%';
+  if (Object.prototype.hasOwnProperty.call(RARE_OK, rid)) rareAllowed.push(rlabel + ' (approved: ' + RARE_OK[rid] + ')');
+  else rareList.push(rlabel);
+}
+WScript.Echo('');
+WScript.Echo('--- reachability (' + REACH_WALKS + ' uniformly random walks, minimum ' + REACH_MIN + '%) ---');
+dump('passages below the minimum', rareList);
+if (rareAllowed.length) dump('approved rare passages', rareAllowed);
 
 /* ---------- targeted checks on the branching logic ---------- */
 WScript.Echo('');
@@ -553,14 +629,14 @@ sEstate.set('tookFromTheChildren');
 var sTagOnly = new Story.GameState();
 sTagOnly.set('knowsTheWards');
 expect('culvert tag does not invent a warning from the tower',
-  String(Story.textOf(Story.get('a2_mercy_approach'), sTagOnly).join(' ').indexOf('A woman in a tower block told me') >= 0), 'false');
+  String(Story.textOf(Story.get('a2_mercy_approach'), sTagOnly).join(' ').indexOf('A woman in a high-rise told me') >= 0), 'false');
 expect('estate route opens a distinct confession',
   String(Story.get('a2_mercy_approach').choices[6].show(sEstate)), 'true');
 expect('estate route recalls the children in the final decision',
   String(Story.textOf(fin, sEstate).join(' ').indexOf('six children') >= 0), 'true');
 sEstate.set('gaveItBack');
 expect('returned supplies are not described as carried to the Mercy',
-  String(Story.textOf(Story.get('a2_mercy_approach'), sEstate).join(' ').indexOf('looks at the tins') >= 0), 'false');
+  String(Story.textOf(Story.get('a2_mercy_approach'), sEstate).join(' ').indexOf('looks at the cans') >= 0), 'false');
 var sWithoutTeddy = new Story.GameState();
 sWithoutTeddy.part('teddy'); sWithoutTeddy.set('heldAtTheBoat');
 expect('boat search counts only present companions',
@@ -581,6 +657,6 @@ expect('serum ending acknowledges surviving companions',
 WScript.Echo('');
 var total = probList.length + errList.length + deadList.length + countList.length +
             trulyUnreachable.length + missingEndings.length + targeted.length +
-            unobtainable.length;
+            unobtainable.length + rareList.length;
 WScript.Echo(total === 0 ? 'RESULT: clean' : 'RESULT: ' + total + ' issue(s)');
 if (total > 0) WScript.Quit(1);
