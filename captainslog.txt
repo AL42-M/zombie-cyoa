@@ -127,6 +127,17 @@ PROJECT CONTEXT
 
 VERSION HISTORY (newest first)
 
+Pages custom-domain removal - 2026-10-17
+- Removed the root CNAME file declaring www.thehush.com at the user's request.
+  The intended address is https://al42-m.github.io/zombie-cyoa/; the publishing
+  branch should remain beta. No gameplay or version-label changes.
+- This change is prepared on copilot/wwwthehushbeta, not directly on beta.
+  Pages settings were inaccessible through the hosted tools, so removal of the
+  live custom domain and successful deployment are not confirmed. Apply the
+  CNAME deletion to the publishing branch and verify Settings > Pages shows
+  no custom domain. The game entry point remains ZombieChoiceAdventure/play.html;
+  there is no root index.html.
+
 v1.7 - 2026-10-17
 - Matched story days to actual overnights: the opening wait, extended boat stay,
   morning triage, and next-morning boat departure in the Teddy ending. Hour-long
