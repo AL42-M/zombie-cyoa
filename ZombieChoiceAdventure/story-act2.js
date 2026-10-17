@@ -198,7 +198,7 @@
 
       { c: 'hum', t: 'h m m m m m m m' },
 
-      'I do not know what it means. my body knows something, though, because my own throat ' +
+      'I do not know what it means. My body knows something, though, because my own throat ' +
       'has opened and I am <span class="wound">humming with them</span>, and I did not decide to.'
     ],
     choices: [
@@ -247,7 +247,7 @@
         act: function (s) { s.trust('bram', 25); s.set('bramSavedYou'); s.ease(6); s.scar(4); } },
       { label: 'Thank Bram. Out loud, in front of the others.', tone: 'kind', to: 'a2_quay',
         act: function (s) { s.trust('bram', 35); s.set('bramSavedYou'); s.soften(6); } },
-      { label: 'Stop resisting. Let them open your mouth.', tone: 'rot', to: 'end_turned',
+      { label: 'Turn back toward them. Stop resisting the note.', tone: 'rot', to: 'end_turned',
         act: function (s) { s.infect(80); s.set('letTheNoteIn'); } }
     ]
   });

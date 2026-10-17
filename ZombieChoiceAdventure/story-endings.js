@@ -207,8 +207,8 @@
         'pink of an ordinary morning in an ordinary year, and three-quarters of a tank is ' +
         'enough to get somewhere, and nobody on this boat knows where, and for the first time ' +
         'since the Hush that is a <em>pleasant</em> thing not to know.');
-      lines.push('There is no hum out here. There is just water, and an engine, ' +
-        'and the sound of people not holding their breath.');
+      lines.push('When the banks are out of sight the hum is gone. I hear water against the hull, ' +
+        'the engine, and the people aboard letting their breath out.');
       return lines;
     }
   });
@@ -553,7 +553,16 @@
     tease: 'The hum, in the bone. Most of me is still mine. Nearly theirs.',
     place: 'Where I stood',
     text: function (s) {
-      var lines = [
+      var lines = [];
+      if (s.flag('letTheNoteIn')) {
+        lines.push('At the trailer door I stop. Bram still has the back of my coat in his fist. ' +
+          'I put my hand over his and loosen his fingers one by one. ' +
+          'For a moment we are both holding on.');
+        lines.push('He says my name. I hear every part of it. Then I turn toward the people ' +
+          'waiting inside, and he does not follow me.');
+        lines.push({ c: 'sep', t: '\u2042' });
+      }
+      lines.push(
         'It does not happen the way I had been quietly dreading, which was teeth, ' +
         'and a moment, and somebody\u2019s face going wrong above me.',
 
@@ -562,7 +571,7 @@
         'The back teeth. The jaw. The sinuses. The long bones of the arms. ' +
         'The floor of the pelvis. Places I did not know it had got to, ' +
         'going over one after another like lights in a house.'
-      ];
+      );
       if (s.alive('odile')) {
         lines.push({ c: 'sep', t: '\u2042' });
         lines.push('Odile sees it before I say anything, because Odile sees everything, ' +

@@ -458,6 +458,26 @@ sNoCutters.give('cutters');
 expect('one available tool permits hotwire attempt',
   String(Story.get('a2_boat').choices[2].show(sNoCutters)), 'true');
 
+var sRefuse = new Story.GameState();
+Story.get('a3_refuse').enter(sRefuse);
+expect('refusing at the gate does not invent a conversation with Matron',
+  String(Story.textOf(Story.get('a3_refuse'), sRefuse).join(' ').indexOf('I never went in') >= 0), 'true');
+expect('refusal final choice makes the return to the hospital explicit',
+  String(fin.choices[1].label(sRefuse).indexOf('Go back') >= 0), 'true');
+var sSpokeToMatron = new Story.GameState();
+sSpokeToMatron.set('metTheMatron');
+Story.get('a3_refuse').enter(sSpokeToMatron);
+expect('Teddy responds to what Matron actually said',
+  String(Story.textOf(Story.get('a3_refuse'), sSpokeToMatron).join(' ').indexOf('One or two units') >= 0), 'true');
+var sWithoutOdileOnExit = new Story.GameState();
+sWithoutOdileOnExit.part('odile'); sWithoutOdileOnExit.set('tookTheTreatment');
+expect('departing with treatment does not invent an absent Odile',
+  String(Story.textOf(Story.get('a3_refuse'), sWithoutOdileOnExit).join(' ').indexOf('Odile sees the dinosaur') >= 0), 'false');
+var sSurrender = new Story.GameState();
+sSurrender.set('letTheNoteIn');
+expect('abrupt surrender route pauses for the companion left behind',
+  String(Story.textOf(Story.get('end_turned'), sSurrender)[0].indexOf('Bram still has') >= 0), 'true');
+
 var sFire = new Story.GameState();
 var fireChoice = Story.get('a2_lorry_open').choices[1];
 expect('burning the lorry needs accelerant', String(fireChoice.show(sFire)), 'false');

@@ -687,8 +687,7 @@
       'somebody mops twice a day.',
 
       'They are strapped at the wrist, the chest and the ankle, in padded restraints that have been ' +
-      'sheepskin-lined by hand, because sheepskin does not take the skin off and someone worked ' +
-      'that out and then did the work.',
+      'lined with sheepskin by hand. The seams are tucked away from their skin.',
 
       'They are clean. They are covered to the chest with a folded blanket. Their hair has been ' +
       'brushed. Each one has a cannula taped at the inside of the elbow, capped off, and a chart ' +
@@ -1027,8 +1026,7 @@
     place: "The Matron's office",
     enter: function (s) { s.set('foundTheOffice'); if (!s.has('ledger')) s.give('ledger'); },
     text: [
-      'The office is at the end of the east wing and the door is open, because the door is always ' +
-      'open, because that is the kind of building this is.',
+      'The office is at the end of the east wing. Its door stands open; the light is on over the desk.',
 
       'A desk. A chair. A kettle. A framed photograph of a hockey team from 1991. ' +
       'And on the desk, closed, squared to the edge, a hardbacked ledger about four inches thick.',
@@ -1379,9 +1377,9 @@
       ];
       if (s.flag('knowsBoat')) {
         lines.push(s.flag('foundBoat')
-          ? 'There is a boat. Riding high, canopy zipped, three-quarters of a tank, ' +
+          ? 'The boat is still there. Riding high, canopy zipped, three-quarters of a tank, ' +
             'on a river that they will not cross.'
-          : 'There is a boat at the sailing club, riding high on a river that they will not cross. ' +
+          : 'The sailing club has a boat, riding high on a river that they will not cross. ' +
             'I have not been inside it.');
       }
       if (s.has('keys')) {
@@ -1395,31 +1393,52 @@
         lines.push('I have no keys. I have only seen the boat from the bank.');
       }
       lines.push({ c: 'sep', t: '\u2042' });
+      if (s.flag('tookTheTreatment') && s.alive('odile')) {
+        lines.push('Odile sees the dinosaur plaster on my hand. She checks the injection site ' +
+          'without asking where it came from, then lets my hand go.');
+      } else if (s.flag('sawWard11') && s.alive('wren')) {
+        lines.push('Wren puts her pad away without showing me the page. She has seen enough ' +
+          'of that building to know why I have come out.');
+      }
       if (withTeddy(s)) {
         lines.push('Teddy walks the first two hundred yards on his own and then cannot, ' +
-          'and Odile takes one side and I take the other without discussing it.');
+          (s.alive('odile')
+            ? 'and Odile takes one side and I take the other without discussing it.'
+            : 'so I take his weight and we keep going.'));
         lines.push('<span class="said">"Was it bad?" </span>he asks.');
-        lines.push('I tell him. All of it. He listens to the whole thing and then says, ' +
-          'after a while: <span class="said">"One or two units. That is what I am worth to them."</span>');
-        lines.push('<span class="said">"And you still turned around. Thank you. ' +
-          'That is twice now."</span>');
+        if (s.flag('metTheMatron')) {
+          lines.push('I tell him what Matron said. He listens to the whole thing and then says, ' +
+            'after a while: <span class="said">"One or two units. That is what I am worth to them."</span>');
+        } else if (s.flag('sawWard11') || s.flag('wasTriaged')) {
+          lines.push('I tell him what I saw. He looks up at the lit windows, then at the road. ' +
+            '<span class="said">"I know what a bed costs,"</span> he says.');
+        } else {
+          lines.push('I tell him I never went in. He watches the light in the windows until ' +
+            'the trees hide it. <span class="said">"Then we keep walking,"</span> he says.');
+        }
+        lines.push('<span class="said">"Thank you for coming back."</span>');
       }
       return lines;
     },
     choices: [
-      { label: 'The river. The boat. Tonight.', show: function (s) { return s.has('keys'); },
+      { label: 'Take the keys down to the river. Try the boat tonight.',
+        show: function (s) { return s.has('keys'); },
         to: 'a3_final', act: function (s) { s.set('headingForTheBoat'); } },
       { label: 'Go back for the keys. You cannot do this without them.',
         show: function (s) { return !s.has('keys') && s.flag('knowsBoat'); }, to: 'a3_refuse_keys' },
-      { label: 'The river anyway. You will break into the boat or sleep on it.',
+      { label: 'Head for the boat without keys. Try the cabin as shelter.',
         show: function (s) { return s.flag('knowsBoat'); },
         to: 'a3_final', act: function (s) { s.set('headingForTheBoat'); s.set('noKeys'); } },
       { label: 'Wait for the others at the foot of the hill before deciding.',
         show: function (s) { return !s.flag('knowsBoat'); },
         to: 'a3_final', act: function (s) { s.soften(4); s.set('lookingForTheDoor'); } },
-      { label: 'Find somewhere with a door that locks from the inside.', tone: 'kind',
+      { label: function (s) {
+          return s.alive('wren')
+            ? 'Keep walking until Wren has a door she can lock.'
+            : 'Keep walking. Find somewhere with a door that locks.';
+        }, tone: 'kind',
         to: 'a3_final', act: function (s) { s.set('lookingForTheDoor'); } },
-      { label: 'Turn around. You cannot leave it standing.', tone: 'risk', to: 'a3_final',
+      { label: 'Turn back. Decide what to do about the hospital.', tone: 'risk', to: 'a3_final',
         act: function (s) { s.set('declaredTheEnd'); } }
     ]
   });
@@ -1495,12 +1514,12 @@
       if (s.flag('tookFromTheChildren')) {
         lines.push(s.flag('gaveItBack')
           ? 'I left the stolen tins on the landing at Marlowe House. The sound of the ' +
-            'children behind the door has followed me into this corridor.'
+            'children behind the door has followed me here.'
           : 'The tins from Marlowe House are still with me. Before I decide what the ' +
             'hospital owes anyone, I have to admit what I took from six children.');
       }
-      lines.push('Everything I have is in my pockets and everyone I have is in this building ' +
-        'or on the road below it.');
+      lines.push('Everything I have is in my pockets. The others are close enough to hear ' +
+        'what I choose, if there are any of them left to hear it.');
       var kit = [];
       if (s.has('vial')) kit.push(s.count('vial') > 1 ? s.count('vial') + ' vials of grey serum' : 'one vial of grey serum');
       if (s.has('ledger')) kit.push("the Matron's ledger");
@@ -1511,19 +1530,27 @@
         lines.push('I have: ' + kit.join(', ') + '.');
       }
       if (withTeddy(s)) {
-        lines.push('And I have Teddy, whose time is running out, and who has walked four miles, ' +
-          'and who has not once asked me for anything.');
+        lines.push('And I have Teddy, whose time is running out, and who has walked four miles ' +
+          'without asking me to make his choice for him.');
       }
       lines.push('Decide.');
       return lines;
     },
     choices: [
-      { label: 'Burn St Amaranth Mercy to the ground.',
+      { label: function (s) {
+          return s.flag('refusedTheMercy')
+            ? 'Go back and set St Amaranth Mercy on fire.'
+            : 'Burn St Amaranth Mercy to the ground.';
+        },
         hint: 'ninety-four in the beds. nine weeks of yield. forty staff.',
         tone: 'cruel', show: function (s) { return s.has('lighter'); },
         to: 'end_burn' },
 
-      { label: 'Take the Matron\u2019s chair. Run it properly until the yield ends.',
+      { label: function (s) {
+          return s.flag('refusedTheMercy')
+            ? 'Go back and take the Matron\u2019s chair. Keep the hospital running.'
+            : 'Take the Matron\u2019s chair. Keep the hospital running.';
+        },
         hint: 'somebody has to sign the forms', tone: 'cruel',
         show: function (s) { return s.flag('metTheMatron') || s.flag('atTheMercy'); },
         to: 'end_matron' },
@@ -1546,7 +1573,11 @@
           return s.partyCount() >= 1 ? 'a3_boat_who' : 'end_boat_alone';
         } },
 
-      { label: 'Volunteer for bed ninety-five.',
+      { label: function (s) {
+          return s.flag('refusedTheMercy')
+            ? 'Go back and volunteer for a bed in Ward Eleven.'
+            : 'Volunteer for bed ninety-five.';
+        },
         hint: 'verbal, witnessed, compensated', tone: 'rot',
         show: function (s) { return s.flag('sawWard11') || s.flag('knowsTheWards') || s.flag('atTheMercy'); },
         to: 'end_ward' },
