@@ -1428,7 +1428,11 @@
       return lines;
     },
     choices: [
-      { label: 'Take the keys down to the river. Try the boat tonight.',
+      { label: function (s) {
+          return s.flag('knowsBoat')
+            ? 'Take the keys down to the river. Try the boat tonight.'
+            : 'Take the keys down to the river. Find the boat named on the fob.';
+        },
         show: function (s) { return s.has('keys'); },
         to: 'a3_final', act: function (s) { s.set('headingForTheBoat'); } },
       { label: 'Go back for the keys. You cannot do this without them.',
@@ -1654,6 +1658,10 @@
         'will ever come back for. LUCKY II is fourth along, and the foam fob turns in the ' +
         'ignition like it has been waiting.'
       ];
+      if (!s.flag('knowsBoat')) {
+        lines.unshift('I follow the river until I find a sailing club, checking every name ' +
+          'against the fish-shaped fob in my hand.');
+      }
       lines.push('The engine will start. I know it will start. That stopped being the ' +
         'question somewhere on the hill.');
       lines.push({ c: 'sep', t: '\u2042' });

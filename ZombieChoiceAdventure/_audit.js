@@ -471,6 +471,14 @@ expect('refusal final choice makes the return to the hospital explicit',
   String(fin.choices[1].label(sRefuse).indexOf('Go back') >= 0), 'true');
 expect('choosing boat without keys names key retrieval',
   String(fin.choices[3].label(sRefuse).indexOf('Fetch the boat keys') >= 0), 'true');
+var sUnknownBoat = new Story.GameState();
+sUnknownBoat.give('keys');
+expect('keys without prior sighting prompt a boat search',
+  String(Story.get('a3_refuse').choices[0].label(sUnknownBoat).indexOf('Find the boat') >= 0), 'true');
+expect('slipway introduces an unvisited boat',
+  String(Story.textOf(Story.get('a3_boat_who'), sUnknownBoat)[0].indexOf('follow the river') >= 0), 'true');
+expect('solitary departure discovers an unvisited boat',
+  String(Story.textOf(Story.get('end_boat_alone'), sUnknownBoat)[0].indexOf('search the sailing club') >= 0), 'true');
 var sSpokeToMatron = new Story.GameState();
 sSpokeToMatron.set('metTheMatron');
 Story.get('a3_refuse').enter(sSpokeToMatron);

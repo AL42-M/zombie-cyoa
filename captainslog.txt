@@ -139,10 +139,14 @@ v1.7 - 2026-10-17
   it means returning to the hospital. A short surrender route pauses for its
   immediate human consequence. Refusal reactions distinguish what the narrator
   actually learned and which companions are present; tightened repetitive prose.
+  A route that finds boat keys without ever seeing the boat now discovers it
+  along the river instead of recognizing it by unexplained prior knowledge.
 - Added targeted chronology, route knowledge, and companion checks alongside the
-  16,000-walk audit. Existing saves still load, but prior saved day counts and
-  recorded journal passages retain their original values; start a new run to
-  experience the corrected chronology from day 41.
+  16,000-walk audit. Four contrasting complete story-engine trials found no
+  repeated passages; a boat-knowledge gap exposed by the fourth was corrected.
+  Existing saves still load, but prior saved day counts and recorded journal
+  passages retain their original values; start a new run to experience the
+  corrected chronology from day 41.
 - Current work remains on copilot/improve-story-quality, separate from main.
   The requested beta branch and public repository visibility require publishing
   a new branch and changing a GitHub setting; neither was available to this

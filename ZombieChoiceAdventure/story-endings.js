@@ -176,6 +176,10 @@
         'catches on the fourth attempt, and the sound of it across that water at five in the ' +
         'morning is the single loudest and most magnificent noise in the history of the world.'
       ];
+      if (!s.flag('knowsBoat')) {
+        lines.unshift('The keys lead me downriver to a sailing club. I find LUCKY II ' +
+          'among the boats tied to the slip.');
+      }
       lines.push('Both banks fill up. Of course they do. Hundreds of them, out of the reeds, ' +
         'out of the boatyards, down the slipway \u2014 and they stop at the waterline exactly ' +
         'as Wren said they would, shin-deep, facing me, holding the note as I go past.');
@@ -243,6 +247,10 @@
         'I am very good at being alone. That turns out to be the thing I was best at ' +
         'the whole time, and I did not find it out until there was nobody left to test it on.'
       ];
+      if (!s.flag('knowsBoat')) {
+        lines.unshift('I search the sailing club until I find LUCKY II, with the foam fish ' +
+          'on my key fob matching the name on its stern.');
+      }
       if (s.deaths.length) {
         lines.push('I lost ' + s.deaths.length + ' of them. I could tell anybody the order, ' +
           'and the hour, and what the weather was doing, and what I chose.');
@@ -297,6 +305,10 @@
         'both hands up, eyes shut, working through something from memory for about four minutes ' +
         'while the rest of us watch forty years of a man\u2019s life happen in an empty pair of hands.'
       ];
+      if (!s.flag('knowsBoat')) {
+        lines.unshift('At the sailing club I find LUCKY II by the name on the fob, ' +
+          'fourth boat along the slip.');
+      }
       if (s.alive('wren')) {
         lines.push('Wren hums for him. Quietly, badly, off the note \u2014 ' +
           (s.flag('wrenSpoke')
