@@ -326,12 +326,7 @@ dump('mementos never obtainable', unobtainable);
    least 1% of uniformly random playthroughs. RARE_OK lists exceptions the user
    has approved, with the reason. */
 var REACH_WALKS = 10000, REACH_MIN = 1.0;
-var RARE_OK = {
-  /* v1.9: listed for the user's decision (report item 1.1 / 1.2); remove an
-     entry if the user declines and the ending is made more reachable. */
-  end_body_failed: 'death by injury; only when health reaches zero (pending user approval)',
-  end_turned: 'turning; only when infection reaches 100 or the reader surrenders in the truck (pending user approval)'
-};
+var RARE_OK = {};
 var reachHits = {};
 for (var rw = 0; rw < REACH_WALKS; rw++) {
   var rrnd = rngFactory(rw * 2246822519 + 3266489917);

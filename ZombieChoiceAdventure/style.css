@@ -254,6 +254,17 @@ body.reading-instant #passage p,body.reading-instant .choice{ animation:none; }
   border-left:2px solid rgba(122,97,134,.35); padding-left:.9rem; margin-left:-.1rem;
   font-size:.95em;
 }
+/* Wren's pad notes: pencil on paper, distinct from the narrator's italic asides.
+   NOTE: the game's fonts are expected to change to something more distinctive later;
+   revisit this font stack, size and letter-spacing when that happens. */
+#passage .pad{
+  display:block; width:fit-content; max-width:100%;
+  font-family:"Segoe Print","Bradley Hand","Comic Neue",var(--mono); font-style:normal;
+  font-size:.92em; letter-spacing:.02em; color:#c9c2b2; opacity:.9;
+  background:rgba(201,194,178,.05); border:1px dashed rgba(201,194,178,.22);
+  padding:.35rem .8rem; margin:.5rem 0; transform:rotate(-.4deg);
+}
+#passage .pad + .pad{ margin-top:-.15rem; }
 #passage .hum{
   display:block; font-family:var(--mono); font-size:.8rem; letter-spacing:.5em;
   color:var(--rot); opacity:.55; text-align:center; margin:1.4rem 0;

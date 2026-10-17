@@ -39,7 +39,9 @@ keepsakes, endings, menus, help, title screen, and documentation)
 - Setting: the game takes place in the United States (relocated in v1.9). Keep
   distinctive, cool-sounding proper names (characters, towns, streets,
   buildings such as Thornbury, Ferry Street, Marlowe House, St. Amaranth Mercy)
-  rather than replacing them with generic American ones.
+  rather than replacing them with generic American ones. The user chose to keep
+  a few British-flavored terms: "betting shop", the map of Cornwall, and lime
+  trees on the hospital avenue.
 - Natural, idiomatic prose; vivid but restrained description; distinct
   character voices; no cliches, repetitive phrasing or melodrama.
 - No obvious AI phrasing: "it's not X, it's Y" / "not X but Y" reveals,
@@ -171,6 +173,35 @@ PROJECT CONTEXT
   overwrite it. Work in the active source folder and use Git for history.
 
 VERSION HISTORY (newest first)
+
+v1.10 - 2026-10-18
+- Applied the user's answers to the v1.9 report (decision record:
+  session file DECISIONS_v110.md; report V1.10_REPORT.md).
+- Language/setting: Rosco's is "the store"/"drugstore"; kept British-flavored
+  names the user likes: betting shop, Cornwall; lime trees restored (pits use
+  "quicklime"); baseball team photo; "hairclip" replaces barrette; ledger fourth
+  column is filled "on every line" (characters wouldn't count to 900).
+- Reachability: every passage and every ending >= 1% of uniform random runs;
+  RARE_OK is empty again. New routes: ward overexertion -> end_body_failed
+  (health < 65 when choosing "Keep going"), treatment failure -> end_turned
+  (more than 4 days infected OR infection >= 34); Matron's duplicate ledger
+  makes end_ledger's spare-copy branch reachable (0.3%, a branch, not a node).
+- Reverts per user: tool-free hotwire and no-Teddy Marlowe House plea removed
+  (replaced by a knife/cutters-only wiring attempt at the dock and a Teddy-only
+  knock from the courtyard); help text, toasts and title kicker restored to
+  v1.8 wording (American spelling; key names corrected); content warning
+  removed from the title screen at the user's request.
+- New: daylight variants for Act 2 after dawn departures (helper daylight());
+  the road atlas reveals a railroad-cut exit from the culvert; the narrator
+  notices the donor's pre-Hush scars; the pillow attempt on Holloway fails (the
+  hum doesn't need breath); Wren's pad notes use class 'pad' with their own
+  style (style.css has a note to revisit when the game font changes); unique
+  journal-style death lines per character (CAST deathNote), now also shown for
+  deaths applied in enter().
+- Status words reordered (health 0 now shows "Dying"; Blood: In your bones /
+  Losing yourself) and Weight tops out at Overencumbered / Impossible.
+- Open (see report): Act 3/endings may still read as night after a dawn
+  departure; end_serum self-dose ignores the new treatment-failure rule.
 
 v1.9 - 2026-10-17
 - Language and setting: all player-facing text rewritten in American English

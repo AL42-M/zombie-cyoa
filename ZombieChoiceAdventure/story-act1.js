@@ -80,7 +80,7 @@
     ],
     choices: [
       { label: 'Tell him he\u2019s coming with you, whatever it costs.', tone: 'kind',
-        hint: 'it may not be yours to promise', to: 'a1_hub',
+        hint: 'the others haven\u2019t agreed to this', to: 'a1_hub',
         act: function (s) { s.set('promisedTeddy'); s.soften(5); s.trust('teddy', 20); s.scar(4); },
         toast: ['You promised.', 'good'] },
       { label: 'Ask him what he wants.', hint: 'he may ask for something hard', to: 'a1_teddy_wants' },
@@ -146,6 +146,8 @@
         act: function (s) { s.give('badge'); s.set('knowsMercy'); s.set('promisedTeddy'); s.soften(4); s.trust('teddy', 18); } },
       { label: 'Take it, and keep the Mercy to yourself for now.', to: 'a1_hub',
         act: function (s) { s.give('badge'); s.set('knowsMercy'); s.set('hidMercy'); s.harden(4); } },
+      { label: 'Take it, and go sit with Wren for a minute.', to: 'a1_wren_wants',
+        act: function (s) { s.give('badge'); s.set('knowsMercy'); s.set('badgeToWren'); } },
       { label: 'Take it and tell him plainly you may leave him behind.', tone: 'cruel',
         to: 'a1_hub',
         act: function (s) { s.give('badge'); s.set('knowsMercy'); s.set('toldTeddyTruth'); s.harden(8); s.trust('teddy', -20); } }
@@ -275,7 +277,7 @@
       { label: 'Drink some of the alcohol.', tone: 'risk', to: 'a1_hub',
         act: function (s) { s.ease(8); s.hurt(4); s.take('flask'); s.set('drankIt'); },
         toast: ['It takes the edge off and burns your throat raw.', 'weight'] },
-      { label: 'Check the back of the shop while you\u2019re up.', to: 'a1_backdoor' }
+      { label: 'Check the back of the store while you\u2019re up.', to: 'a1_backdoor' }
     ]
   });
 
@@ -283,6 +285,7 @@
     id: 'a1_wren',
     chapter: CH,
     place: PLACE,
+    enter: function (s) { s.set('sawWren'); },
     text: [
       'Wren is fourteen and hasn\u2019t made a sound since the third day. She doesn\u2019t even cough ' +
       'out loud; she has learned to swallow it. In this room that makes her the most valuable person ' +
@@ -292,9 +295,9 @@
       'She\u2019s awake. She hands me the pharmacy pad before I\u2019ve said a word, the stub of pencil ' +
       'threaded through the wire. She\u2019s already written on it.',
 
-      { c: 'whisper', t: 'you were going to ask me if im ok' },
+      { c: 'pad', t: 'you were going to ask me if im ok' },
 
-      { c: 'whisper', t: 'everyone asks me that when theyve already decided something' }
+      { c: 'pad', t: 'everyone asks me that when theyve already decided something' }
     ],
     choices: [
       { label: 'Write back: "We haven\u2019t decided anything."', to: 'a1_wren_lie',
@@ -315,8 +318,8 @@
     text: [
       'She reads it, then looks at me for three full seconds, which from Wren is a speech.',
       'She takes the pad back, writes without hurrying, and turns it around.',
-      { c: 'whisper', t: 'ok' },
-      { c: 'whisper', t: 'ill pretend i believe that if you pretend you said it kindly' }
+      { c: 'pad', t: 'ok' },
+      { c: 'pad', t: 'ill pretend i believe that if you pretend you said it kindly' }
     ],
     choices: [
       { label: 'Tell her the truth after all.', tone: 'kind', to: 'a1_wren_truth',
@@ -333,10 +336,10 @@
     place: PLACE,
     text: [
       'She isn\u2019t surprised. She\u2019s fourteen, and I can\u2019t hold her eye for long.',
-      { c: 'whisper', t: 'bram said it on day 20' },
-      { c: 'whisper', t: 'hes been saying it quieter since' },
-      { c: 'whisper', t: 'if you leave teddy ill still come with you' },
-      { c: 'whisper', t: 'i just wont be able to look at you' }
+      { c: 'pad', t: 'bram said it on day 20' },
+      { c: 'pad', t: 'hes been saying it quieter since' },
+      { c: 'pad', t: 'if you leave teddy ill still come with you' },
+      { c: 'pad', t: 'i just wont be able to look at you' }
     ],
     choices: [
       { label: 'Swear to her that Teddy comes too.', tone: 'kind', to: 'a1_hub',
@@ -356,13 +359,22 @@
     id: 'a1_wren_wants',
     chapter: CH,
     place: PLACE,
-    text: [
-      'The pencil hovers for a long time.',
-      { c: 'whisper', t: 'i want to go somewhere with a door that locks from the inside' },
-      { c: 'whisper', t: 'and i want to be the one who locks it' },
-      'She underlines <em>i</em> twice, hard enough to tear the paper, then looks embarrassed and ' +
-      'smooths the tear flat with her thumb.'
-    ],
+    text: function (s) {
+      var lines = [];
+      if (s.flag('badgeToWren')) {
+      lines.push(s.flag('sawWren')
+        ? 'I go back to Wren with the badge shut in my fist. Before I tell her anything, I ask her ' +
+          'what she wants.'
+        : 'I cross the stockroom with the badge shut in my fist and sit down beside Wren. Before I tell ' +
+          'her anything, I ask her what she wants.');
+      }
+      lines.push('The pencil hovers for a long time.');
+      lines.push({ c: 'pad', t: 'i want to go somewhere with a door that locks from the inside' });
+      lines.push({ c: 'pad', t: 'and i want to be the one who locks it' });
+      lines.push('She underlines <em>i</em> twice, hard enough to tear the paper, then looks embarrassed and ' +
+      'smooths the tear flat with her thumb.');
+      return lines;
+    },
     choices: [
       { label: 'Promise her that door.', tone: 'kind', to: 'a1_hub',
         act: function (s) {
@@ -373,7 +385,8 @@
       { label: 'Tell her there\u2019s no such place left.', tone: 'cruel', to: 'a1_hub',
         act: function (s) { s.harden(8); s.trust('wren', -14); } },
       { label: 'Tell her about St. Amaranth Mercy.', show: function (s) { return s.flag('knowsMercy'); },
-        to: 'a1_hub', act: function (s) { s.set('wrenKnowsMercy'); s.trust('wren', 10); } },
+        to: 'a1_hub', act: function (s) { s.set('wrenKnowsMercy'); s.trust('wren', 10); },
+        toast: ['She reads the badge twice before she hands it back.', 'good'] },
       { label: 'Say nothing. Sit with her.', tone: 'kind', to: 'a1_hub',
         act: function (s) { s.trust('wren', 8); s.ease(4); } }
     ]
@@ -391,7 +404,7 @@
         'Through the slats, Ferry Street is silver with moonlight and full of people standing still.'
       ];
       if (n <= 1) {
-        lines.push('I count. I always count. Thirty-one between the check-cashing place and the bus stop, ' +
+        lines.push('I count. I always count. Thirty-one between the betting shop and the bus stop, ' +
           'six more than this morning. They aren\u2019t milling around. Every head is tilted a few ' +
           'degrees toward this window, like compass needles.');
       } else if (n === 2) {
@@ -409,7 +422,7 @@
     },
     choices: [
       { label: 'Keep watching. Learn how they move.', to: 'a1_window_study' },
-      { label: 'Check the back of the shop for another way out.', to: 'a1_backdoor' },
+      { label: 'Check the back of the store for another way out.', to: 'a1_backdoor' },
       { label: 'Give Bram the count.', to: 'a1_bram',
         act: function (s) { s.set('bramIntro', 'window'); } },
       { label: 'Go back to the others.', to: 'a1_hub' },
@@ -441,7 +454,7 @@
         toast: ['For once, Bram really listens.', 'good'] },
       { label: 'Keep what you learned to yourself.', tone: 'cruel', to: 'a1_hub',
         act: function (s) { s.harden(7); s.set('hoardedKnowledge'); } },
-      { label: 'Check the back of the shop.', to: 'a1_backdoor' },
+      { label: 'Check the back of the store.', to: 'a1_backdoor' },
       { label: 'Go back and call everyone together.', to: 'a1_hub' }
     ]
   });
@@ -665,7 +678,7 @@
       lines.push('When he finally turns his head, his face is tired and reasonable. Nothing he says next ' +
         'is going to sound crazy, and that scares me more than shouting would.');
       lines.push('<span class="said">"Four days. Odile says four days. That\u2019s four nights of him calling ' +
-        'them in, and then he goes anyway, and we\u2019re four people in a shop with fifty of them at the ' +
+        'them in, and then he goes anyway, and we\u2019re four people in a drugstore with fifty of them at the ' +
         'glass. Tell me the version of that where waiting is the kind option."</span>');
       return lines;
     },
@@ -691,7 +704,7 @@
       'something more patient. I preferred the first face.',
       '<span class="said">"I\u2019m not a monster. I want you to hear that before I say the next part. ' +
       'You know I\u2019ve got a daughter in Thornbury, if there\u2019s still a Thornbury. Every night I ' +
-      'don\u2019t leave this shop, I\u2019m choosing a man I met six weeks ago over her. I\u2019ve done ' +
+      'don\u2019t leave this store, I\u2019m choosing a man I met six weeks ago over her. I\u2019ve done ' +
       'that forty times. I\u2019m asking you to notice I\u2019ve done it forty times."</span>'
     ],
     choices: [
@@ -784,7 +797,7 @@
       'later."</span>',
       'He pauses, just long enough for me to know it\u2019s deliberate.',
       '<span class="said">"Then I want to walk to Thornbury, hold my daughter, and never think about ' +
-      'this shop again. I won\u2019t get that last part. I know. I want it anyway."</span>'
+      'this store again. I won\u2019t get that last part. I know. I want it anyway."</span>'
     ],
     choices: [
       { label: '"No. And if you touch him, I\u2019ll stop you."', tone: 'kind', to: 'a1_hub',
@@ -1152,7 +1165,8 @@
       lines.push('Wren watches from the doorway. None of us notices her in time to send her away. Of ' +
         'everything we did tonight, that is the part I can\u2019t excuse.');
       lines.push('Within a minute the humming outside drops, and the crowd in the street goes slack. ' +
-        '<em>The arithmetic was right.</em>');
+        'Through the slats I watch their heads turn away from our window, one after another, until none ' +
+        'of them is facing us.');
       return lines;
     },
     choices: [
@@ -1172,9 +1186,9 @@
     text: [
       'She\u2019s in the yard with her back against the wall and the pad on her knees. She doesn\u2019t ' +
       'look up. She writes, tears the page off, and holds it out sideways without turning her head.',
-      { c: 'whisper', t: 'i know why' },
-      { c: 'whisper', t: 'thats the worst part. i know why and its still the worst thing ive ever seen' },
-      { c: 'whisper', t: 'dont tell me it was mercy. tell me it was arithmetic. i can live next to arithmetic' }
+      { c: 'pad', t: 'i know why' },
+      { c: 'pad', t: 'thats the worst part. i know why and its still the worst thing ive ever seen' },
+      { c: 'pad', t: 'dont tell me it was mercy. tell me it was arithmetic. i can live next to arithmetic' }
     ],
     choices: [
       { label: '"It was arithmetic."', to: 'a2_lane',
@@ -1195,7 +1209,7 @@
     place: PLACE,
     text: [
       'She\u2019s at the sink with her sleeves pushed past the elbow, washing hands that are already ' +
-      'clean, in a shop with no running water, with rubbing alcohol poured from a measuring cup.',
+      'clean, in a drugstore with no running water, with rubbing alcohol poured from a measuring cup.',
       '<span class="said">"Do not thank me,"</span> she says, without turning. <span class="said">"I have ' +
       'been thanked for this nine hundred times. It has never once been the right thing to say."</span>',
       'She pours again. Washes again.',
@@ -1235,7 +1249,7 @@
         lines.push('Nobody waits to be ready. Odile goes up the yard wall first and reaches down for Teddy, ' +
           'Bram shoves him up from below, and he comes over in one bad, scraping minute, biting down on ' +
           'every sound it costs him.');
-        lines.push('Wren is over before I am. Behind us, the shop stays silent.');
+        lines.push('Wren is over before I am. Behind us, the store stays silent.');
       } else {
         if (!s.flag('foundBackDoor')) {
           lines.push('Bram knows the way out. He\u2019s been through the fire door behind the staff restroom ' +

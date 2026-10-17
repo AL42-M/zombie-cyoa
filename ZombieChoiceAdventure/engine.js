@@ -295,11 +295,11 @@
     /* infection crossing a stage boundary */
     var wasStage = stageOf(before.infection), nowStage = state.stage();
     if (nowStage > wasStage) {
-      toast('The infection gets worse.', 'rot');
+      toast('The hum gets closer.', 'rot');
       Ambience.sting('rot');
       pulse('rgba(141,154,85,.20)');
     } else if (nowStage < wasStage) {
-      toast('The infection eases a little.', 'good');
+      toast('It recedes. A little.', 'good');
     }
 
     /* wounds */
@@ -307,17 +307,22 @@
       Ambience.sting('blood');
       pulse('rgba(142,51,38,.26)');
     }
-    if (state.trauma > before.trauma + 12) toast('That hit you hard.', 'weight');
-    if (state.humanity < before.humanity - 12) toast('That hardened you.', 'bad');
+    if (state.trauma > before.trauma + 12) toast('Something in you gives.', 'weight');
+    if (state.humanity < before.humanity - 12) toast('You did not hesitate.', 'bad');
 
     /* the dead */
-    before._deadCount = before.deaths ? before.deaths.length : 0;
-    if (state.deaths.length > before._deadCount) {
-      var latest = state.deaths[state.deaths.length - 1];
-      var who = (Story.CAST[latest.id] && Story.CAST[latest.id].name) || latest.id;
-      toast(who + ' is dead.', 'bad');
-      Ambience.sting('cold');
+    announceDeaths(before.deaths ? before.deaths.length : 0);
+  }
+
+  /* One journal-style line per character (Story.CAST[id].deathNote), for deaths
+     caused by a choice or by a passage's enter(). */
+  function announceDeaths(prevCount) {
+    if (!state.deaths || state.deaths.length <= prevCount) return;
+    for (var i = prevCount; i < state.deaths.length; i++) {
+      var id = state.deaths[i].id, c = Story.CAST[id];
+      toast((c && c.deathNote) || ((c ? c.name : id) + ' is gone.'), 'bad');
     }
+    Ambience.sting('cold');
   }
 
   /* ---------------------------------------------------------- keepsakes
@@ -437,7 +442,9 @@
     state.node = id;
     if (!skipHistory) {
       state.visits[id] = (state.visits[id] || 0) + 1;
+      var deadBefore = state.deaths ? state.deaths.length : 0;
       if (typeof node.enter === 'function') node.enter(state);
+      announceDeaths(deadBefore);
     }
     checkKeepsakes();
 
@@ -707,36 +714,36 @@
   function buildHelp(body) {
     body.innerHTML =
       '<h3>How to play</h3>' +
-      '<p>Read each passage, then pick one of the choices under it. There\u2019s no text box: ' +
-      'you can only choose from the options shown.</p>' +
+      '<p>Read what is in front of you, then pick one of the choices. There is never a text box — ' +
+      'you choose from what is offered, and what is offered is never everything you want.</p>' +
       '<h3>Your condition</h3>' +
       '<ul>' +
-      '<li><b>Body</b>: your injuries. If it runs out, you die.</li>' +
-      '<li><b>Blood</b>: how far the infection has spread. It\u2019s hard to reverse, and if it goes all the way, you turn.</li>' +
-      '<li><b>Self</b>: how much of the person you were is left. Cruel choices wear it down; kind ones build it back.</li>' +
-      '<li><b>Weight</b>: the stress and grief you carry. Hard moments add to it; rest and comfort ease it.</li>' +
+      '<li><b>Body</b> — what you can still do. At zero you stop.</li>' +
+      '<li><b>Blood</b> — how far the hum has gone into you. It does not go back easily.</li>' +
+      '<li><b>Self</b> — how much of the person you were is still driving.</li>' +
+      '<li><b>Weight</b> — what you are carrying that cannot be put down.</li>' +
       '</ul>' +
-      '<p>They\u2019re shown as words, not numbers. Body and Blood can end your run. ' +
-      'Self and Weight don\u2019t lock you out of anything; they track what the run is doing to you ' +
-      'and appear in the summary at the end.</p>' +
+      '<p>These are shown in words, never numbers. You are not meant to optimize them. ' +
+      'You are meant to live with them.</p>' +
       '<h3>Keys</h3>' +
-      '<ul><li><b>1</b>\u2013<b>7</b> choose</li><li><b>J</b> journal</li><li><b>K</b> keepsakes</li>' +
-      '<li><b>M</b> sound on/off</li>' +
-      '<li><b>Esc</b> menu, or close a panel</li><li><b>Space</b> or <b>Enter</b> show the whole passage</li></ul>' +
-      '<p><b>Text: paced</b> shows a passage one paragraph at a time; click that button to switch to ' +
-      '<b>Text: instant</b>. <b>Text size</b> switches story and journal text between regular and large. ' +
-      'Both settings are saved in this browser. In the journal, expand an entry to reread the full ' +
-      'passage; this doesn\u2019t change your choices. Entries from older saves may show only a short excerpt.</p>' +
+      '<ul><li><b>1</b>–<b>7</b> choose</li><li><b>J</b> journal</li><li><b>K</b> keepsakes</li>' +
+      '<li><b>M</b> sound</li>' +
+      '<li><b>Esc</b> menu, or close a panel</li><li><b>Space</b> or <b>Enter</b> finish the text</li></ul>' +
+      '<p>Use Text: paced/instant to control how passages appear and Text size to enlarge ' +
+      'story and journal text. These preferences remain in this browser. Expand a journal ' +
+      'entry to reread the passage without changing your choices. Older saves may have only ' +
+      'a short excerpt.</p>' +
       '<h3>Keepsakes</h3>' +
-      '<p>Some choices let you keep a small thing that\u2019s of no practical use, like a photograph, ' +
-      'a torn page, or a tuning fork. Keepsakes can\u2019t be used, traded, or lost. They record ' +
-      'who and what you decided was worth carrying, and they\u2019re listed at the end.</p>' +
+      '<p>Some choices let you pick up a small thing that is of no use to anybody — a photograph, ' +
+      'a torn page, a tuning fork. They do nothing. They cannot be spent, traded, or lost. ' +
+      'They are only a record of who and what you decided was worth carrying, and they are ' +
+      'read back to you at the end.</p>' +
       '<h3>Saving</h3>' +
-      '<p>Your run saves automatically in this browser. Reaching an ending clears the save, ' +
-      'but the title screen keeps track of the endings you\u2019ve found.</p>' +
+      '<p>Your run is saved in this browser as you go. Reaching an ending clears it — ' +
+      'but endings you find are remembered on the title screen.</p>' +
       '<h3>A note</h3>' +
-      '<p>Some choices are cruel. The game won\u2019t stop you or lecture you, but later passages ' +
-      'may reflect what you chose.</p>';
+      '<p>Some choices are cruel, and the game will not stop you or scold you. ' +
+      'It will only remember.</p>';
   }
 
   /* ---------------------------------------------------------- new run */

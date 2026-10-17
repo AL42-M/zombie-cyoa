@@ -15,6 +15,11 @@
   }
   /* the narrator is at the barricade on the ninth floor, not at the street door */
   function atTheTop(s) { return s.flag('wentUpTheTower'); }
+  /* Act I ended at first light (waited for morning, or sat with Teddy until the light came);
+     two days on the boat reset the clock, and the last night there ends at dusk */
+  function daylight(s) {
+    return (s.flag('waited') || s.flag('satWithHim')) && !s.flag('heldAtTheBoat');
+  }
 
   S.add({
     id: 'a2_lane',
@@ -289,9 +294,14 @@
       } else {
         lines.push('It takes the four of us under a minute, now that nobody has to be lifted.');
       }
-      lines.push('From the cab roof I can see the length of Quay Road, the river beyond it, ' +
-        'and, four miles northeast on the hill, the long Victorian front of St. Amaranth Mercy, ' +
-        'lit. <em>Lit, with electric light.</em>');
+      lines.push(daylight(s)
+        ? 'From the cab roof I can see the length of Quay Road, the river beyond it, ' +
+          'and, four miles northeast on the hill, the long Victorian front of St. Amaranth Mercy. ' +
+          'The morning is gray, and every window in that front is lit, pale yellow against the stone. ' +
+          '<em>Lit, with electric light.</em>'
+        : 'From the cab roof I can see the length of Quay Road, the river beyond it, ' +
+          'and, four miles northeast on the hill, the long Victorian front of St. Amaranth Mercy, ' +
+          'lit. <em>Lit, with electric light.</em>');
       lines.push('A building with power, in a county that has had none for six weeks.');
       return lines;
     },
@@ -406,7 +416,7 @@
       'as I pass with the same slow grip, trying to turn me around, to bring my face to theirs, ' +
       'to get my mouth open.',
 
-      'Bram goes down outside the check-cashing place with three of them on him and comes up ' +
+      'Bram goes down outside the betting shop with three of them on him and comes up ' +
       'again swinging the ' +
       (s.has('cutters') ? 'bolt cutters' : 'length of broken railing') +
       ', a <span class="wound">flap of scalp hanging over one eye</span>. ' +
@@ -435,17 +445,29 @@
     place: 'Quay Road',
     enter: function (s) { s.set('atTheQuay'); },
     text: function (s) {
+      var day = daylight(s);
       var lines = [
-        'Quay Road runs along the water. To my left, the river, wide and black. ' +
-        'To my right, the Fenwick Houses: four high-rises around a little shopping plaza, every ' +
-        'window dark except one on the ninth floor of Marlowe House, where somebody has a candle lit.'
+        day
+          ? 'Quay Road runs along the water. To my left, the river, wide and brown in the morning light. ' +
+            'To my right, the Fenwick Houses: four high-rises around a little shopping plaza, every ' +
+            'window blank except one on the ninth floor of Marlowe House, where somebody has strung ' +
+            'washing across the inside of the glass.'
+          : 'Quay Road runs along the water. To my left, the river, wide and black. ' +
+            'To my right, the Fenwick Houses: four high-rises around a little shopping plaza, every ' +
+            'window dark except one on the ninth floor of Marlowe House, where somebody has a candle lit.'
       ];
       if (s.flag('sawTheLights')) {
-        lines.push('Ahead and above it all, four miles northeast, St. Amaranth Mercy is lit up like ' +
-          'an ocean liner. We have all seen it now. Nobody has said yet what it means.');
+        lines.push(day
+          ? 'Ahead and above it all, four miles northeast, St. Amaranth Mercy has its lights on in ' +
+            'broad day. We have all seen it now. Nobody has said yet what it means.'
+          : 'Ahead and above it all, four miles northeast, St. Amaranth Mercy is lit up like ' +
+            'an ocean liner. We have all seen it now. Nobody has said yet what it means.');
       } else {
-        lines.push('And ahead, four miles northeast, up on the hill: lights. Electric light, ' +
-          'burning steadily, in a county with no power. St. Amaranth Mercy.');
+        lines.push(day
+          ? 'And ahead, four miles northeast, up on the hill: lights. Electric light in every window, ' +
+            'pale but steady against the morning, in a county with no power. St. Amaranth Mercy.'
+          : 'And ahead, four miles northeast, up on the hill: lights. Electric light, ' +
+            'burning steadily, in a county with no power. St. Amaranth Mercy.');
         lines.push('We all stop walking at the same moment.');
         s.set('sawTheLights');
       }
@@ -456,7 +478,13 @@
           'while it is still only information."</span>');
       }
       lines.push('The river path is long and open. The way through the projects is short and close, ' +
-        'and it passes the candle. Then there is the culvert under the road.');
+        (day ? 'and it passes under that window.' : 'and it passes the candle.') +
+        ' Then there is the culvert under the road.');
+      if (s.flag('hasAtlas')) {
+        lines.push('I open the atlas on the curb at the Thornbury page. The stream is a thin blue line ' +
+          'that goes under Quay Road, comes up for thirty yards in the railroad cut, and goes under ' +
+          'again at the embankment. So the culvert has a way out in the middle.');
+      }
       return lines;
     },
     choices: [
@@ -478,7 +506,9 @@
       var lines = ['I ask. This group doesn\u2019t usually ask, and the question alone ' +
         'changes the mood.'];
       lines.push('<span class="said">"The projects,"</span> Bram says at once. ' +
-        '<span class="said">"It\u2019s short. A candle means a person, and a person means a room that\u2019s ' +
+        '<span class="said">"It\u2019s short. ' +
+        (daylight(s) ? 'Washing in a window means a person' : 'A candle means a person') +
+        ', and a person means a room that\u2019s ' +
         'held. I\u2019d like to see a room that\u2019s held."</span>');
       lines.push('<span class="said">"River,"</span> says Odile. <span class="said">"Open ground. ' +
         'I can see what is coming and I can hear it. I have had enough of corridors ' +
@@ -489,8 +519,8 @@
           'child. The long one is where you have to decide about me. Halfway down."</span>');
       }
       lines.push({ c: 'whisper', t: 'Wren writes one word and holds it up.' });
-      lines.push({ c: 'whisper', t: 'water' });
-      lines.push({ c: 'whisper', t: 'they dont like water. ive watched. they stop at the edge' });
+      lines.push({ c: 'pad', t: 'water' });
+      lines.push({ c: 'pad', t: 'they dont like water. ive watched. they stop at the edge' });
       return lines;
     },
     choices: [
@@ -607,19 +637,21 @@
     id: 'a2_boat_odile',
     chapter: CH,
     place: 'The sailing club',
-    text: [
+    text: function (s) { return [
       'She looks at the boat for a long moment, arms folded.',
 
       '<span class="said">"It is the best idea anybody has had in six weeks,"</span> she says. ' +
       '<span class="said">"Understand what it is before you fall in love with it. A hole ' +
-      'in the water. No power, no charts, no fuel we have counted, and a river that runs out to a ' +
+      'in the water. No power, ' +
+      (s.flag('hasAtlas') ? 'no charts but a road atlas that stops at the shoreline' : 'no charts') +
+      ', no fuel we have counted, and a river that runs out to a ' +
       'sea none of us can sail."</span>',
 
       'She unfolds her arms.',
 
       '<span class="said">"But they stop at the water\u2019s edge. I have watched them do it four ' +
       'times since we got here. So, yes. Find the keys."</span>'
-    ],
+    ]; },
     choices: [
       { label: 'Board her and search.', to: 'a2_boat' },
       { label: 'Ask her to go aboard and check it while you watch the path.', to: 'a2_boat',
@@ -702,10 +734,7 @@
         act: function (s) { s.set('boatWillKeep'); s.harden(5); } },
       { label: 'Keep the card, but stay aboard for now. The water keeps them off.', tone: 'risk',
         hint: 'rest for everyone, but the food is almost gone',
-        to: 'a2_boat_hold', act: function (s) { s.set('hollowayCard'); } },
-      { label: 'Pocket the card and try to start her without the keys.', tone: 'risk',
-        hint: 'noisy if it goes wrong',
-        to: 'a2_boat_hotwire', act: function (s) { s.set('hollowayCard'); } }
+        to: 'a2_boat_hold', act: function (s) { s.set('hollowayCard'); } }
     ]
   });
 
@@ -715,10 +744,10 @@
     place: 'LUCKY II',
     enter: function (s) { s.hurt(5); s.scar(6); },
     text: function (s) {
-      var tool = s.has('knife') ? 'the boning knife'
-        : (s.has('cutters') ? 'the jaws of the bolt cutters' : 'a butter knife from the galley drawer');
+      var tool = s.has('knife') ? 'the boning knife' : 'the jaws of the bolt cutters';
       return [
-        'I pry the panel off with ' + tool + ' and work my hand into a loom of forty-year-old ' +
+        (s.flag('heldAtTheBoat') ? 'Before we give up on the boat, I pry' : 'I pry') +
+        ' the panel off with ' + tool + ' and work my hand into a loom of forty-year-old ' +
         'marine wiring, and over the next twenty minutes I learn that a diesel inboard with ' +
         'an electronic cutoff is not a \u201992 Civic.',
 
@@ -731,7 +760,8 @@
         { c: 'hum', t: 'h m m m m m m m' },
 
         'There are hundreds of them. The far bank has been full of them all along, ' +
-        'standing in the dark, and now every one of them is facing me.',
+        (daylight(s) ? 'standing back among the willows where I never thought to look' : 'standing in the dark') +
+        ', and now every one of them is facing me.',
 
         'They cannot cross. I am almost certain they cannot cross.'
       ];
@@ -789,7 +819,10 @@
         to: 'a2_mercy_approach',
         act: function (s) { s.set('tookBram'); s.set('boatWillKeep'); } },
       { label: 'Stay one more day. Then go up to the Mercy.', tone: 'risk', to: 'a2_boat_lastnight',
-        act: function (s) { s.hurt(10); s.scar(8); s.bump('daysWasted'); } }
+        act: function (s) { s.hurt(10); s.scar(8); s.bump('daysWasted'); } },
+      { label: 'Two days with nothing to do. Take the ignition panel off and try the wiring.',
+        tone: 'risk', hint: 'noisy if it goes wrong',
+        show: function (s) { return s.has('cutters') || s.has('knife'); }, to: 'a2_boat_hotwire' }
     ]
   });
 
@@ -832,13 +865,16 @@
     chapter: CH,
     place: 'The Fenwick Houses',
     enter: function (s) { s.set('tookEstate'); },
-    text: [
+    text: function (s) { return [
       'The plaza is a concrete horseshoe of shuttered storefronts around a dry fountain. It is ' +
       'the quietest place I have been in six weeks, and I don\u2019t trust it. ' +
       'Something here is holding still.',
 
-      'The candle is on the ninth floor of Marlowe House. From the courtyard I can see it moving ' +
-      'behind the glass: somebody carrying a light from room to room.',
+      daylight(s)
+        ? 'The washing is on the ninth floor of Marlowe House. From the courtyard I can see somebody ' +
+          'moving behind it, from room to room, keeping back from the glass.'
+        : 'The candle is on the ninth floor of Marlowe House. From the courtyard I can see it moving ' +
+          'behind the glass: somebody carrying a light from room to room.',
 
       { c: 'sep', t: '\u2042' },
 
@@ -848,12 +884,14 @@
       { c: 'note', t: 'WE HAVE CHILDREN IN HERE.\nWE HAVE NO FOOD TO SPARE AND NOTHING WORTH TAKING.\n' +
         'IF YOU ARE WELL, PLEASE WALK ON.\nIF YOU ARE BITTEN, PLEASE WALK ON.\nWE ARE SORRY. ' +
         'WE ARE SO SORRY. PLEASE WALK ON.' }
-    ],
+    ]; },
     choices: [
       { label: 'Walk on.', tone: 'kind', hint: 'as the sign asks', to: 'a2_mercy_approach',
         act: function (s) { s.soften(10); s.set('walkedOn'); s.scar(5); },
-        toast: ['The candle goes out behind you as you pass.', 'good'] },
+        toast: ['When you look back, nobody is at the ninth-floor window.', 'good'] },
       { label: 'Knock.', tone: 'risk', to: 'a2_estate_knock' },
+      { label: 'Knock, and ask whoever answers to take in a sick old man.', tone: 'risk',
+        show: function (s) { return withTeddy(s); }, to: 'a2_estate_beg' },
       { label: 'Try the shuttered stores. The sign says there is nothing worth taking. Check.',
         to: 'a2_estate_units' },
       { label: 'Go up. Nine floors. Take what they have.', tone: 'cruel', to: 'a2_estate_up' },
@@ -867,10 +905,11 @@
     chapter: CH,
     place: 'Marlowe House',
     enter: function (s) { s.set('warnedAboutFront'); },
-    text: [
+    text: function (s) { return [
       'I knock four times, slowly, with one knuckle, the way a person knocks.',
 
-      'Nine floors up, the candle stops moving.',
+      daylight(s) ? 'Nine floors up, the shape behind the washing goes still.'
+        : 'Nine floors up, the candle stops moving.',
 
       'Four minutes later a voice comes down the stairwell, thinned by distance: a woman, sixty or so ' +
       'by the sound of her, doing a very good job of sounding calm.',
@@ -883,18 +922,15 @@
 
       '<span class="said">"If you\u2019re going up to the Mercy, don\u2019t go in the front. ' +
       'They\u2019re letting people in at the front."</span>'
-    ],
+    ]; },
     choices: [
       { label: '"Thank you." Then go.', tone: 'kind', to: 'a2_mercy_approach',
         act: function (s) { s.set('warnedAboutFront'); s.soften(8); s.set('walkedOn'); } },
       { label: 'Ask her what she means by that.', to: 'a2_estate_warning' },
       { label: 'Offer her the antibiotics through the mail slot.', tone: 'kind',
         show: function (s) { return s.has('pills'); }, to: 'a2_estate_gift' },
-      { label: function (s) {
-          return withTeddy(s)
-            ? 'Tell her you have a sick old man and ask again.'
-            : 'Ask her to let you in for one night anyway.';
-        },
+      { label: 'Tell her you have a sick old man and ask again.',
+        show: function (s) { return withTeddy(s); },
         tone: 'risk', to: 'a2_estate_beg' },
       { label: 'Ask her whether anybody has gotten out of this town, and how.', to: 'a2_estate_holloway' },
       { label: 'Force the door.', tone: 'cruel', to: 'a2_estate_up' }
@@ -1070,8 +1106,8 @@
           'child. Those are the rules."</span>');
       }
       lines.push({ c: 'whisper', t: 'Wren holds up the pad.' });
-      lines.push({ c: 'whisper', t: s.flag('knowsBoat') ? 'the boat' : 'the river' });
-      lines.push({ c: 'whisper', t: 'i know its not sensible. im voting for it anyway. you asked' });
+      lines.push({ c: 'pad', t: s.flag('knowsBoat') ? 'the boat' : 'the river' });
+      lines.push({ c: 'pad', t: 'i know its not sensible. im voting for it anyway. you asked' });
       return lines;
     },
     choices: [
@@ -1127,7 +1163,7 @@
             'window and hits the concrete'
           : 'Four minutes later a bundle drops from a ninth-floor window and hits the courtyard') +
         ' with a crack: a knotted pillowcase holding nine cans of soup, a sleeve of crackers, ' +
-        'a flashlight with a working battery, and a dish towel printed with a map of Cape Cod.'
+        'a flashlight with a working battery, and a dish towel printed with a map of Cornwall.'
       ];
       return lines;
     },
@@ -1151,12 +1187,14 @@
     place: 'Marlowe House',
     text: function (s) {
       var lines = [];
-      if (withTeddy(s)) {
+      if (s.seen('a2_estate_knock')) {
         lines.push('I tell her about Teddy. I don\u2019t dress it up: seventy-one, one lung, ' +
           'less breath every night, and we\u2019re trying to get him four miles uphill.');
       } else {
-        lines.push('I ask her to let us in for one night. I don\u2019t dress it up: four of us, ' +
-          'four miles still to go, and almost nothing left to eat.');
+        lines.push('I knock. Four minutes later a woman\u2019s voice comes down the stairwell, thinned ' +
+          'by distance, asking me please to go away. There are children in the building.');
+        lines.push('I tell her about Teddy instead. I don\u2019t dress it up: seventy-one, one lung, ' +
+          'less breath every night, and we\u2019re trying to get him four miles uphill.');
       }
       lines.push('The stairwell is quiet for a long time.');
       lines.push('<span class="said">"I\u2019m going to say no,"</span> she says at last, <span class="said">' +
@@ -1212,20 +1250,21 @@
     chapter: CH,
     place: 'The Fenwick Houses',
     enter: function (s) { s.scar(10); s.set('shoutedInTheCourtyard'); },
-    text: [
+    text: function (s) { return [
       'I tip my head back and shout up nine floors of concrete.',
 
-      'The candle goes out.',
+      daylight(s) ? 'On the ninth floor, somebody snatches the washing down from the glass.'
+        : 'The candle goes out.',
 
       'The plaza answers from every side. From the shuttered stores all around the horseshoe, ' +
-      'behind the roll-down doors of the pharmacy, the check-cashing place, and the shop that ' +
+      'behind the roll-down doors of the pharmacy, the betting shop, and the shop that ' +
       'sold phone cases, a humming starts in six places at once and draws together. They have ' +
       'been in there all along, standing in the dark among the stock.',
 
       { c: 'hum', t: 'h m m m m m m m' },
 
       'Bram has me by the arm before the echo has died.'
-    ],
+    ]; },
     choices: [
       { label: 'Run northeast. Don\u2019t stop until you\u2019re clear of the projects.', to: 'a2_mercy_approach',
         act: function (s) { s.hurt(12); s.scar(10); } },
@@ -1285,7 +1324,7 @@
     text: [
       'I try the shutters one by one, quietly, along the horseshoe.',
 
-      'The pharmacy is stripped. So is the check-cashing place. Nobody has touched the phone-case ' +
+      'The pharmacy is stripped. So is the betting shop. Nobody has touched the phone-case ' +
       'shop in six weeks, because it sells phone cases.',
 
       'The last store is a butcher shop. The shutter is already up two feet, and the smell ' +
@@ -1400,8 +1439,8 @@
       s.give('tinned', 9); s.give('pills', 4);
       s.set('tookFromTheChildren');
     },
-    text: [
-      'It takes nineteen minutes, the loudest of the night, and nobody ' +
+    text: function (s) { var day = daylight(s); return [
+      'It takes nineteen minutes, the loudest of the ' + (day ? 'day' : 'night') + ', and nobody ' +
       'inside the apartment stops screaming for any of it.',
 
       'They don\u2019t fight me. I wasn\u2019t ready for that. A woman in her sixties stands in ' +
@@ -1414,11 +1453,11 @@
       { c: 'sep', t: '\u2042' },
 
       'Odile does not speak to me on the stairs. Wren walks eleven feet behind me for the rest ' +
-      'of the night and won\u2019t come closer. When I stop, she stops, and the gap stays ' +
+      'of the ' + (day ? 'day' : 'night') + ' and won\u2019t come closer. When I stop, she stops, and the gap stays ' +
       'the same.',
 
-      'Nobody relights the candle.'
-    ],
+      (day ? 'Nobody comes back to the window.' : 'Nobody relights the candle.')
+    ]; },
     choices: [
       { label: 'Go. Do not look back at the window.', tone: 'cruel', to: 'a2_mercy_approach',
         act: function (s) { s.harden(10); } },
@@ -1453,6 +1492,11 @@
         lines.push('Teddy can\u2019t go bent double. He goes on his hands and knees, his chest ' +
           'four inches above the water, and I can hear what that does to a man with one lung.');
       }
+      if (s.flag('hasAtlas')) {
+        lines.push('Two hundred yards in, the first pipe ends in the railroad cut, as the atlas showed: ' +
+          'thirty yards of open ditch between steep banks, with the tracks along the top. Then the ' +
+          'second pipe, under the embankment.');
+      }
       lines.push('Four hundred yards in, my flashlight finds the first of them.');
       lines.push('It is standing in the water facing the wall, as if it walked in here and ran ' +
         'out of instructions. It does not turn around. We edge past it one at a time, close ' +
@@ -1472,7 +1516,11 @@
       { label: 'Back out. Take the river after all.', to: 'a2_river',
         act: function (s) { s.scar(8); s.hurt(4); } },
       { label: 'Back out. Cut through the Fenwick Houses instead.', to: 'a2_estate',
-        act: function (s) { s.scar(8); s.hurt(4); } }
+        act: function (s) { s.scar(8); s.hurt(4); } },
+      { label: 'Go back to the railroad cut and climb out. Follow the tracks instead.',
+        hint: 'you skip the nine; the tracks are open ground',
+        show: function (s) { return s.flag('hasAtlas'); }, to: 'a2_mercy_approach',
+        act: function (s) { s.set('climbedOutAtTheCut'); s.scar(6); } }
     ]
   });
 
@@ -1535,8 +1583,13 @@
       '<span class="wound">long pale scars in a regular pattern</span>: ' +
       'four of them, parallel and evenly spaced, cheek to jaw.',
 
-      'They are old, months old, which puts them before April 11. Made with ' +
+      'They are old, months old, healed flat and white, which puts them before April 11. Made with ' +
       'instruments, in a hospital I would guess, by somebody who was being careful.',
+
+      'That stops me. Before April 11 there was no Hush, and no reason I can think of for anybody ' +
+      'to cut a woman\u2019s face like this and then let it heal. I count back the months twice and get ' +
+      'the same answer. Odile has seen it too. She says nothing, and from Odile that means she ' +
+      'has no explanation either.',
 
       { c: 'note', t: 'On a cord around her neck, under the collar: ST. AMARANTH MERCY \u00b7 ' +
         'DONOR \u00b7 WARD 11 \u00b7 H-0441' },
@@ -1570,20 +1623,20 @@
     text: function (s) {
       var teddy = s.alive('teddy');
       var lines = [
-        'The hill takes an hour. The last quarter-mile is an avenue of linden trees, and somebody has ' +
+        'The hill takes an hour. The last quarter-mile is an avenue of lime trees, and somebody has ' +
         'been pruning them. Four miles of dead city did not get to me the way that does.'
       ];
       /* everyone who set out reaches the gate; how they get there depends on the plan */
       if (s.flag('groupCaughtUp')) {
         lines.push((s.flag('sentThemToWater')
           ? 'I sent the others to the river. They didn\u2019t go. When I turn at the gate, they are ' +
-            'already coming up through the lindens. '
+            'already coming up through the limes. '
           : 'I reach the gate ahead of the others. When I turn to signal that the road is ' +
-            'clear, they are already coming up through the lindens. ') +
+            'clear, they are already coming up through the limes. ') +
           (teddy ? 'Bram has Teddy\u2019s arm. ' : 'Wren has the flashlight. ') +
           'None of them was willing to wait for my say-so.');
       } else if (s.flag('tookBram')) {
-        lines.push('Bram and I reach the gate first and wait under the lindens. Odile and Wren come up ' +
+        lines.push('Bram and I reach the gate first and wait under the limes. Odile and Wren come up ' +
           'the avenue an hour behind us' + (teddy ? ', with Teddy between them.' : '.'));
       } else if (s.flag('splitTheGroup')) {
         lines.push('We reach the gate by two roads, twenty minutes apart. Bram counts heads twice.');
@@ -1625,7 +1678,10 @@
         lines.push('The scrape from the projects has bled through my shirt. Wren checks it ' +
           'without being asked. If it worked, the children at Marlowe House have had an hour of quiet.');
       } else if (s.flag('tookCulvert')) {
-        lines.push('My cuffs are still wet from the culvert. When the hum rises behind the ' +
+        lines.push((s.flag('climbedOutAtTheCut')
+          ? 'My cuffs are still wet from the culvert, and my boots are gray with dust from the tracks. '
+          : 'My cuffs are still wet from the culvert. ') +
+          'When the hum rises behind the ' +
           'east wing, it is the same note I heard under the road.');
       } else if (s.flag('tookRiver')) {
         lines.push('For most of the walk the river kept them back. Up here there is no water ' +
@@ -1635,12 +1691,21 @@
           'Up here is a place that says it takes in everyone.');
       }
       lines.push({ c: 'sep', t: '\u2042' });
-      lines.push('St. Amaranth Mercy is a Victorian hospital with two modern wings. Every window ' +
-        'is lit. Somewhere behind the kitchens a generator runs with the deep, ' +
-        'steady note of a machine that has been serviced.');
-      lines.push('The front doors stand open, and warm yellow light spills down the steps onto the gravel. ' +
-        'Inside, at a desk under a sign that says RECEPTION, a man in a clean fleece sits reading a ' +
-        'paperback, waiting.');
+      if (daylight(s)) {
+        lines.push('St. Amaranth Mercy is a Victorian hospital with two modern wings. Every window ' +
+          'is lit, in full daylight, as if electricity cost nothing. Somewhere behind the ' +
+          'kitchens a generator runs with the deep, steady note of a machine that has been serviced.');
+        lines.push('The front doors stand open onto a lobby under bright ceiling lights. ' +
+          'Inside, at a desk under a sign that says RECEPTION, a man in a clean fleece sits reading a ' +
+          'paperback, waiting.');
+      } else {
+        lines.push('St. Amaranth Mercy is a Victorian hospital with two modern wings. Every window ' +
+          'is lit. Somewhere behind the kitchens a generator runs with the deep, ' +
+          'steady note of a machine that has been serviced.');
+        lines.push('The front doors stand open, and warm yellow light spills down the steps onto the gravel. ' +
+          'Inside, at a desk under a sign that says RECEPTION, a man in a clean fleece sits reading a ' +
+          'paperback, waiting.');
+      }
       lines.push('Over the door, carved in 1874, is the hospital\u2019s motto:');
       lines.push({ c: 'note', t: 'WE TAKE IN ALL WHO COME' });
       if (s.flag('warnedAboutFront')) {
@@ -1651,7 +1716,7 @@
       return lines;
     },
     choices: [
-      { label: 'Walk up the steps and through the front door.', hint: 'as invited', to: 'a3_reception' },
+      { label: 'Walk up the steps and through the front door.', hint: 'straight to reception, in full view', to: 'a3_reception' },
       { label: 'Go around. Find the back.', tone: 'risk', hint: 'away from reception',
         to: 'a3_back' },
       { label: 'Send one person in and keep the rest outside.', tone: 'risk', to: 'a3_split' },
@@ -1675,14 +1740,15 @@
   S.add({
     id: 'a2_watch',
     chapter: CH,
-    place: 'The linden avenue',
+    place: 'The lime avenue',
     enter: function (s) { s.set('watchedTheMercy'); },
-    text: [
-      'An hour and a little more in the wet grass under the lindens, watching a hospital work.',
+    text: function (s) { return [
+      'An hour and a little more in the wet grass under the limes, watching a hospital work.',
 
       'A man crosses from the main building to the kitchens carrying a covered tray. ' +
       'Fifteen minutes later he comes back with it uncovered and empty. Two people in scrubs walk the ' +
-      'perimeter of the east wing with flashlights, talking, and one of them laughs at something.',
+      'perimeter of the east wing' + (daylight(s) ? '' : ' with flashlights') +
+      ', talking, and one of them laughs at something.',
 
       'Then double doors open at the back of the east wing and four people wheel out ' +
       'a gurney with a shape on it under a sheet. They take it down a service road and come back ' +
@@ -1698,7 +1764,7 @@
       { c: 'hum', t: 'h m m m m m m m' },
 
       'The lights never so much as flicker. Everything here runs on a schedule.'
-    ],
+    ]; },
     choices: [
       { label: 'Front door. Walk in like a patient.', to: 'a3_reception' },
       { label: 'The service road. Follow where the gurneys go.', tone: 'risk', to: 'a3_service' },

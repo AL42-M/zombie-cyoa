@@ -14,25 +14,29 @@
       name: 'Odile',
       full: 'Odile Marchetti',
       role: 'veterinarian',
-      blurb: 'Thirty years as a veterinarian, putting animals down gently and telling farmers the truth. Steady hands.'
+      blurb: 'Thirty years as a veterinarian, putting animals down gently and telling farmers the truth. Steady hands.',
+      deathNote: 'We lost Odile. Nobody left to tell us the truth about our chances.'
     },
     bram: {
       name: 'Bram',
       full: 'Bram Kessler',
       role: 'corrections officer',
-      blurb: 'Eleven years as a corrections officer. He keeps the count and the rations, and he wants to leave.'
+      blurb: 'Eleven years as a corrections officer. He keeps the count and the rations, and he wants to leave.',
+      deathNote: 'Bram won\u2019t make it to Thornbury now.'
     },
     wren: {
       name: 'Wren',
       full: 'Wren',
       role: 'fourteen',
-      blurb: 'Hasn\u2019t made a sound since the third day. Writes on a pharmacy pad when she has to.'
+      blurb: 'Hasn\u2019t made a sound since the third day. Writes on a pharmacy pad when she has to.',
+      deathNote: 'Wren\u2019s pad stays blank from here on.'
     },
     teddy: {
       name: 'Teddy',
       full: 'Teodor Alafuzo',
       role: 'retired choirmaster',
-      blurb: 'Seventy-one, with one working lung. His breathing is loud, and the sound carries.'
+      blurb: 'Seventy-one, with one working lung. His breathing is loud, and the sound carries.',
+      deathNote: 'Teddy\u2019s breathing has stopped. The room is too quiet.'
     }
   };
 
@@ -52,7 +56,7 @@
     flask:    { name: 'grain alcohol',    desc: 'Enough to drink, to clean a wound, or to start a fire, but only one of the three.' },
     badge:    { name: 'Mercy ID',         desc: 'An ID from St. Amaranth Mercy, on a cord.' },
     morphine: { name: 'morphine',         desc: 'One ampoule. Enough to ease bad pain, or to kill someone who is already very weak.' },
-    saw:      { name: 'bone saw',         desc: 'A butcher\u2019s saw. Someone has cleaned it recently, and carefully.' },
+    saw:      { name: 'bone saw',         desc: 'A bone saw. Someone has cleaned it recently, and carefully.' },
     ledger:   { name: 'the Matron\u2019s ledger', desc: 'Nine hundred names in a neat hand, each with a date and a yield.' },
     vial:     { name: 'gray serum',       desc: 'It moves inside the vial even when I hold it still.' },
     tape:     { name: 'duct tape',        desc: 'Holds most things together, for an hour or so.' },
@@ -98,7 +102,7 @@
       desc: 'THEY ARE NOT MEAT. DO NOT OPEN. 4/11. Written on the day the Hush began.'
     },
     hairslide: {
-      name: 'a child\u2019s barrette',
+      name: 'a child\u2019s hairclip',
       of: 'one of the nine hundred',
       desc: 'Yellow enamel, in the shape of a duck. I took it from the chapel table, where every object had a label and had been lined up and dusted.'
     },
@@ -119,7 +123,7 @@
      ---------------------------------------------------------- */
   var WORDS = {
     health: [
-      [0,   'Dying'],
+      [1,   'Dying'],
       [12,  'Failing'],
       [28,  'Badly hurt'],
       [45,  'Battered'],
@@ -132,8 +136,8 @@
       [14,  'Exposed'],
       [30,  'Low fever'],
       [48,  'Spreading'],
-      [66,  'Humming in your bones'],
-      [84,  'Mostly still you'],
+      [66,  'In your bones'],
+      [84,  'Losing yourself'],
       [101, 'Nearly turned']
     ],
     humanity: [
@@ -150,8 +154,8 @@
       [34,  'Heavy'],
       [52,  'Very heavy'],
       [70,  'Crushing'],
-      [86,  'Numb'],
-      [101, 'Shut down']
+      [86,  'Overencumbered'],
+      [101, 'Impossible']
     ]
   };
 
