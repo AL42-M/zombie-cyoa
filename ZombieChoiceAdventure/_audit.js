@@ -462,8 +462,15 @@ var sRefuse = new Story.GameState();
 Story.get('a3_refuse').enter(sRefuse);
 expect('refusing at the gate does not invent a conversation with Matron',
   String(Story.textOf(Story.get('a3_refuse'), sRefuse).join(' ').indexOf('I never went in') >= 0), 'true');
+var sBackRefuse = new Story.GameState();
+Story.get('a3_back').enter(sBackRefuse);
+Story.get('a3_refuse').enter(sBackRefuse);
+expect('leaving through the back acknowledges entering the building',
+  String(Story.textOf(Story.get('a3_refuse'), sBackRefuse).join(' ').indexOf('I never went in') >= 0), 'false');
 expect('refusal final choice makes the return to the hospital explicit',
   String(fin.choices[1].label(sRefuse).indexOf('Go back') >= 0), 'true');
+expect('choosing boat without keys names key retrieval',
+  String(fin.choices[3].label(sRefuse).indexOf('Fetch the boat keys') >= 0), 'true');
 var sSpokeToMatron = new Story.GameState();
 sSpokeToMatron.set('metTheMatron');
 Story.get('a3_refuse').enter(sSpokeToMatron);
@@ -473,6 +480,10 @@ var sWithoutOdileOnExit = new Story.GameState();
 sWithoutOdileOnExit.part('odile'); sWithoutOdileOnExit.set('tookTheTreatment');
 expect('departing with treatment does not invent an absent Odile',
   String(Story.textOf(Story.get('a3_refuse'), sWithoutOdileOnExit).join(' ').indexOf('Odile sees the dinosaur') >= 0), 'false');
+var sSoloWard = new Story.GameState();
+sSoloWard.set('wentInAlone'); sSoloWard.set('sawWard11');
+expect('solo ward visit reports what Wren was told, not what she saw',
+  String(Story.textOf(Story.get('a3_refuse'), sSoloWard).join(' ').indexOf('I tell Wren what I saw') >= 0), 'true');
 var sSurrender = new Story.GameState();
 sSurrender.set('letTheNoteIn');
 expect('abrupt surrender route pauses for the companion left behind',
@@ -514,6 +525,9 @@ Story.get('end_mercy_teddy').enter(sBoat);
 expect('Teddy ending uses the actual departure day',
   String(Story.textOf(Story.get('end_mercy_teddy'), sBoat).join(' ').indexOf('day 45') >= 0), 'true');
 expect('Teddy boat departure occurs the following morning', String(sBoat.day), '45');
+sBoat.set('wrenSpoke');
+expect('Wren does not speak for the first time twice',
+  String(Story.textOf(Story.get('end_mercy_teddy'), sBoat).join(' ').indexOf('the first sound she has made') >= 0), 'false');
 expect('May hospital records do not refer to June events before day 41',
   String(Story.textOf(Story.get('a3_pit_read'), sDirect).join(' ').indexOf('June') >= 0), 'false');
 expect('arrival recalls all three boat days',

@@ -127,6 +127,28 @@ PROJECT CONTEXT
 
 VERSION HISTORY (newest first)
 
+v1.7 - 2026-10-17
+- Matched story days to actual overnights: the opening wait, extended boat stay,
+  morning triage, and next-morning boat departure in the Teddy ending. Hour-long
+  rests, travel routes, and the hill no longer each add an entire day. Reconciled
+  institutional records with day 41 after the April 11 Hush: dated events that
+  had been placed in the future now occur in May, with related dialogue and
+  relative durations corrected. The April 11 manifest is now the first day's
+  warning, not a warning written eleven days after the Hush.
+- Distinct final choices and refusal choices now describe the action and whether
+  it means returning to the hospital. A short surrender route pauses for its
+  immediate human consequence. Refusal reactions distinguish what the narrator
+  actually learned and which companions are present; tightened repetitive prose.
+- Added targeted chronology, route knowledge, and companion checks alongside the
+  16,000-walk audit. Existing saves still load, but prior saved day counts and
+  recorded journal passages retain their original values; start a new run to
+  experience the corrected chronology from day 41.
+- Current work remains on copilot/improve-story-quality, separate from main.
+  The requested beta branch and public repository visibility require publishing
+  a new branch and changing a GitHub setting; neither was available to this
+  hosted task through its permitted publishing tools. Do not claim either is
+  complete until confirmed in GitHub.
+
 v1.6 - 2026-10-16
 - Five independent AI reader personas completed five story-engine runs each
   (25 total, on the v1.5 baseline) for a spoiler-free playtest synthesis.

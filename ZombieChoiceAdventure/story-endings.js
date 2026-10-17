@@ -299,7 +299,9 @@
       ];
       if (s.alive('wren')) {
         lines.push('Wren hums for him. Quietly, badly, off the note \u2014 ' +
-          'the first sound she has made on purpose since the third day \u2014 ' +
+          (s.flag('wrenSpoke')
+            ? 'she has not risked her voice since the river path \u2014 '
+            : 'the first sound she has made on purpose since the third day \u2014 ') +
           'and he does not stop or open his eyes, he just brings her in with two fingers ' +
           'on the second bar, the way he once did with nervous choristers, ' +
           'and keeps going as if he had been expecting her.');

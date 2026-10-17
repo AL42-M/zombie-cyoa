@@ -327,7 +327,7 @@
     id: 'a2_under_still',
     chapter: CH,
     place: 'Under the trailer',
-    enter: function (s) { s.scar(12); s.advance(0); },
+    enter: function (s) { s.scar(12); },
     text: function (s) {
       var lines = [
         'We stop. All of us. Flat on our backs in eleven inches of dark under fourteen tonnes of ' +
@@ -593,7 +593,7 @@
       'She unfolds her arms.',
 
       '<span class="said">"But they stop at the edge of the water. I have watched them do it four ' +
-      'times tonight. So yes. Yes. Find the keys."</span>'
+      'times since we got here. So yes. Yes. Find the keys."</span>'
     ],
     choices: [
       { label: 'Board her and search.', to: 'a2_boat' },
@@ -1515,7 +1515,7 @@
       { label: 'Go round. Find the back.', tone: 'risk', hint: 'away from reception',
         to: 'a3_back' },
       { label: 'Send one person in and keep the rest outside.', tone: 'risk', to: 'a3_split' },
-      { label: 'Watch the building for an hour first.', to: 'a2_watch' },
+      { label: 'Watch the building for a while first.', to: 'a2_watch' },
       { label: 'Turn around. Go back to the river.', tone: 'kind',
         show: function (s) { return s.flag('knowsBoat'); }, to: 'a3_refuse' },
       { label: 'Ask for a bed for Teddy before you ask for one for yourself.', tone: 'kind',
@@ -1536,23 +1536,23 @@
     id: 'a2_watch',
     chapter: CH,
     place: 'The lime avenue',
-    enter: function (s) { s.set('watchedTheMercy'); s.advance(0); },
+    enter: function (s) { s.set('watchedTheMercy'); },
     text: [
-      'An hour in the wet grass under the lime trees, watching a hospital work.',
+      'An hour and a little more in the wet grass under the lime trees, watching a hospital work.',
 
-      'At 03:10 a man crosses from the main building to the kitchens carrying a covered tray. ' +
-      'At 03:25 he comes back with it uncovered and empty. At 03:40 two people in scrubs walk the ' +
+      'A man crosses from the main building to the kitchens carrying a covered tray. ' +
+      'Fifteen minutes later he comes back with it uncovered and empty. Two people in scrubs walk the ' +
       'perimeter of the east wing with torches, talking, and one of them laughs at something.',
 
-      'At 04:00, a set of double doors opens at the back of the east wing and four people wheel out ' +
+      'Then a set of double doors opens at the back of the east wing and four people wheel out ' +
       'a trolley with a shape on it under a sheet, and take it down a service road, and come back ' +
       'eleven minutes later with the trolley empty.',
 
-      'At 04:20 they do it again.',
+      'Twenty minutes later they do it again.',
 
       { c: 'sep', t: '\u2042' },
 
-      'And every twenty minutes, all night, from the east wing, with the regularity of a tide: ' +
+      'And every twenty minutes, through my hour in the grass, from the east wing, with the regularity of a tide: ' +
       'the sound of a great many people humming in a large room with hard floors.',
 
       { c: 'hum', t: 'h m m m m m m m' },

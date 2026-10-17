@@ -20,7 +20,7 @@
         'The man in the fleece puts his paperback face-down on the desk and stands up, and he is ' +
         'so ordinary that it is like being struck.',
 
-        '<span class="said">"Evening," </span>he says. <span class="said">"Come in, come in, ' +
+        '<span class="said">"Hello," </span>he says. <span class="said">"Come in, come in, ' +
         'shut it behind you, the heat gets out. You are the first since Tuesday."</span>',
 
         'It is warm. That is the thing that gets through my guard before any of the rest of it. ' +
@@ -435,7 +435,7 @@
       var lines = [
         'I go in alone. It takes nine minutes to arrange and all nine of them are an argument.'
       ];
-      lines.push('<span class="said">"If you are not out by first light," </span> Bram says, ' +
+      lines.push('<span class="said">"If you are not out in an hour," </span> Bram says, ' +
         '<span class="said">"we are not coming in after you. I want that agreed out loud, now, ' +
         'by you, so that it is your decision and not mine."</span>');
       lines.push('I agree it out loud.');
@@ -1373,7 +1373,7 @@
     text: function (s) {
       var lines = [
         'I walk back down the avenue of pruned lime trees with the lights of a working hospital ' +
-        'behind me and nothing in front of me but four miles of dark and a river.'
+        'behind me and nothing in front of me but four miles of road and a river.'
       ];
       if (s.flag('knowsBoat')) {
         lines.push(s.flag('foundBoat')
@@ -1397,8 +1397,11 @@
         lines.push('Odile sees the dinosaur plaster on my hand. She checks the injection site ' +
           'without asking where it came from, then lets my hand go.');
       } else if (s.flag('sawWard11') && s.alive('wren')) {
-        lines.push('Wren puts her pad away without showing me the page. She has seen enough ' +
-          'of that building to know why I have come out.');
+        lines.push(s.flag('wentInAlone')
+          ? 'I tell Wren what I saw in the ward. She puts her pad away without ' +
+            'showing me the page.'
+          : 'Wren puts her pad away without showing me the page. She has seen enough ' +
+            'of that building to know why I have come out.');
       }
       if (withTeddy(s)) {
         lines.push('Teddy walks the first two hundred yards on his own and then cannot, ' +
@@ -1413,8 +1416,12 @@
           lines.push('I tell him what I saw. He looks up at the lit windows, then at the road. ' +
             '<span class="said">"I know what a bed costs,"</span> he says.');
         } else {
-          lines.push('I tell him I never went in. He watches the light in the windows until ' +
-            'the trees hide it. <span class="said">"Then we keep walking,"</span> he says.');
+          lines.push((s.flag('cameInTheFront') || s.flag('cameInTheBack') ||
+            s.flag('foundTheOffice')
+            ? 'I tell him I went in but came out before I knew enough.'
+            : 'I tell him I never went in.') +
+            ' He watches the light in the windows until the trees hide it. ' +
+            '<span class="said">"Then we keep walking,"</span> he says.');
         }
         lines.push('<span class="said">"Thank you for coming back."</span>');
       }
@@ -1426,9 +1433,9 @@
         to: 'a3_final', act: function (s) { s.set('headingForTheBoat'); } },
       { label: 'Go back for the keys. You cannot do this without them.',
         show: function (s) { return !s.has('keys') && s.flag('knowsBoat'); }, to: 'a3_refuse_keys' },
-      { label: 'Head for the boat without keys. Try the cabin as shelter.',
+      { label: 'Head towards the river without keys. Decide before the slip.',
         show: function (s) { return s.flag('knowsBoat'); },
-        to: 'a3_final', act: function (s) { s.set('headingForTheBoat'); s.set('noKeys'); } },
+        to: 'a3_final', act: function (s) { s.set('headingForTheBoat'); } },
       { label: 'Wait for the others at the foot of the hill before deciding.',
         show: function (s) { return !s.flag('knowsBoat'); },
         to: 'a3_final', act: function (s) { s.soften(4); s.set('lookingForTheDoor'); } },
@@ -1562,7 +1569,11 @@
           if (!s.has('ledger')) { s.give('ledger'); s.set('tookTheLedger'); }
         } },
 
-      { label: 'Take everyone to the boat and go out on the tide.',
+      { label: function (s) {
+          return s.has('keys')
+            ? 'Take everyone to the boat and go out on the tide.'
+            : 'Fetch the boat keys, then take everyone out on the tide.';
+        },
         hint: 'the water is a wall', tone: 'kind',
         show: function (s) { return s.flag('knowsBoat') || s.flag('headingForTheBoat'); },
         to: function (s) {
