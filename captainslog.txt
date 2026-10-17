@@ -43,7 +43,8 @@ Versioning
 - Never reuse or overwrite a previous version number.
 - When incrementing, update any version displayed or stored by the application,
   if applicable, and add a corresponding entry to this log.
-- Commit completed changes with a concise description.
+- Commit completed changes using the commit-naming rule under "Git and source
+  control".
 - Do not make duplicate versioned or backup project files (for example,
   game-v1.2.html or game-final-final.html). Git history preserves prior versions.
 
@@ -61,6 +62,12 @@ Maintaining this log
 Git and source control
 - Use Git as the authoritative project history.
 - Create clear, concise commits representing completed logical changes.
+- Commit naming: the commit subject (first line) is the project version the
+  commit contains, exactly as written in this log, e.g. "v1.8". Put the
+  description of the change in the commit body, not the subject. If a commit
+  does not introduce a new version (log-only or other unversioned changes), use
+  the current version followed by a short parenthesised label, e.g.
+  "v1.8 (captain's log)". Do not use free-form or descriptive-only subjects.
 - Do not rewrite or destroy useful history without explicit user permission.
 - Never merge branches without explicit user authorization.
 - Never force-push without explicit user authorization.
@@ -126,6 +133,37 @@ PROJECT CONTEXT
   overwrite it. Work in the active source folder and use Git for history.
 
 VERSION HISTORY (newest first)
+
+v1.8 - 2026-10-17
+- Full prose line edit of all player-facing story text (story-act1/2/3, endings,
+  and displayed strings in story-core) for natural British English, a restrained
+  found-journal voice, and distinct character voices. Only string-literal prose
+  changed: a tokenizer check confirmed every file's code skeleton (ids, flags,
+  conditions, choice targets/tones, paragraph and choice counts) is identical to
+  v1.7, and the 16,000-walk audit passes, including all prose anchor phrases.
+- Voice rules: narrator uses contractions and present tense; Odile and the
+  Matron speak formally without contractions; Bram is clipped and procedural;
+  Teddy speaks in short breaths and sometimes calls the narrator "child"; Wren's
+  pad notes and in-world documents ({c:'note'}) are unchanged. Choice labels,
+  hints and toasts remain second person; keepsake notes are first person.
+- Fixed in prose: pronoun/person slips left from the old second-person draft,
+  Americanisms (Bram is now a "prison officer"), and contradictions in prose
+  (31 vs "fifty" at the window, "three people" left in the shop, a cooling
+  radiator without power, "thirty days" in a trailer sealed on 11 April, two
+  months in a locked ward for a man admitted 23 April, statements that were
+  false on some routes). Cut repetitive tics ("That is the thing/part...",
+  "somehow", "every single", future-tense foreshadowing).
+- Code-level continuity issues the editors found but did not change are in the
+  session report; notable ones: Act 1 "leave Teddy" from the breach still reads
+  as unhurried; a3_ask_east/treatment/decides "leave" labels go to a3_back;
+  a3_boat_who pronoun for Odile/Bram is "them"; duplicate key grants in
+  a3_chapel_keys/a3_property; a2_boat_search "go alone" leads to the group boat
+  wait; end_boat_alone never mentions companions left on the slip.
+- Saves: existing runs keep their recorded journal text and keepsake notes;
+  new passages appear from the next passage onward.
+- Added the commit-naming rule (subject = version number) at the user's
+  request; this is the first commit to follow it. Git identity on the user's
+  computer is set globally to AL42-M <arislab42@gmail.com>.
 
 Pages custom-domain removal - 2026-10-17
 - Removed the root CNAME file declaring www.thehush.com at the user's request.

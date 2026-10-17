@@ -19,7 +19,7 @@
     bram: {
       name: 'Bram',
       full: 'Bram Kessler',
-      role: 'corrections officer',
+      role: 'prison officer',
       blurb: 'Spent eleven years deciding who got to eat. He has not stopped deciding.'
     },
     wren: {
@@ -79,12 +79,12 @@
     fork: {
       name: 'a tuning fork',
       of: 'Teddy',
-      desc: 'A 440, worn smooth at the handle. Struck on a knee it still finds the note. That is the trouble with it.'
+      desc: 'An A440, worn smooth at the handle. Struck on a knee, it still finds the note. That\u2019s the trouble with it.'
     },
     facts: {
       name: 'nine facts in my handwriting',
       of: "Bram's daughter",
-      desc: 'Nine. Asthmatic. Frightened of the hoover. Written down so that one day somebody who is not her father will have them.'
+      desc: 'Nine. Asthmatic. Frightened of the hoover. Written down so that one day someone other than her father will have them.'
     },
     dogphoto: {
       name: 'a photograph of a collie',
@@ -188,7 +188,7 @@
       choicesMade: 0,
       /* you have carried one thing since before any of this started */
       keepsakes: [
-        { id: 'ring', day: 9, note: 'You have stopped noticing the weight of it, which is worse than losing it.' }
+        { id: 'ring', day: 9, note: 'I\u2019ve stopped noticing the weight of it, which is worse than losing it.' }
       ]
     };
   }

@@ -17,18 +17,18 @@
     enter: function (s) { s.set('inTheLane'); },
     text: function (s) {
       var lines = [
-        'The lorry fills the mouth of the lane from wall to wall, white and enormous and softly ticking ' +
-        'as the night cools it. FRESH DAILY, in a font chosen by somebody in a meeting.'
+        'The lorry blocks the mouth of the lane from wall to wall, white and enormous, ticking softly ' +
+        'as the night cools it. FRESH DAILY, in a font somebody once chose in a meeting.'
       ];
       if (withTeddy(s)) {
-        lines.push('Teddy has to stop every twenty yards. I have stopped pretending this is a rest for ' +
-          'everybody. Odile counts his breaths with two fingers on his wrist and does not report the number.');
+        lines.push('Teddy has to stop every twenty yards. I no longer pretend the stops are for ' +
+          'everyone. Each time, Odile takes his pulse at the wrist and keeps the number to herself.');
       } else {
-        lines.push('There are four of us now, and I am walking faster than I should, and nobody ' +
-          'has said a single word since the yard wall.');
+        lines.push('There are four of us now. I am walking faster than I should, and nobody ' +
+          'has spoken since the yard wall.');
       }
-      lines.push('There is no way past it. There is over it, or through it, or back up the lane and out ' +
-        'onto Ferry Street itself, which is where the fifty are.');
+      lines.push('There is no way round it, only over, under or through, or back up the lane and out ' +
+        'onto Ferry Street, where the fifty are.');
       lines.push({ c: 'sep', t: '\u2042' });
       lines.push('From inside the trailer, muffled by six inches of insulated panel, something is ' +
         '<em>humming</em>.');
@@ -56,18 +56,18 @@
       }
     },
     text: [
-      'The driver is still in it. Seatbelt on, hands at ten and two, head back against the rest — ' +
-      'and a neat dark hole under the chin where he solved the whole problem himself in the first week ' +
-      'with a weapon that is no longer in the cab, because somebody got here before me.',
+      'The driver is still in it: seatbelt on, hands at ten to two, head back against the rest, and a ' +
+      'neat dark hole under the chin. He saw to it himself, in the first week by the look of him. ' +
+      'Whatever he used is gone. Somebody got here before me.',
 
-      'What they did not take: three loose rounds rolling in the door pocket, a road atlas open at ' +
-      'the wrong county, and a photograph taped to the dash of a dog.',
+      'What they left: three loose rounds rolling in the door pocket, a road atlas open at ' +
+      'the wrong county, and a photograph of a dog taped to the dash.',
 
       { c: 'note', t: 'Clipped to the sun visor, a delivery manifest. 14 TONNES CHILLED. ' +
         'Under it, in biro, in a different hand: THEY ARE NOT MEAT. DO NOT OPEN. 11/4' },
 
-      'The day the Hush began. Somebody wrote that warning and then walked away and ' +
-      'left the trailer sealed, and the trailer has been humming ever since.'
+      'The eleventh of April, the day the Hush began. Somebody wrote that, left the trailer ' +
+      'sealed and walked away. It has been humming ever since.'
     ],
     choices: [
       { label: 'Open it anyway.', tone: 'risk', to: 'a2_lorry_open' },
@@ -81,14 +81,14 @@
         hint: 'somebody loved that dog enough to tape it up',
         act: function (s) {
           s.set('leftItSealed'); s.soften(4); s.scar(3);
-          s.keep('dogphoto', 'I did not know him. I know the dog\u2019s face better than I know most of the living.');
+          s.keep('dogphoto', 'I never knew him. I know the dog\u2019s face better than most living ones.');
         },
         toast: ['You peel it off carefully, so as not to tear the corners.', 'keepsake'] },
       { label: 'Tear the biro line off the manifest and pocket it.', to: 'a2_lorry_climb',
         hint: 'the last handwriting of the old world',
         act: function (s) {
           s.set('leftItSealed'); s.scar(4);
-          s.keep('manifest', 'On the first day, somebody still believed a warning was a thing worth writing.');
+          s.keep('manifest', 'On the first day, somebody still thought a warning was worth writing.');
         },
         toast: ['THEY ARE NOT MEAT. DO NOT OPEN. 11/4', 'keepsake'] }
     ]
@@ -100,30 +100,30 @@
     place: 'Quay Road',
     enter: function (s) { s.set('openedTheLorry'); s.scar(14); },
     text: [
-      'The handle is a lever as long as my arm and it goes over with a clang that I feel in ' +
+      'The handle is a lever as long as my arm. It goes over with a clang I feel in ' +
       'my teeth.',
 
-      'Fourteen tonnes of chilled capacity. Six weeks without power. What comes out first is the ' +
-      'air, and the air is a physical object — warm, sweet, thick enough to lean on, and it puts ' +
-      'Bram on his knees retching before the doors have finished swinging.',
+      'Fourteen tonnes of chilled capacity, six weeks without power. The air comes out first, ' +
+      'warm and sweet and thick enough to lean on, and it has Bram on his knees retching before ' +
+      'the doors have finished swinging.',
 
-      'They are standing up. All of them. Shoulder to shoulder in the dark, packed the way a lift ' +
-      'is packed, perhaps sixty people who were loaded in alive and sealed in alive and have been ' +
-      '<span class="wound">standing in there in the dark for thirty days humming</span>.',
+      'They are standing up. All of them, shoulder to shoulder in the dark, packed as tight as a full ' +
+      'lift: perhaps sixty people, who must have been loaded in alive and sealed in alive and have been ' +
+      '<span class="wound">standing in the dark ever since, humming</span>.',
 
-      'Nothing moves. Nothing comes out. Sixty faces turn, very slowly, in the half-light, ' +
-      'and the note they are holding does not falter at all.',
+      'Nothing comes out. Sixty faces turn towards the light, very slowly, ' +
+      'and the note they are holding does not waver.',
 
       { c: 'hum', t: 'h m m m m m m m' },
 
-      'They have been doing this since the eleventh of April. Not dying. Not leaving. ' +
-      '<em>Waiting</em>, in a box, for something that has not happened yet.'
+      'They have been like this since the eleventh of April, neither dying nor leaving. ' +
+      '<em>Waiting</em>, in a box, for something that hasn\u2019t happened yet.'
     ],
     choices: [
       { label: 'Close the doors. Very, very slowly.', to: 'a2_quay',
         act: function (s) { s.scar(10); s.set('closedThemIn'); },
         toast: ['The lever goes back over. Nothing follows you.', 'bad'] },
-      { label: 'Burn it. Now, while they are still standing still.', tone: 'cruel',
+      { label: 'Burn it. Now, while they are standing still.', tone: 'cruel',
         show: function (s) { return s.has('lighter') && s.has('flask'); },
         to: 'a2_burn_lorry' },
       { label: 'Walk in. Find out what they are waiting for.', tone: 'rot',
@@ -144,24 +144,24 @@
       s.harden(12); s.scar(18);
     },
     text: [
-      'Grain alcohol goes in a wide arc off the end of the trailer and the lighter does the rest, ' +
-      'and the thing that happens next is not like fire in a film.',
+      'I throw the grain alcohol in a wide arc through the open doors, and the lighter does the rest. ' +
+      'What happens next is nothing like fire in a film.',
 
       'It is fast and blue and almost silent for the first four seconds. Then sixty people begin to ' +
-      'burn in an enclosed steel box, and the humming does not stop — it <em>changes pitch</em>, ' +
-      'rising together, sixty throats going up the scale in perfect unison until it is a sound that ' +
-      'does not belong in a human throat at all, and holds there, and holds, and holds.',
+      'burn in a steel box, and the humming does not stop. It <em>changes pitch</em>. ' +
+      'Sixty voices climb the scale together, in unison, until the sound is higher than any human ' +
+      'throat should go, and it stays there. It holds, and holds.',
 
-      'Nobody runs. Not one of them tries to come out of the open doors. They stand in it.',
+      'None of them runs. Not one tries to come out through the open doors. They stand in it.',
 
       { c: 'sep', t: '\u2042' },
 
-      'Wren has her hands over her ears, which is the first time in forty-one days she has admitted ' +
-      'that a sound can reach her. Odile is watching with her head tilted, taking notes behind her eyes.',
+      'Wren has her hands over her ears: the first time in forty-one days she has admitted ' +
+      'that a sound can reach her. Odile watches with her head on one side, as if she were taking notes.',
 
-      '<span class="said">"They did not run,"</span> she says afterwards, on the road, out of nowhere. ' +
-      '<span class="said">"Pain is a survival instinct. You only feel it if something still wants ' +
-      'to survive."</span>'
+      '<span class="said">"They did not run,"</span> she says later, on the road, out of nowhere. ' +
+      '<span class="said">"Pain is protective. It is only any use to something that still wants ' +
+      'to live."</span>'
     ],
     choices: [
       { label: 'Get everyone moving. Now. The whole town saw that.', to: 'a2_quay',
@@ -181,30 +181,29 @@
     place: 'Inside the trailer',
     enter: function (s) { s.infect(22); s.scar(20); s.set('wentInside'); },
     text: [
-      'I step up into the trailer and nobody stops me, and that includes the sixty.',
+      'I step up into the trailer. Nobody stops me, the sixty included.',
 
-      'Inside, the humming is not a sound. It is a <em>pressure</em>, in the sinuses and the back ' +
-      'teeth and the long bones, and walking into it is like walking chest-deep into a river.',
+      'Inside, the humming stops being a sound. It is a <em>pressure</em> in the sinuses, the back ' +
+      'teeth, the long bones, and walking into it is like wading chest-deep into a river.',
 
-      'They part for me. That is the thing I will not be able to explain afterwards to anyone ' +
-      'who was outside. Sixty bodies shuffle a half-step each to make a corridor, without looking, ' +
-      'the way a crowd makes room for a stretcher.',
+      'They part for me. Sixty bodies each shuffle half a step aside to open a corridor, without ' +
+      'looking, the way a crowd makes room for a stretcher.',
 
-      'At the far end of the trailer, against the bulkhead, there is a space cleared in the middle ' +
-      'of all that packed flesh — a circle of empty floor about a yard across — and in the centre of ' +
-      'it, lying on its side, perfectly clean, is <span class="cold">a child\u2019s shoe</span>.',
+      'At the far end, against the bulkhead, they have left a space in all that packed flesh: ' +
+      'a circle of bare floor about a yard across. In the middle of it, on its side and spotless, ' +
+      'is <span class="cold">a child\u2019s shoe</span>.',
 
-      'They are standing around it. All of them. They have been standing around it for thirty days.',
+      'Every one of them is turned towards it. They have stood round it since April.',
 
       { c: 'hum', t: 'h m m m m m m m' },
 
-      'I do not know what it means. My body knows something, though, because my own throat ' +
-      'has opened and I am <span class="wound">humming with them</span>, and I did not decide to.'
+      'I don\u2019t know what it means. My body knows something, though: my throat ' +
+      'has opened and I am <span class="wound">humming with them</span>. I did not decide to.'
     ],
     choices: [
       { label: 'Take the shoe.', tone: 'rot', to: 'a2_quay',
         act: function (s) { s.set('tookTheShoe'); s.infect(10); s.scar(12); },
-        toast: ['Nothing happens. That is somehow worse.', 'rot'] },
+        toast: ['Nothing happens. The hum does not even change.', 'rot'] },
       { label: 'Leave it. Back out slowly, still humming.', to: 'a2_quay',
         act: function (s) { s.set('leftTheShoe'); s.infect(4); },
         toast: ['They close the corridor behind you like water.', 'rot'] },
@@ -221,25 +220,25 @@
     place: 'Inside the trailer',
     enter: function (s) { s.hurt(16); s.infect(6); s.scar(16); },
     text: [
-      'I close my mouth. It takes everything I have, and it feels — precisely — like holding ' +
-      'a sneeze, or standing up in a church.',
+      'I close my mouth. It takes everything I have. It feels like holding in a sneeze, ' +
+      'or standing up in church in the middle of the prayers.',
 
       'Sixty heads come round at once.',
 
-      'Not fast. That is what I will remember. They turn to me with a kind of slow institutional ' +
-      'disappointment, like a committee, and the nearest one lifts both hands and puts them on my ' +
-      'face — not clawing, not biting, just <span class="wound">holding my jaw and trying to open it</span> ' +
+      'Not fast. They turn to me with a slow, institutional disappointment, like a committee, ' +
+      'and the nearest one lifts both hands to my face. It does not claw or bite. It is ' +
+      '<span class="wound">holding my jaw and trying to open it</span>, ' +
       'with the patient strength of something that has all night.',
 
-      'I get out because Bram comes three steps up into that and gets a fistful of my collar. ' +
-      'I lose a boot and a strip of cheek doing it.'
+      'I get out because Bram comes three steps up into that and takes a fistful of my collar. ' +
+      'It costs me a boot and a strip of skin off my cheek.'
     ],
     choices: [
       { label: 'Out. Run. Do not look back at the doors.', to: 'a2_quay',
         act: function (s) { s.trust('bram', 25); s.set('bramSavedYou'); } },
       { label: 'Close the doors behind you first.', to: 'a2_quay',
         act: function (s) { s.trust('bram', 25); s.set('bramSavedYou'); s.set('closedThemIn'); s.scar(6); } },
-      { label: 'Burn it before it follows.', tone: 'cruel',
+      { label: 'Burn it before they follow.', tone: 'cruel',
         show: function (s) { return s.has('lighter') && s.has('flask'); },
         to: 'a2_burn_lorry', act: function (s) { s.trust('bram', 25); s.set('bramSavedYou'); } },
       { label: 'Sit down on the kerb and let your hands stop shaking first.',
@@ -247,7 +246,7 @@
         act: function (s) { s.trust('bram', 25); s.set('bramSavedYou'); s.ease(6); s.scar(4); } },
       { label: 'Thank Bram. Out loud, in front of the others.', tone: 'kind', to: 'a2_quay',
         act: function (s) { s.trust('bram', 35); s.set('bramSavedYou'); s.soften(6); } },
-      { label: 'Turn back toward them. Stop resisting the note.', tone: 'rot', to: 'end_turned',
+      { label: 'Turn back towards them. Stop resisting the note.', tone: 'rot', to: 'end_turned',
         act: function (s) { s.infect(80); s.set('letTheNoteIn'); } }
     ]
   });
@@ -258,21 +257,21 @@
     place: 'Quay Road',
     text: function (s) {
       var lines = [
-        'Wing mirror, door handle, across the bonnet, down the far side. Bram goes first and makes ' +
-        'it look like a thing he does for exercise.'
+        'Wing mirror, door handle, cab roof, down the far side. Bram goes first and makes ' +
+        'it look like something he does for exercise.'
       ];
       if (withTeddy(s)) {
-        lines.push('Getting Teddy up and over takes eleven minutes, four hands, and a silence from him ' +
-          'so total and so deliberate that when he finally does cough, on the far side, into both palms, ' +
-          'he looks around at all of us with naked apology, like a man who has dropped a glass in a library.');
+        lines.push('Getting Teddy up and over takes eleven minutes and four hands. He keeps utterly ' +
+          'silent the whole way, and when he finally coughs, on the far side, into both palms, ' +
+          'he looks round at us in apology, like a man who has dropped a glass in a library.');
       } else {
-        lines.push('It takes under a minute for the four of us. I am getting good at this. ' +
-          'That is its own kind of grief.');
+        lines.push('It takes the four of us under a minute. We are quick now. ' +
+          'I would rather we weren\u2019t.');
       }
-      lines.push('From the top of the cab I can see the whole of Quay Road, the river beyond it, ' +
-        'and four miles north-east, up on the hill, lit — <em>actually lit, with electric light</em> — ' +
-        'the long Victorian frontage of St Amaranth Mercy.');
-      lines.push('There is a building with power in a county that has had none for six weeks.');
+      lines.push('From the cab roof I can see the length of Quay Road, the river beyond it, ' +
+        'and, four miles north-east on the hill, the long Victorian front of St Amaranth Mercy, ' +
+        'lit. <em>Lit, with electric light.</em>');
+      lines.push('A building with power, in a county that has had none for six weeks.');
       return lines;
     },
     choices: [
@@ -293,30 +292,30 @@
     enter: function (s) { s.scar(8); s.set('wentUnder'); },
     text: function (s) {
       var lines = [
-        'Eleven inches of clearance at the rear axle, forty feet of diesel-smelling dark, and I go ' +
-        'first because I suggested it.',
+        'Eleven inches of clearance at the rear axle and forty feet of dark that smells of diesel. ' +
+        'I go first, because it was my idea.',
 
-        'Halfway under, flat on my back, I learn that the humming is louder down here — conducted ' +
-        'through the chassis, through the floor pan, through the six inches of panel directly above ' +
-        'my face. Sixty of them, standing on the other side of that panel.',
+        'Halfway along, flat on my back, I find that the humming is louder down here. It comes ' +
+        'through the chassis and the floor pan, through the six inches of panel just above ' +
+        'my face. However many of them there are, they are standing on the other side of it.',
 
-        'And then, above me, through the steel: a sound like a shoe placed carefully down.',
-        'And then another.',
+        'Then, above me, through the steel: a sound like a shoe being set down carefully.',
+        'Then another.',
         '<em>They are following me along the trailer.</em>'
       ];
       if (withTeddy(s)) {
-        lines.push('Behind me in the dark, Teddy is coming through on his elbows, and his breathing ' +
-          'in this enclosed space is the loudest thing in the county.');
+        lines.push('Behind me in the dark Teddy is coming through on his elbows, and in this space ' +
+          'his breathing is the loudest thing in the county.');
       }
       return lines;
     },
     choices: [
       { label: 'Keep going. Fast. Everyone, now.', to: 'a2_quay',
         act: function (s) { s.hurt(6); s.scar(8); } },
-      { label: 'Stop. Absolute stillness until they lose you.', tone: 'risk', to: 'a2_under_still' },
+      { label: 'Stop. Lie absolutely still until they lose you.', tone: 'risk', to: 'a2_under_still' },
       { label: 'Back out. Take your chances on Ferry Street instead.', to: 'a2_ferry',
         act: function (s) { s.scar(6); } },
-      { label: 'Hum. Give them what they want and walk out the other side.', tone: 'rot',
+      { label: 'Hum. Give them what they want and crawl out the other side.', tone: 'rot',
         to: 'a2_quay',
         act: function (s) { s.infect(14); s.set('hummedUnder'); s.scar(6); },
         toast: ['The footsteps stop. You crawl out unharmed, and that frightens you more.', 'rot'] }
@@ -330,18 +329,17 @@
     enter: function (s) { s.scar(12); },
     text: function (s) {
       var lines = [
-        'We stop. All of us. Flat on our backs in eleven inches of dark under fourteen tonnes of ' +
+        'We stop, all of us, flat on our backs in eleven inches of dark under fourteen tonnes of ' +
         'standing dead.',
 
         'Forty minutes.',
 
-        'Forty minutes under a lorry. I think of June in the photo booth at the county fair, ' +
-        'trying to fit both our heads into the fourth frame. I have not said her name aloud ' +
+        'I think about June in the photo booth at the county fair, ' +
+        'trying to get both our heads into the fourth frame. I have not said her name aloud ' +
         'for nineteen days. I count them twice to be sure.'
       ];
       if (withTeddy(s)) {
-        lines.push('Teddy does not cough. Not once, in forty minutes. I will never know what that ' +
-          'cost him and he will never tell me, and when I finally crawl out he is grey to the lips ' +
+        lines.push('Teddy does not cough. Not once in forty minutes. Afterwards he is grey to the lips ' +
           'and smiling like a boy who has won something.');
         lines.push({ c: 'whisper', t: 'He has bitten through his own bottom lip to do it.' });
       }
@@ -360,7 +358,7 @@
           s.trust('teddy', 25); s.soften(6);
           if (s.has('gauze')) {
             s.take('gauze');
-            s.keep('gauzescrap', 'I kept the square I took off him. I cannot say why. I tried to throw it away and could not.');
+            s.keep('gauzescrap', 'I kept the square I took off his lip. I have tried to throw it away. I can\u2019t.');
           }
         } },
       { label: 'Out, and do not speak to anybody for an hour.', to: 'a2_quay',
@@ -377,20 +375,20 @@
       s.wound('bram');
     },
     text: function (s) { return [
-      'I take Ferry Street because there is no time and no better idea, and Ferry Street takes ' +
+      'We take Ferry Street because there is no time and no better idea, and Ferry Street takes ' +
       'something from each of us in exchange.',
 
-      'It is not a chase. I keep expecting it to become a chase and it never does — it is a ' +
-      '<em>crowd</em>, and I am going the wrong way through it, and every single one of them is ' +
-      'reaching as I pass with that same slow grip, trying to turn me round, trying ' +
-      'to get my face toward them, trying to get my mouth open.',
+      'It is not a chase. I keep expecting it to turn into one, and it never does. It is a ' +
+      '<em>crowd</em>, and I am going the wrong way through it, and each of them reaches for me ' +
+      'as I pass with the same slow grip, trying to turn me round, to bring my face to theirs, ' +
+      'to get my mouth open.',
 
-      'Bram goes down at the betting shop with three of them on him and comes up again with the ' +
-      (s.has('cutters') ? 'bolt cutters' : 'broken length of railing') +
-      ' swinging and a <span class="wound">flap of his scalp hanging over one eye</span>. ' +
-      'He does not stop moving. He does not make a sound. Eleven years of corrections.',
+      'Bram goes down outside the betting shop with three of them on him and comes up again swinging the ' +
+      (s.has('cutters') ? 'bolt cutters' : 'length of broken railing') +
+      ', a <span class="wound">flap of scalp hanging over one eye</span>. ' +
+      'He does not stop moving and he does not make a sound. Eleven years on prison landings.',
 
-      'I come out at the Quay Road end with everyone still upright. None of us expected that.'
+      'We come out at the Quay Road end with everyone still on their feet. None of us expected that.'
     ]; },
     choices: [
       { label: 'Stop and get the scalp closed. Now, before he loses the eye.', tone: 'kind',
@@ -414,28 +412,27 @@
     enter: function (s) { s.set('atTheQuay'); },
     text: function (s) {
       var lines = [
-        'Quay Road runs along the water. On my left, the river, black and wide and moving. ' +
-        'On my right, the Fenwick estate — four tower blocks and a shopping precinct, every window ' +
-        'dark except one on the ninth floor of Marlowe House, where somebody has a candle.'
+        'Quay Road runs along the water. To my left, the river, wide and black and moving. ' +
+        'To my right, the Fenwick estate: four tower blocks and a shopping precinct, every window ' +
+        'dark except one on the ninth floor of Marlowe House, where somebody has a candle lit.'
       ];
       if (s.flag('sawTheLights')) {
         lines.push('Ahead and above it all, four miles north-east, St Amaranth Mercy is lit up like ' +
-          'a liner. We have all seen it now. Nobody has said what it means yet.');
+          'a liner. We have all seen it now. Nobody has said yet what it means.');
       } else {
-        lines.push('And ahead, four miles north-east, up on the hill: lights. Electric lights, ' +
+        lines.push('And ahead, four miles north-east, up on the hill: lights. Electric light, ' +
           'burning steadily, in a county with no power. St Amaranth Mercy.');
-        lines.push('Everybody stops walking at the same moment.');
+        lines.push('We all stop walking at the same moment.');
         s.set('sawTheLights');
       }
       lines.push({ c: 'sep', t: '\u2042' });
       if (withTeddy(s)) {
-        lines.push('Odile takes me aside by the elbow. <span class="said">"Two miles," she says. ' +
-          '"He has two miles in him, maybe three. Not four. I am telling you now, while it is still ' +
-          'information and not an emergency."</span>');
+        lines.push('Odile takes me aside by the elbow. <span class="said">"He has two miles in him,"' +
+          '</span> she says. <span class="said">"Perhaps three. Not four. I am telling you now, ' +
+          'while it is still information and not an emergency."</span>');
       }
-      lines.push('There is the river path, which is long and quiet and open. There is the estate, ' +
-        'which is short and close and has a candle in it. There is the culvert under the road, ' +
-        'which is neither.');
+      lines.push('The river path: long, quiet, open. The estate: short, close, with a candle in it. ' +
+        'And the culvert under the road, which is neither.');
       return lines;
     },
     choices: [
@@ -453,18 +450,18 @@
     chapter: CH,
     place: 'Quay Road',
     text: function (s) {
-      var lines = ['I ask. It is not a thing this group does, and the asking itself changes ' +
-        'the temperature of the night.'];
-      lines.push('<span class="said">"Estate," </span> Bram says immediately. ' +
-        '<span class="said">"Short. And a candle means a person, and a person means a room that has ' +
-        'held, and I would like to see a room that has held."</span>');
-      lines.push('<span class="said">"River," </span> says Odile. <span class="said">"Open ground. ' +
-        'I can see what is coming and I can hear what is coming, and I have had enough of corridors ' +
+      var lines = ['I ask. It is not something this group does, and the asking alone ' +
+        'changes the mood.'];
+      lines.push('<span class="said">"Estate,"</span> Bram says at once. ' +
+        '<span class="said">"It\u2019s short. A candle means a person, and a person means a room that\u2019s ' +
+        'held. I\u2019d like to see a room that\u2019s held."</span>');
+      lines.push('<span class="said">"River,"</span> says Odile. <span class="said">"Open ground. ' +
+        'I can see what is coming and I can hear it. I have had enough of corridors ' +
         'for one lifetime."</span>');
       if (withTeddy(s)) {
-        lines.push('<span class="said">"The short one," </span> Teddy says. <span class="said">' +
-          '"Whichever it is. Do not choose the long one on my account, because the long one is the ' +
-          'one where you have to decide about me halfway down it."</span>');
+        lines.push('<span class="said">"The short one,"</span> Teddy says. <span class="said">' +
+          '"Whichever that is."</span> A breath. <span class="said">"Not the long one for my sake, ' +
+          'child. The long one is where you have to decide about me. Halfway down."</span>');
       }
       lines.push({ c: 'whisper', t: 'Wren writes one word and holds it up.' });
       lines.push({ c: 'whisper', t: 'water' });
@@ -489,15 +486,15 @@
     place: 'Quay Road',
     enter: function (s) { s.ease(8); s.heal(6); s.set('rested'); },
     text: [
-      'I give it an hour in the lee of an overturned skip, and the hour costs me the last of the dark.',
+      'We give it an hour in the lee of an overturned skip, and the hour costs us the last of the dark.',
 
-      'Teddy sleeps sitting up against my shoulder and his breathing gets easier for a while, ' +
-      'and Odile sleeps for the first time in my presence in forty-one days, which tells me ' +
+      'Teddy sleeps sitting up against my shoulder, and for a while his breathing eases. ' +
+      'Odile sleeps too, the first time I have seen her sleep in forty-one days. That tells me ' +
       'more about how bad she thinks it is than anything she has said.',
 
-      'Wren does not sleep. Wren sits watching the river with her chin on her knees, and when I ' +
-      'look over she is doing something with her mouth — opening it, closing it, silently, ' +
-      'over and over, the way I would test a door I was afraid was locked.',
+      'Wren does not sleep. She sits watching the river with her chin on her knees, and when I ' +
+      'look over she is opening and closing her mouth, silently, over and over, ' +
+      'the way I might try a door I was afraid was locked.',
 
       { c: 'whisper', t: 'She is checking whether her voice is still in there.' }
     ],
@@ -507,7 +504,7 @@
       { label: 'Let her have the silence. Lead the group through the estate.', tone: 'kind', to: 'a2_estate',
         act: function (s) { s.trust('wren', 10); s.scar(4); } },
       { label: 'Ask her to try. Out loud. Once.', tone: 'risk', to: 'a2_wren_voice' },
-      { label: 'Wake everybody. Take the culvert before the light goes.', to: 'a2_culvert' }
+      { label: 'Wake everybody. Take the culvert before it gets light.', to: 'a2_culvert' }
     ]
   });
 
@@ -516,15 +513,15 @@
     chapter: CH,
     place: 'Quay Road',
     text: [
-      'She looks at me for a long time. Then she nods, and turns to face the water, and takes a breath.',
+      'She looks at me for a long time. Then she nods, turns to face the water and takes a breath.',
 
-      'What comes out is not a word. It is a dry click, and then a thin cracked vowel about two ' +
-      'seconds long, and it is the ugliest, most wonderful sound I have heard since the world ended.',
+      'What comes out is not a word. It is a dry click, then a thin, cracked vowel about two ' +
+      'seconds long: the ugliest and best sound I have heard since April.',
 
-      'Her hand goes straight to her own throat, surprised.',
+      'Her hand goes to her throat. She looks surprised.',
 
-      'And out on the water, forty yards out, on the far bank — something that had been standing ' +
-      'still in the reeds for the whole hour turns its head.',
+      'Forty yards away, on the far bank, something that has stood in the reeds all hour ' +
+      'without moving turns its head.',
 
       { c: 'hum', t: 'h m m m m m m m' }
     ],
@@ -548,23 +545,23 @@
     enter: function (s) { s.set('tookRiver'); },
     text: function (s) {
       var lines = [
-        'Wren is right about the water. Twice on the river path I see them at the edge of it — ' +
-        'standing in the shallows up to the shins, facing out, perfectly still, humming at the far bank ' +
-        'like a congregation facing an altar nobody can see.',
+        'Twice on the river path I see them at the water\u2019s edge, ' +
+        'standing in the shallows up to the shins, facing out, quite still, humming at the far bank ' +
+        'like a congregation facing an altar nobody else can see.',
 
-        'They do not come in after me. Whatever the water is to them, it is a wall.',
+        'They do not come in after us. Whatever the water is to them, it is a wall.',
 
         { c: 'sep', t: '\u2042' },
 
-        'Two miles up, where the path passes the old sailing club, there is a pontoon with four boats ' +
-        'still moored to it, and three of them are swamped and on the bottom.',
+        'Two miles on, where the path passes the old sailing club, four boats are still moored to a ' +
+        'pontoon. Three of them are swamped and sitting on the bottom.',
 
-        'The fourth is a twenty-six foot cabin cruiser, riding high, rocking gently, ' +
-        'with its canopy zipped and its hull intact and the name <em>LUCKY II</em> across the transom.'
+        'The fourth is a twenty-six-foot cabin cruiser riding high and rocking gently: ' +
+        'canopy zipped, hull sound, <em>LUCKY II</em> across the transom.'
       ];
       if (withTeddy(s)) {
-        lines.push('Teddy stops dead when he sees it and puts a hand on my arm and does not say ' +
-          'anything at all, and the hand is shaking.');
+        lines.push('Teddy stops dead when he sees it and puts a hand on my arm. He says nothing. ' +
+          'The hand is shaking.');
       }
       return lines;
     },
@@ -583,17 +580,17 @@
     chapter: CH,
     place: 'The sailing club',
     text: [
-      'She looks at the boat for a long moment with her arms folded.',
+      'She looks at the boat for a long moment, arms folded.',
 
-      '<span class="said">"I think it is the best idea anybody has had in six weeks," she says, ' +
-      '"and I think you should understand what it is before you fall in love with it. It is a hole ' +
-      'in the water. No power, no charts, no fuel we have counted, and a river that goes out to a ' +
+      '<span class="said">"It is the best idea anybody has had in six weeks,"</span> she says. ' +
+      '<span class="said">"Understand what it is before you fall in love with it. A hole ' +
+      'in the water. No power, no charts, no fuel we have counted, and a river that runs out to a ' +
       'sea none of us can sail."</span>',
 
       'She unfolds her arms.',
 
-      '<span class="said">"But they stop at the edge of the water. I have watched them do it four ' +
-      'times since we got here. So yes. Yes. Find the keys."</span>'
+      '<span class="said">"But they stop at the water\u2019s edge. I have watched them do it four ' +
+      'times since we got here. So, yes. Find the keys."</span>'
     ],
     choices: [
       { label: 'Board her and search.', to: 'a2_boat' },
@@ -621,8 +618,8 @@
       { c: 'note', t: 'Taped inside the locker door, in marker pen, a note from a man to his wife: ' +
         'JEAN \u2014 KEYS ARE WHERE THEY ALWAYS ARE. STOP ASKING ME. x' },
 
-      'There is a fuel gauge and it reads three-quarters, and that is the single most hopeful object ' +
-      'any of us have seen since the eleventh of April.'
+      'The fuel gauge reads three-quarters. It is the most hopeful thing any of us ' +
+      'has seen since the eleventh of April.'
     ],
     choices: [
       { label: 'Search the boat properly for the keys.', to: 'a2_boat_search' },
@@ -641,7 +638,7 @@
     place: 'LUCKY II',
     enter: function (s) { s.set('searchedBoat'); },
     text: function (s) { return [
-      'I take the cabin apart in eleven minutes with ' + (s.partyCount() + 1) +
+      'We take the cabin apart in eleven minutes, ' + (s.partyCount() + 1) +
       ' of us and one wind-up torch.',
 
       'Where they always are turns out to mean: not here. Not in the galley drawer, not in the chart ' +
@@ -655,19 +652,19 @@
       { c: 'note', t: 'ST AMARANTH MERCY \u00b7 RESPIRATORY OUTPATIENTS\nMR D. HOLLOWAY \u00b7 WARD 11 \u00b7 ' +
         'THURS 09:40\nPLEASE BRING THIS CARD AND A LIST OF YOUR MEDICATIONS' },
 
-      'The card has the same name as the note in the locker. If the keys are still in ' +
-      'Dennis Holloway\u2019s coat, they are four miles up the hill, in the only building with lights.'
+      'Mr D. Holloway, then: the man who wrote to Jean. If he went up the hill with the keys in ' +
+      'his coat, they are four miles away, in the only building with lights.'
     ]; },
     choices: [
       { label: 'Take Holloway\u2019s appointment card to the Mercy.', to: 'a2_mercy_approach',
         act: function (s) { s.set('hollowayCard'); s.set('boatWillKeep'); },
-        toast: ['Ward 11. A name. A room number.', 'item'] },
+        toast: ['Ward 11. A name. A place to start.', 'item'] },
       { label: 'Take the card and tell nobody what it means.', tone: 'cruel',
         to: 'a2_mercy_approach',
         act: function (s) { s.set('hollowayCard'); s.set('boatWillKeep'); s.set('secretCard'); s.harden(10); } },
       { label: 'Leave the card. The boat is a fantasy and the Mercy is a plan.', to: 'a2_mercy_approach',
         act: function (s) { s.set('boatWillKeep'); s.harden(5); } },
-      { label: 'Hide the family aboard and go to the Mercy alone.', tone: 'risk',
+      { label: 'Hide the others aboard and go to the Mercy alone.', tone: 'risk',
         to: 'a2_boat_hold', act: function (s) { s.set('hollowayCard'); } },
       { label: 'Take the card up the hill. Leave the river behind.',
         to: 'a2_mercy_approach', act: function (s) { s.set('hollowayCard'); s.set('boatWillKeep'); } }
@@ -681,19 +678,19 @@
     enter: function (s) { s.hurt(5); s.scar(6); },
     text: function (s) { return [
       'I get the panel off with ' + (s.has('knife') ? 'the knife' : 'the bolt cutters') +
-      ' and I get my hand into a loom of forty-year-old ' +
-      'marine wiring and I learn, over the following twenty minutes, that a diesel inboard with ' +
+      ' and my hand into a loom of forty-year-old ' +
+      'marine wiring, and over the next twenty minutes I learn that a diesel inboard with ' +
       'an electronic cut-off is not a Vauxhall Astra.',
 
-      'What I achieve is: the horn.',
+      'What I manage is the horn.',
 
-      'One single enormous blast across two hundred yards of open water, rolling off the far bank, ' +
-      'coming back at me, and then — like something being poured — the humming starts up all along ' +
+      'One enormous blast across two hundred yards of open water. It rolls off the far bank ' +
+      'and comes back at me, and then, like something being poured, the humming starts up all along ' +
       'the opposite shore at once.',
 
       { c: 'hum', t: 'h m m m m m m m' },
 
-      'Hundreds. Not dozens. The far bank of the river has been full of them this entire time, ' +
+      'Not dozens: hundreds. The far bank has been full of them all along, ' +
       'standing in the dark, and now every one of them is facing me.',
 
       'They cannot cross. I am almost certain they cannot cross.'
@@ -719,24 +716,23 @@
     enter: function (s) { s.advance(2); s.set('heldAtTheBoat'); },
     text: function (s) {
       var lines = [
-        'I hold at the pontoon for two days, because the water is a wall and because for two days ' +
+        'We stay at the pontoon for two days, because the water is a wall, and for two days ' +
         'it is possible to believe that a wall is the same thing as a home.',
 
-        'It is the best time any of us have had. That is the cruelty of it. I eat tinned peaches ' +
+        'They are the best days any of us has had since April. I eat tinned peaches ' +
         'sitting on the coachroof. Wren finds the paperback readable from page forty. Bram laughs once, ' +
         'at something Odile says about a horse, and the sound is so unfamiliar that everybody stops.'
       ];
       if (withTeddy(s)) {
-        lines.push('And Teddy gets worse. Not dramatically. The way a tide comes in. On the second ' +
-          'night his breathing acquires a new sound underneath the old one — a fine dry crackle, ' +
-          'like someone screwing up paper in another room — and Odile hears it from the cockpit and ' +
-          'closes her eyes.');
+        lines.push('And Teddy gets worse. Not dramatically; the way a tide comes in. On the second ' +
+          'night a new sound starts under his breathing, a fine dry crackle like somebody screwing ' +
+          'up paper in another room. Odile hears it from the cockpit and closes her eyes.');
       } else {
-        lines.push('And on the second night the far bank fills up, and stays full, and the humming ' +
-          'does not stop for nine hours, and we all stop pretending that the wall is a home.');
+        lines.push('On the second night the far bank fills up and stays full. The humming goes on ' +
+          'for nine hours without a break, and we stop pretending that the wall is a home.');
       }
-      lines.push('There is almost no food left on this boat. There are no keys on this boat. ' +
-        'The lit building four miles north-east has both beds and people to answer to.');
+      lines.push('There is almost no food left on this boat, and there are no keys. ' +
+        'The lit building four miles north-east has beds in it, and people.');
       return lines;
     },
     choices: [
@@ -746,7 +742,7 @@
         act: function (s) { s.set('wentAlone'); s.set('boatWillKeep'); s.scar(8); s.soften(6); } },
       { label: 'Take Bram. Leave Odile and Wren with the boat.', to: 'a2_mercy_approach',
         act: function (s) { s.set('tookBram'); s.set('boatWillKeep'); } },
-      { label: 'Stay one more day, then follow the others up to the Mercy.', tone: 'risk', to: 'a2_boat_lastnight',
+      { label: 'Stay one more day. Then go up to the Mercy.', tone: 'risk', to: 'a2_boat_lastnight',
         act: function (s) { s.hurt(10); s.scar(8); s.bump('daysWasted'); } }
     ]
   });
@@ -764,10 +760,10 @@
     },
     text: function (s) {
       var lines = [
-        'I bargain for one more day. By afternoon the last tin is empty. The paperback lies open ' +
-        'face-down in the cockpit, its pages swelling as the river mist comes in.',
-        'At dusk the humming starts on the far bank again. Nobody gets up to look. That is when ' +
-        'I understand what staying has bought me: not safety, only practice at ignoring it.'
+        'I argue for one more day and get it. By afternoon the last tin is empty. The paperback lies ' +
+        'face down in the cockpit, its pages swelling in the river mist.',
+        'At dusk the humming starts again on the far bank. Nobody gets up to look. Staying has ' +
+        'bought us nothing but practice at ignoring it.'
       ];
       if (withTeddy(s)) {
         lines.push('Teddy asks me to help him off the boat. He does not ask for the Mercy. ' +
@@ -792,17 +788,17 @@
     place: 'Fenwick estate',
     enter: function (s) { s.set('tookEstate'); },
     text: [
-      'The precinct is a concrete horseshoe of shuttered units with a dry fountain in the middle, ' +
-      'and it is the quietest place I have been in six weeks — not the quiet of nothing here, ' +
-      'but the quiet of something holding still.',
+      'The precinct is a concrete horseshoe of shuttered units round a dry fountain. It is ' +
+      'the quietest place I have been in six weeks, and it is not an empty quiet. ' +
+      'Something here is holding still.',
 
       'The candle is on the ninth floor of Marlowe House. From the courtyard I can see it moving ' +
-      'about behind the glass: somebody walking from room to room with a light, ' +
+      'behind the glass: somebody carrying a light from room to room, ' +
       'in a dead city.',
 
       { c: 'sep', t: '\u2042' },
 
-      'Taped inside the glass of the tower entrance, at eye height, facing out, there is a sheet ' +
+      'Taped to the inside of the glass at the tower entrance, at eye level and facing out, is a sheet ' +
       'of A4 in forty-point type.',
 
       { c: 'note', t: 'WE HAVE CHILDREN IN HERE.\nWE HAVE NO FOOD TO SPARE AND NOTHING WORTH TAKING.\n' +
@@ -814,7 +810,7 @@
         act: function (s) { s.soften(10); s.set('walkedOn'); s.scar(5); },
         toast: ['The candle goes out behind you as you pass. Relief, from nine floors up.', 'good'] },
       { label: 'Knock.', tone: 'risk', to: 'a2_estate_knock' },
-      { label: 'Try the other units. They said nothing worth taking — check.', to: 'a2_estate_units' },
+      { label: 'Try the shuttered units. They said nothing worth taking — check.', to: 'a2_estate_units' },
       { label: 'Go up. Nine floors. Take what they have.', tone: 'cruel', to: 'a2_estate_up' },
       { label: 'Shout up to them. Ask about the hospital.', tone: 'risk', to: 'a2_estate_shout' }
     ]
@@ -825,22 +821,22 @@
     chapter: CH,
     place: 'Marlowe House',
     text: [
-      'I knock. Four times, slowly, with my knuckle, in the way that is unmistakably a person ' +
-      'and not a thing.',
+      'I knock four times, slowly, with one knuckle: the way a person knocks, ' +
+      'and nothing else does.',
 
-      'Nine floors up the candle stops moving.',
+      'Nine floors up, the candle stops moving.',
 
-      'Four minutes later a voice comes down the stairwell, thinned by distance, a woman in her sixties ' +
-      'doing an extremely good job of sounding calm.',
+      'Four minutes later a voice comes down the stairwell, thinned by distance: a woman, sixty or so ' +
+      'by the sound of her, doing a very good job of sounding calm.',
 
-      '<span class="said">"Please go away. I am not being unkind. There are six children in this ' +
-      'flat and two of them are under four and I cannot — I will not — open this door. Please."</span>',
+      '<span class="said">"Please go away. I\u2019m not being unkind. There are six children in this ' +
+      'flat, two of them under four, and I can\u2019t — I won\u2019t — open this door. Please."</span>',
 
-      'A pause. Then, more quietly, and from much closer, as though she has come down two flights ' +
+      'A pause. Then, quieter and much closer, as if she has come down two flights ' +
       'to say it properly:',
 
-      '<span class="said">"If you are going up to the Mercy, do not go in the front. ' +
-      'They are letting people in the front."</span>'
+      '<span class="said">"If you\u2019re going up to the Mercy, don\u2019t go in the front. ' +
+      'They\u2019re letting people in at the front."</span>'
     ],
     choices: [
       { label: '"Thank you." Then go.', tone: 'kind', to: 'a2_mercy_approach',
@@ -860,21 +856,21 @@
     place: 'Marlowe House',
     enter: function (s) { s.set('warnedAboutFront'); s.set('knowsAboutMercy'); },
     text: [
-      'The silence from the stairwell goes on long enough that I think she has gone.',
+      'The stairwell is silent for so long that I think she has gone.',
 
-      '<span class="said">"My husband went up in the second week," she says. "With his brother. ' +
-      'They were taking anybody then. Beds, hot water, a doctor. Proper triage, lanyards, ' +
+      '<span class="said">"My husband went up in the second week,"</span> she says. <span class="said">"Him ' +
+      'and his brother. They were taking anybody then. Beds, hot water, a doctor. Proper triage, lanyards, ' +
       'the whole performance."</span>',
 
-      '<span class="said">"His brother came back on the eleventh of May and stood in that courtyard ' +
-      'where you are standing and told me what the wards are for now. And then he asked to come up, ' +
-      'and I said no, because of what he had helped them do, and he sat down against that fountain ' +
-      'and he was still sitting there four days later."</span>',
+      '<span class="said">"His brother came back on the eleventh of May. Stood in that courtyard, ' +
+      'where you\u2019re standing, and told me what the wards are for now. Then he asked to come up, ' +
+      'and I said no, because of what he\u2019d helped them do. So he sat down against that fountain. ' +
+      'He was still sitting there four days later."</span>',
 
       { c: 'sep', t: '\u2042' },
 
-      '<span class="said">"They are not lying to you about the beds. That is the thing. ' +
-      'There really are beds. There is really a doctor. Everything they tell you at the front door ' +
+      '<span class="said">"And they\u2019re not lying to you about the beds. ' +
+      'There really are beds. There really is a doctor. Everything they tell you at the front door ' +
       'is true."</span>',
 
       '<span class="said">"Go in the back."</span>'
@@ -902,16 +898,16 @@
     place: 'Marlowe House',
     enter: function (s) { s.set('knowsTheWards'); },
     text: [
-      'She tells me. It takes ninety seconds and she does it in the flat, careful voice of a woman ' +
-      'who has had to say it before to people who did not believe her.',
+      'She tells me. It takes ninety seconds, in the flat, careful voice of somebody ' +
+      'who has said it before to people who didn\u2019t believe her.',
 
-      '<span class="said">"They keep them alive. The turned ones. Strapped, fed, washed — properly ' +
-      'washed, she said he said, it is a real hospital, they are not animals about it. Whole wards of ' +
-      'them lying there humming at the ceiling."</span>',
+      '<span class="said">"They keep them alive. The turned ones. Strapped down, fed, washed — properly ' +
+      'washed, he said, it\u2019s a real hospital, they\u2019re not animals about it. Whole wards of ' +
+      'them, lying there humming at the ceiling."</span>',
 
-      '<span class="said">"And they take the blood. Every day, a little, off every one of them, ' +
-      'and they do something to it, and what comes out the other end they give to the well ones ' +
-      'as a treatment. And it works. That is the part you need to hear properly. ' +
+      '<span class="said">"And they take the blood. A little every day, off every one of them. ' +
+      'They do something to it, and what comes out the other end they give to the well ones ' +
+      'as a treatment. And it works. You need to hear that part properly. ' +
       '<em>It works.</em>"</span>',
 
       { c: 'sep', t: '\u2042' },
@@ -940,24 +936,24 @@
       var lines = [
         'I say it out loud in the courtyard, by the dry fountain, and it lands like a dropped plate.'
       ];
-      lines.push('<span class="said">"Not going," </span> Bram repeats. <span class="said">' +
-        '"To the only building in this county with electricity in it."</span>');
+      lines.push('<span class="said">"Not going,"</span> Bram repeats. <span class="said">' +
+        '"To the only building in this county that\u2019s got electricity."</span>');
       if (withTeddy(s)) {
-        lines.push('<span class="said">"On the word of a frightened woman through a door," </span>' +
-          'he says, <span class="said">"you want to turn a dying man around and walk him back ' +
-          'down the hill."</span>');
+        lines.push('<span class="said">"On the word of a frightened woman behind a door,"</span> ' +
+          'he goes on, <span class="said">"you want to turn a dying man round and walk him away ' +
+          'from a doctor."</span>');
       }
-      lines.push('Odile says nothing for a long moment. Then: <span class="said">"She said it works."</span>');
-      lines.push('<span class="said">"She did say that," </span> I agree.');
-      lines.push('<span class="said">"No," </span> Odile says. <span class="said">"Listen to me. ' +
-        'I am not arguing with you. I am telling you that in thirty years I have never once heard ' +
-        'anybody describe an atrocity and a cure in the same breath and be wrong about <em>both</em>."</span>');
+      lines.push('Odile is quiet for a while. Then: <span class="said">"She said it works."</span>');
+      lines.push('<span class="said">"She did say that,"</span> I agree.');
+      lines.push('<span class="said">"No,"</span> Odile says. <span class="said">"Listen to me. ' +
+        'I am not arguing with you. I am telling you that in thirty years I have never ' +
+        'heard anybody describe an atrocity and a cure in the same breath and be wrong about <em>both</em>."</span>');
       return lines;
     },
     choices: [
       { label: 'Go anyway. In the back. Eyes open.', to: 'a2_mercy_approach',
         act: function (s) { s.set('warnedAboutFront'); s.scar(6); } },
-      { label: 'Go to the river instead. Find the boat.', to: 'a2_river',
+      { label: 'Go to the river instead. Away from the Mercy.', to: 'a2_river',
         show: function (s) { return !s.flag('knowsBoat'); }, act: function (s) { s.set('refusedMercy'); } },
       { label: 'Put it to a vote.', to: 'a2_vote' },
       { label: 'Go alone. Send the others to the water.', tone: 'risk', to: 'a2_mercy_approach',
@@ -970,14 +966,14 @@
     chapter: CH,
     place: 'Fenwick estate',
     text: function (s) {
-      var lines = ['Hands, in a dry fountain, while the precinct holds its breath.'];
-      lines.push('Bram: the Mercy. Immediately, without apology.');
-      lines.push('Odile: the Mercy, and she says <span class="said">"with my eyes open, and with ' +
+      var lines = ['A show of hands by the dry fountain. The precinct around us does not make a sound.'];
+      lines.push('Bram: the Mercy. Straight away, and without apology.');
+      lines.push('Odile: the Mercy, and she adds, <span class="said">"with my eyes open, and with ' +
         'something sharp in my coat."</span>');
       if (withTeddy(s)) {
-        lines.push('Teddy does not raise his hand at all. <span class="said">"I am the reason you ' +
-          'are going," </span>he says. <span class="said">"I do not get a vote on it. That is not ' +
-          'humility, it is procedure."</span>');
+        lines.push('Teddy keeps his hand down. <span class="said">"I am the reason you ' +
+          'are going,"</span> he says. A breath. <span class="said">"The reason does not get a vote. ' +
+          'Not modesty, child. Just the rules."</span>');
       }
       lines.push({ c: 'whisper', t: 'Wren holds up the pad.' });
       lines.push({ c: 'whisper', t: 'the boat' });
@@ -1007,21 +1003,21 @@
       s.set('gaveThePills');
     },
     text: [
-      'Four capsules of expired amoxicillin go through a letterbox in a tower block before we leave.',
+      'Four capsules of expired amoxicillin go through the letterbox.',
 
-      'It is not enough for six children. It is not enough for one child, really. I do it anyway, ' +
-      'and the foil strip makes a small bright sound on the hall tiles on the other side.',
+      'It isn\u2019t enough for six children. It isn\u2019t really enough for one. I do it anyway, ' +
+      'and the foil strip lands with a small bright sound on the tiles inside.',
 
-      'A long silence. Then the letterbox flap lifts an inch from the inside and a voice says, ' +
-      'very close and quite broken:',
+      'A long silence. Then the flap lifts an inch from the inside, and a voice, ' +
+      'very close and badly shaken, says:',
 
-      '<span class="said">"Oh. Oh, you absolute — "</span> and does not finish, and the flap closes.',
+      '<span class="said">"Oh. Oh, you absolute —"</span> She doesn\u2019t finish. The flap drops shut.',
 
       { c: 'sep', t: '\u2042' },
 
-      'Four minutes later a bundle comes out of a ninth floor window and lands in the courtyard ' +
-      'with a crack: a pillowcase, knotted, containing nine tins of soup, a packet of dry crackers, ' +
-      'a torch with a working battery, and a tea towel with a map of Cornwall on it.'
+      'Four minutes later a bundle drops from a ninth-floor window and hits the courtyard ' +
+      'with a crack: a knotted pillowcase holding nine tins of soup, a packet of crackers, ' +
+      'a torch with a working battery and a tea towel printed with a map of Cornwall.'
     ],
     choices: [
       { label: 'Take it all. Say thank you to a window.', tone: 'kind', to: 'a2_mercy_approach',
@@ -1040,19 +1036,19 @@
     chapter: CH,
     place: 'Marlowe House',
     text: [
-      'I tell her about Teddy. I do not perform it. I just say it: seventy-one, one lung, ' +
-      'less breath each night, and we are trying to get him four miles uphill.',
+      'I tell her about Teddy. I don\u2019t dress it up: ' +
+      'seventy-one, one lung, less breath every night, and we are trying to get him four miles uphill.',
 
       'The stairwell is quiet for a long time.',
 
-      '<span class="said">"I am going to say no," </span> she says at last, <span class="said">' +
-      '"and I am going to have to live with having said it, and I want you to know that I understood ' +
-      'exactly what I was saying no to. I am not going to pretend to myself that I did not."</span>',
+      '<span class="said">"I\u2019m going to say no,"</span> she says at last, <span class="said">' +
+      '"and I\u2019ll have to live with having said it. I want you to know I understood what I was ' +
+      'saying no to. I won\u2019t pretend to myself that I didn\u2019t."</span>',
 
-      '<span class="said">"There are six of them up here. Two are under four. That is the whole ' +
-      'of my reasoning and it is not enough and it is still the answer."</span>',
+      '<span class="said">"There are six of them upstairs. Two under four. That\u2019s all my ' +
+      'reasoning, and it isn\u2019t enough, and it\u2019s still the answer."</span>',
 
-      'Something comes through the letterbox: a bottle of water and a blister pack of co-codamol, ' +
+      'Then something comes through the letterbox: a bottle of water and a blister pack of co-codamol, ' +
       'eight tablets, most of a box.'
     ],
     choices: [
@@ -1073,17 +1069,17 @@
     /* she names the boat out loud, which is how you come to know about it */
     enter: function (s) { s.set('knowsHolloway'); s.set('knowsBoat'); },
     text: [
-      '<span class="said">"Dennis," </span> she says immediately. <span class="said">"Dennis Holloway. ' +
+      '<span class="said">"Dennis,"</span> she says, without having to think. <span class="said">"Dennis Holloway. ' +
       'Boat at the sailing club. Chest like a bag of spanners."</span>',
 
       'A pause, and when she speaks again the careful calm has slipped a little.',
 
-      '<span class="said">"He went up the same week as my husband. Ward Eleven. He is why ' +
+      '<span class="said">"He went up the same week as my husband. Ward Eleven. He\u2019s why ' +
       'I know about Ward Eleven."</span>',
 
-      '<span class="said">"If your business up there is with Dennis Holloway, then you had better ' +
-      'understand what you are going to find in that bed. He will not be able to tell you anything. ' +
-      'But he will have his coat. They keep the coats. They are very organised about the coats."</span>'
+      '<span class="said">"If it\u2019s his boat you\u2019re after, you\u2019d better understand ' +
+      'what you\u2019ll find in that bed. He won\u2019t be able to tell you anything. ' +
+      'But he\u2019ll have his coat. They keep the coats. They\u2019re very organised about the coats."</span>'
     ],
     choices: [
       { label: '"Thank you." Go.', tone: 'kind', to: 'a2_mercy_approach',
@@ -1101,18 +1097,18 @@
     place: 'Fenwick estate',
     enter: function (s) { s.scar(10); s.set('shoutedInTheCourtyard'); },
     text: [
-      'I put my head back and I shout up nine floors in a concrete courtyard.',
+      'I tip my head back and shout up nine floors of concrete.',
 
-      'The candle goes out instantly.',
+      'The candle goes out.',
 
-      'And the precinct answers. Not from one direction. From the shuttered units all around the ' +
+      'The precinct answers, and not from one direction. From the shuttered units all round the ' +
       'horseshoe, from behind the roller doors of the chemist and the bookmaker and the shop that ' +
-      'sold phone cases — a humming that starts in six places at once and converges, because they ' +
-      'have been in there the whole time, standing in the dark among the stock, waiting for exactly this.',
+      'sold phone cases, a humming starts in six places at once and draws together. They have ' +
+      'been in there all along, standing in the dark among the stock, waiting for this.',
 
       { c: 'hum', t: 'h m m m m m m m' },
 
-      'Bram has me by the arm before the echo is finished.'
+      'Bram has me by the arm before the echo has died.'
     ],
     choices: [
       { label: 'Run. North-east. Do not stop at the estate edge.', to: 'a2_mercy_approach',
@@ -1134,24 +1130,24 @@
       s.set('drewThemOff');
     },
     text: [
-      'I do the single most stupid and most decent thing I have done since the eleventh of April: ' +
-      'I walk backwards into the middle of the precinct shouting at the top of my lungs, ' +
-      'away from the tower, away from the stairwell, away from six children and two under four.',
+      'I do the stupidest and most decent thing I have done since the eleventh of April. ' +
+      'I walk backwards into the middle of the precinct, shouting at the top of my voice, ' +
+      'away from the tower, away from the stairwell, away from the children behind that sign.',
 
-      'They come. All of them, out of the units, out of the dark, converging on the noise like water ' +
-      'finding the drain — and the drain is me.',
+      'They come. All of them, out of the units and out of the dark, converging on the noise like water ' +
+      'finding a drain. I am the drain.',
 
-      'I get out through the bin store by eleven seconds and a torn coat and a line of ' +
-      '<span class="wound">fingernail down the length of my back</span> that Odile will later ' +
-      'describe, with professional disgust, as "not deep, but filthy".',
+      'I get out through the bin store with eleven seconds to spare, a torn coat and a ' +
+      '<span class="wound">fingernail gouge down the length of my back</span>. Odile, later, ' +
+      'with professional distaste: <span class="said">"Not deep, but filthy."</span>',
 
       { c: 'sep', t: '\u2042' },
 
-      'Ninety yards clear, on the slip road, Bram stops me with a hand flat on my chest and ' +
-      'looks at me with an expression I have not seen on him before.',
+      'Ninety yards clear, on the slip road, Bram stops me with a hand flat on my chest. ' +
+      'I have not seen that look on him before.',
 
-      '<span class="said">"Do not ever do that again," </span> he says, and his voice is not steady, ' +
-      '<span class="said">"and thank you, and do not ever do that again."</span>'
+      '<span class="said">"Don\u2019t ever do that again,"</span> he says. His voice isn\u2019t steady. ' +
+      '<span class="said">"And thank you. And don\u2019t ever do that again."</span>'
     ],
     choices: [
       { label: 'Let Odile see the back. Now, before it closes.', tone: 'kind', to: 'a2_mercy_approach',
@@ -1173,32 +1169,32 @@
     text: [
       'I try the shutters one by one, quietly, along the horseshoe.',
 
-      'The chemist is stripped. The bookmaker is stripped. The phone case shop has been untouched ' +
-      'by anybody in six weeks because it is a shop that sells phone cases.',
+      'The chemist is stripped. The bookmaker is stripped. Nobody has touched the phone-case shop ' +
+      'in six weeks, because it is a shop that sells phone cases.',
 
-      'The last unit is a butcher\u2019s, and the shutter is already up two feet, and the smell ' +
-      'coming out from under it is — ',
+      'The last unit is a butcher\u2019s. The shutter is already up two feet, and the smell ' +
+      'coming from under it is —',
 
       { c: 'sep', t: '\u2042' },
 
-      'It is not what I think. It is bleach. Industrial, eye-watering, recent. ' +
-      'Somebody has cleaned a butcher\u2019s shop, thoroughly, within the last week.',
+      'It isn\u2019t what I think. It is bleach: industrial, eye-watering, recent. ' +
+      'Somebody has cleaned a butcher\u2019s shop, thoroughly, in the last week.',
 
-      'Inside, in the dark, every surface is scrubbed, every blade is racked and oiled, ' +
-      'and on the counter by the till, stacked and squared off, is a neat pile of forty-odd ' +
+      'Inside, in the dark, every surface is scrubbed and every blade racked and oiled. ' +
+      'On the counter by the till, squared off in a neat pile, are forty-odd ' +
       '<span class="wound">lanyards with photographs on them</span>.',
 
       { c: 'note', t: 'ST AMARANTH MERCY \u00b7 VISITOR \u00b7 DAY PASS' }
     ],
     choices: [
-      { label: 'Take one lanyard. Leave the rest exactly as they are.', tone: 'risk',
+      { label: 'Take one lanyard. Leave the rest just as they are.', tone: 'risk',
         to: 'a2_mercy_approach',
         act: function (s) { s.give('badge'); s.set('tookLanyard'); s.scar(12); s.set('sawTheButchers'); },
         toast: ['+ Mercy day pass', 'item'] },
       { label: 'Take the lot and burn them in the fountain.', tone: 'cruel', to: 'a2_mercy_approach',
         show: function (s) { return s.has('lighter'); },
         act: function (s) { s.harden(8); s.scar(14); s.set('burnedTheLanyards'); s.set('sawTheButchers'); } },
-      { label: 'Take a boning knife and a cleaver and go.', to: 'a2_mercy_approach',
+      { label: 'Take a boning knife and a bone saw and go.', to: 'a2_mercy_approach',
         act: function (s) { s.give('knife'); s.give('saw'); s.set('sawTheButchers'); s.scar(8); } },
       { label: 'Back out. Do not touch anything. Somebody is still using this room.', tone: 'kind',
         to: 'a2_mercy_approach', act: function (s) { s.scar(10); s.set('sawTheButchers'); } }
@@ -1211,16 +1207,16 @@
     place: 'Marlowe House',
     enter: function (s) { s.set('wentUpTheTower'); },
     text: function (s) { return [
-      'Nine floors of stairwell in the dark, and at the top, a fire door, and behind the fire door ' +
-      'a barricade of furniture that six adults built in a hurry in the first week and have been ' +
-      'improving ever since.',
+      'Nine floors of stairwell in the dark. At the top, a fire door, and behind the fire door ' +
+      'a barricade of furniture that went up in a hurry, early on, and has been added to ' +
+      'ever since.',
 
       'I can hear them through it. Somebody is whispering a child through a nightmare. Somebody ' +
-      'else is counting, very quietly, over and over, which is either a game or a way of not screaming.',
+      'else is counting under their breath, over and over: a game, or a way of not screaming.',
 
-      'The door will come. Not quickly, not quietly, but it will come — ' +
+      'The door will give. Not quickly and not quietly, but it will give. ' +
       (s.has('cutters') ? 'I have bolt cutters' : 'I can work at the hinges') +
-      ' and leverage, and the others are here to help.',
+      ', and the others are here to add their weight.',
 
       { c: 'sep', t: '\u2042' },
 
@@ -1243,21 +1239,21 @@
     chapter: CH,
     place: 'Marlowe House',
     text: [
-      'I step back from the door and I say, out loud, in front of Odile and Wren: ' +
+      'I step back from the door and say, in front of Odile and Wren: ' +
       '<span class="said">"You decide."</span>',
 
-      'And Bram understands exactly what I have just done to him, and his face says so.',
+      'Bram understands what I have just done to him. It is all over his face.',
 
-      '<span class="said">"No," </span>he says. <span class="said">"No, you do not get to do that. ' +
-      'You do not get to hand me the knife and then stand there being the one who did not hold it."</span>',
+      '<span class="said">"No,"</span> he says. <span class="said">"No, you don\u2019t get to do that. ' +
+      'You don\u2019t get to hand me the knife and then stand there being the one who didn\u2019t hold it."</span>',
 
-      'He looks at the barricade for a long moment. Somewhere behind it, the counting continues.',
+      'He looks at the barricade for a long moment. Behind it, the counting goes on.',
 
       '<span class="said">"Eleven years I did this. Every day. Who eats, who waits, who gets moved, ' +
-      'who gets left. And every single day there was a form to fill in afterwards, and a name at ' +
-      'the bottom of the form, and the name was mine."</span>',
+      'who gets left. And every day there was a form to fill in afterwards, with a name at ' +
+      'the bottom, and the name was mine."</span>',
 
-      '<span class="said">"There is no form now. So no. Down. We are going down."</span>'
+      '<span class="said">"There\u2019s no form now. So no. Down. We\u2019re going down."</span>'
     ],
     choices: [
       { label: 'Go down.', tone: 'kind', to: 'a2_mercy_approach',
@@ -1283,23 +1279,23 @@
       s.set('tookFromTheChildren');
     },
     text: [
-      'It takes nineteen minutes and it is the loudest nineteen minutes of the night, and nobody ' +
-      'inside that flat stops screaming for any of it.',
+      'It takes nineteen minutes, the loudest of the night, and nobody ' +
+      'inside the flat stops screaming for any of it.',
 
-      'They do not fight me. That is what I was not ready for. A woman in her sixties stands in ' +
+      'They don\u2019t fight me. I wasn\u2019t ready for that. A woman in her sixties stands in ' +
       'front of six children with a bread knife held wrong, and when the barricade finally goes she ' +
-      'says <span class="said">"take it, take it, take all of it, please just — "</span> and steps aside.',
+      'says <span class="said">"take it, take it, take all of it, please just —"</span> and steps aside.',
 
       'I take nine tins of soup, four capsules of amoxicillin and a torch with a working battery ' +
-      'from six children and a woman whose name I never asked for.',
+      'from six children and a woman whose name I never asked.',
 
       { c: 'sep', t: '\u2042' },
 
       'Odile does not speak to me on the stairs. Wren walks eleven feet behind me for the rest ' +
-      'of the night and will not come closer, and when I stop, she stops, maintaining the distance ' +
-      'exactly, like a tide line.',
+      'of the night and won\u2019t come closer. When I stop, she stops, and the gap stays ' +
+      'the same.',
 
-      'The candle does not come back on.'
+      'Nobody relights the candle.'
     ],
     choices: [
       { label: 'Go. Do not look back at the window.', tone: 'cruel', to: 'a2_mercy_approach',
@@ -1324,23 +1320,22 @@
     enter: function (s) { s.set('tookCulvert'); s.scar(10); },
     text: function (s) {
       var lines = [
-        'The culvert takes the stream under Quay Road and the railway and comes out, according to ' +
-        'the sign nobody has read since 1987, on the far side of the embankment — which puts me ' +
-        'two miles closer and saves me the open ground.',
+        'The culvert carries the stream under Quay Road and the railway and comes out, according to ' +
+        'a sign nobody has read since 1987, on the far side of the embankment. It puts us ' +
+        'two miles closer and spares us the open ground.',
 
-        'It is four feet high. I go bent double in eight inches of cold water, in single file, ' +
+        'It is four feet high. We go bent double through eight inches of cold water, single file, ' +
         'in the dark, for six hundred yards.'
       ];
       if (withTeddy(s)) {
-        lines.push('Teddy cannot go bent double. Teddy goes on his hands and knees in eight inches ' +
-          'of water with his chest four inches above it, and what that does to a man with one lung ' +
-          'is a thing I will hear for the rest of my life.');
+        lines.push('Teddy can\u2019t go bent double. He goes on his hands and knees, his chest ' +
+          'four inches above the water, and I can hear what that does to a man with one lung.');
       }
       lines.push('Four hundred yards in, my torch finds the first of them.');
-      lines.push('It is standing in the water facing the wall, as though it walked in here and ran ' +
-        'out of instructions. It does not turn around. We edge past it one at a time, close ' +
-        'enough to touch, and it does not turn around.');
-      lines.push('There are nine more. All facing the walls. All humming.');
+      lines.push('It is standing in the water facing the wall, as if it walked in here and ran ' +
+        'out of instructions. It does not turn round. We edge past it one at a time, close ' +
+        'enough to touch, and it does not turn round.');
+      lines.push('There are more beyond it: nine in all, each one facing a wall, each one humming.');
       lines.push({ c: 'hum', t: 'h m m m m m m m' });
       return lines;
     },
@@ -1350,7 +1345,7 @@
       { label: 'Kill them. All nine. While they are facing the wall.', tone: 'cruel',
         show: function (s) { return s.has('knife') || s.has('cutters'); },
         to: 'a2_culvert_kill' },
-      { label: 'Turn one of them around. You need to see its face.', tone: 'risk',
+      { label: 'Turn one of them round. You need to see its face.', tone: 'risk',
         to: 'a2_culvert_turn' },
       { label: 'Back out. Take the river after all.', to: 'a2_river',
         act: function (s) { s.scar(8); s.hurt(4); } }
@@ -1366,22 +1361,22 @@
       s.set('cullediInTheCulvert'); s.bump('killed', 9);
     },
     text: [
-      'Nine of them, facing the wall, in eight inches of water, in a four foot pipe.',
+      'Nine of them, facing the wall, in eight inches of water, in a four-foot pipe.',
 
-      'It is not a fight. There is no word for what it is. It is work — wet, close, repetitive work, ' +
-      'and the only sound any of them make is the hum, which continues in each one until it physically ' +
-      'cannot, and then stops mid-note.',
+      'It is not a fight. It is work: wet, close, repetitive work. The only sound any of them ' +
+      'makes is the hum, which goes on in each one until it physically can\u2019t, ' +
+      'and stops mid-note.',
 
       'The ninth one is small.',
 
       { c: 'sep', t: '\u2042' },
 
-      'Nobody helps me. Nobody stops me either. Bram holds the torch at the correct angle for ' +
-      'twenty minutes without being asked, and that is a kind of participation, and both of us ' +
-      'know it, and neither of us will ever describe it that way.',
+      'Nobody helps me. Nobody stops me either. Bram holds the torch at the right angle for ' +
+      'twenty minutes without being asked. That is a kind of taking part. We both ' +
+      'know it. Neither of us will say so.',
 
-      'Afterwards Wren will not walk through the water. Odile carries her the last two hundred yards ' +
-      'on her back, and the water comes up over Odile\u2019s boots, and she says nothing about it at all.'
+      'Afterwards Wren won\u2019t walk through the water. Odile carries her the last two hundred yards ' +
+      'on her back. The water comes over the tops of Odile\u2019s boots and she says nothing about it.'
     ],
     choices: [
       { label: 'Keep going. It is done.', to: 'a2_mercy_approach' },
@@ -1405,21 +1400,21 @@
       '<span class="cold">cold and quite firm</span>, like meat out of a fridge — and I turn it ' +
       'to face me.',
 
-      'It lets me. It turns like a mannequin on a stand, and when it comes round, its face is ' +
+      'It lets me. It turns like a mannequin on a stand, and then its face is ' +
       'four inches from mine in the torchlight.',
 
-      'It is a woman of about thirty. The eyes have gone the way they all go. The jaw is slack and ' +
-      'the throat is working steadily with the note. And across the whole of her face, ' +
-      'under the dirt, are <span class="wound">long pale scars in a regular pattern</span> — ' +
-      'parallel, evenly spaced, four of them, running cheek to jaw.',
+      'A woman of about thirty. Her eyes have gone the way they all go. The jaw hangs slack and ' +
+      'the throat works steadily at the note. Across her face, under the dirt, run ' +
+      '<span class="wound">long pale scars in a regular pattern</span>: ' +
+      'four of them, parallel and evenly spaced, cheek to jaw.',
 
-      'They are old. Months old. They were made before the eleventh of April, in a hospital, ' +
-      'with instruments, by someone who was being careful.',
+      'They are old, months old, which puts them before the eleventh of April. Made with ' +
+      'instruments, in a hospital I would guess, by somebody who was being careful.',
 
       { c: 'note', t: 'On a cord around her neck, under the collar: ST AMARANTH MERCY \u00b7 ' +
         'DONOR \u00b7 WARD 11 \u00b7 H-0441' },
 
-      'Donor. Ward Eleven. And a number with four digits that somebody thought worth stamping into metal.'
+      'Donor. Ward Eleven. And a four-digit number that somebody thought worth stamping into metal.'
     ],
     choices: [
       { label: 'Take the tag. Show the others.', to: 'a2_mercy_approach',
@@ -1447,66 +1442,65 @@
     },
     text: function (s) {
       var lines = [
-        'The hill takes an hour. The last quarter mile is an avenue of lime trees that somebody has ' +
-        'been pruning, and that detail — <em>somebody has been pruning</em> — does something to the ' +
-        'back of my neck that four miles of dead city did not.'
+        'The hill takes an hour. The last quarter-mile is an avenue of lime trees, and somebody has ' +
+        'been pruning them. Four miles of dead city did not get to me the way that does.'
       ];
       if (s.flag('groupCaughtUp')) {
-        lines.push('I reach the gate ahead of the others. When I turn to signal the road is ' +
-          'clear, they are already coming through the limes. ' +
+        lines.push('I reach the gate ahead of the others. When I turn to signal that the road is ' +
+          'clear, they are already coming up through the limes. ' +
           (s.alive('teddy') ? 'Bram has Teddy\u2019s arm; ' : 'Wren has the torch; ') +
-          'none of them wanted to wait for my permission to finish the walk.');
+          'none of them was willing to wait for my say-so.');
       }
       if (s.alive('teddy')) {
-        lines.push('Teddy makes it. Nobody expected it, least of all Odile, who has been walking at ' +
-          'his shoulder for four miles with her hand ready at his elbow. At the gate he stops and ' +
-          'straightens up as far as he can get and fixes his collar, because he is going into a ' +
-          'hospital and he is seventy-one and that is what he does.');
+        lines.push('Teddy makes it. Nobody expected him to, least of all Odile, who has walked ' +
+          'every yard of it at his shoulder with a hand ready at his elbow. At the gate he stops, ' +
+          'straightens up as far as he can and puts his collar right. He is seventy-one, ' +
+          'and this is a hospital.');
       } else {
         lines.push(s.partyCount()
-          ? 'There are ' + (s.partyCount() + 1) + ' of us at the gate. We have walked all this way ' +
-            'with a space where Teddy would have been. Nobody steps into it.'
+          ? 'There are ' + (s.partyCount() + 1) + ' of us at the gate. All the way here we have ' +
+            'walked with a gap where Teddy would have been. Nobody steps into it.'
           : 'I reach the gate alone. I still leave room beside me for Teddy.');
       }
       if (s.flag('heldAtTheBoat')) {
-        lines.push('The boat is still tied to the pontoon. I spent ' +
+        lines.push('Down on the river the boat is still tied to the pontoon. I spent ' +
           (s.flag('leftBoatAfterLastNight') ? 'three days' : 'two days') +
-          ' pretending its canopy was a roof; now the warmth in the windows is an accusation. ' +
+          ' pretending its canopy was a roof, and the warm windows up here feel like an accusation. ' +
           (s.alive('teddy') ? 'Teddy keeps his eyes on the light, not on me.' :
             'Nobody asks whether the extra nights would have changed anything.'));
       } else if (s.flag('tookFromTheChildren')) {
         lines.push(s.flag('gaveItBack')
-          ? 'Bram sees the word <em>Mercy</em> over the entrance. I left the tins on the ' +
-            'landing at Marlowe House, but neither of us can stop hearing the children behind the door.'
-          : 'Bram sees the word <em>Mercy</em> over the entrance and looks at the tins I ' +
-            'carried out of Marlowe House. Neither of us can call this building a refuge without ' +
-            'thinking of the children I left behind.');
+          ? 'Bram reads the word <em>Mercy</em> over the entrance. I left the tins on the ' +
+            'landing at Marlowe House, but neither of us can stop hearing the children behind that door.'
+          : 'Bram reads the word <em>Mercy</em> over the entrance and looks at the tins I ' +
+            'carried out of Marlowe House. Neither of us can call this place a refuge without ' +
+            'thinking of those children.');
       } else if (s.flag('drewThemOff')) {
-        lines.push('The scrape from the estate has bled through its dressing. Wren checks it ' +
-          'without being asked. In the tower behind me, six children have had an hour of quiet.');
+        lines.push('The scrape from the estate has bled through my shirt. Wren checks it ' +
+          'without being asked. Back in the tower, the children have had an hour of quiet.');
       } else if (s.flag('tookCulvert')) {
-        lines.push('My cuffs are still wet with culvert water. When the hum rises behind the ' +
-          'east wing, it finds the same note I heard beneath the road.');
+        lines.push('My cuffs are still wet from the culvert. When the hum rises behind the ' +
+          'east wing, it is the same note I heard under the road.');
       } else if (s.flag('tookRiver')) {
-        lines.push('For most of the walk the river held them back. Up here there is no water ' +
-          'between me and the sound in the east wing.');
+        lines.push('For most of the walk the river kept them back. Up here there is no water ' +
+          'between me and the humming from the east wing.');
       } else if (s.flag('tookEstate')) {
-        lines.push('Somewhere below, a candle is still burning on the ninth floor. I have ' +
-          'come to a place that says it takes in everyone.');
+        lines.push('Somewhere below is Marlowe House, with its sign asking us to walk on. ' +
+          'Up here I have come to a place that says it takes in everyone.');
       }
       lines.push({ c: 'sep', t: '\u2042' });
-      lines.push('St Amaranth Mercy is a Victorian infirmary with two modern wings, and every window ' +
-        'in it is lit, and there is a generator running somewhere behind the kitchens with the deep ' +
+      lines.push('St Amaranth Mercy is a Victorian infirmary with two modern wings. Every window ' +
+        'is lit. Somewhere behind the kitchens a generator runs with the deep, ' +
         'steady note of a machine that has been serviced.');
-      lines.push('The front doors stand open. Warm yellow light spills down the steps onto the gravel. ' +
-        'Inside, at a desk, under a sign reading RECEPTION, a man in a clean fleece is reading a ' +
-        'paperback and waiting.');
-      lines.push('Above the door, carved in 1874, the motto of the hospital:');
+      lines.push('The front doors stand open, and warm yellow light spills down the steps onto the gravel. ' +
+        'Inside, at a desk under a sign that says RECEPTION, a man in a clean fleece sits reading a ' +
+        'paperback, waiting.');
+      lines.push('Over the door, carved in 1874, is the hospital\u2019s motto:');
       lines.push({ c: 'note', t: 'WE TAKE IN ALL WHO COME' });
       if (s.flag('warnedAboutFront')) {
         lines.push('A woman in a tower block told me: <em>go in the back.</em>');
       } else if (s.flag('knowsTheWards')) {
-        lines.push('The tag from the culvert said Ward Eleven. I cannot forget the face above it.');
+        lines.push('The tag from the culvert said Ward Eleven. I can still see the face above it.');
       }
       return lines;
     },
@@ -1544,15 +1538,15 @@
       'Fifteen minutes later he comes back with it uncovered and empty. Two people in scrubs walk the ' +
       'perimeter of the east wing with torches, talking, and one of them laughs at something.',
 
-      'Then a set of double doors opens at the back of the east wing and four people wheel out ' +
-      'a trolley with a shape on it under a sheet, and take it down a service road, and come back ' +
+      'Then double doors open at the back of the east wing and four people wheel out ' +
+      'a trolley with a shape on it under a sheet. They take it down a service road and come back ' +
       'eleven minutes later with the trolley empty.',
 
       'Twenty minutes later they do it again.',
 
       { c: 'sep', t: '\u2042' },
 
-      'And every twenty minutes, through my hour in the grass, from the east wing, with the regularity of a tide: ' +
+      'And every twenty minutes, as regular as breathing, from the east wing: ' +
       'the sound of a great many people humming in a large room with hard floors.',
 
       { c: 'hum', t: 'h m m m m m m m' },
