@@ -166,7 +166,7 @@ body[data-infect="5"]{ filter:saturate(.48) hue-rotate(-22deg) contrast(1.14) br
   font-family:var(--mono); font-size:.68rem; letter-spacing:.26em; text-transform:uppercase; color:var(--bone);
 }
 .place{ font-family:var(--mono); font-size:.62rem; letter-spacing:.12em; color:var(--muted-2); margin-top:.18rem; }
-.hud-right{ display:flex; gap:.4rem; flex-shrink:0; }
+.hud-right{ display:flex; flex-wrap:wrap; gap:.4rem; flex-shrink:0; }
 
 .icon-btn{
   font-family:var(--mono); font-size:.6rem; letter-spacing:.14em; text-transform:uppercase;
@@ -228,6 +228,9 @@ body[data-infect="5"]{ filter:saturate(.48) hue-rotate(-22deg) contrast(1.14) br
   margin:0 0 1.15rem;
   animation:rise .85s var(--ease) both;
 }
+body.reading-large #passage,body.reading-large .end-body{ font-size:1.18em; line-height:1.8; }
+body.reading-large .jpassage{ font-size:1.08em; }
+body.reading-instant #passage p,body.reading-instant .choice{ animation:none; }
 @keyframes rise{ from{opacity:0; transform:translateY(9px); filter:blur(2px)} to{opacity:1; transform:none; filter:none} }
 
 #passage p.lede::first-letter{
@@ -235,6 +238,15 @@ body[data-infect="5"]{ filter:saturate(.48) hue-rotate(-22deg) contrast(1.14) br
 }
 #passage .sep{
   text-align:center; color:var(--muted-2); letter-spacing:1.2em; margin:1.8rem 0; font-size:.7rem;
+}
+#passage .dateline{
+  font-family:var(--mono); font-size:.7rem; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--muted); border-bottom:1px solid var(--line-soft); padding-bottom:.5rem;
+  margin:0 0 1.6rem;
+}
+.end-body .dateline{
+  font-family:var(--mono); font-size:.7rem; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--muted); margin:1.8rem 0 1.2rem;
 }
 #passage .said{ color:var(--ink-bright); }
 #passage .whisper{
@@ -400,12 +412,19 @@ body[data-infect="5"]{ filter:saturate(.48) hue-rotate(-22deg) contrast(1.14) br
 .menu-list .btn{ width:100%; text-align:left; }
 
 .jrow{ border-left:2px solid var(--line); padding:.1rem 0 1.1rem 1rem; margin-bottom:.2rem; }
+.jrow summary{ cursor:pointer; list-style-position:inside; }
+.jrow summary > span{ display:block; }
+.jrow summary:focus-visible{ outline:1px solid var(--bone); }
+.jrow[open]{ border-left-color:var(--bone); }
+.jpassage{ border-top:1px solid var(--line-soft); margin:.8rem 0 0; padding:.8rem 0 0; }
+.jpassage p{ white-space:pre-line; color:var(--ink); line-height:1.65; }
 .jrow .jhead{
+  display:block;
   font-family:var(--mono); font-size:.56rem; letter-spacing:.22em; text-transform:uppercase;
   color:var(--muted-2); margin-bottom:.3rem;
 }
-.jrow .jtext{ font-size:.88rem; color:var(--muted); margin-bottom:.4rem; line-height:1.55; }
-.jrow .jchoice{ font-size:.86rem; color:var(--bone); font-style:italic; }
+.jrow .jtext{ display:block; font-size:.88rem; color:var(--muted); margin-bottom:.4rem; line-height:1.55; }
+.jrow .jchoice{ display:block; font-size:.86rem; color:var(--bone); font-style:italic; }
 .jrow .jchoice::before{ content:"› "; color:var(--blood-lit); font-style:normal; }
 
 .ending-card{

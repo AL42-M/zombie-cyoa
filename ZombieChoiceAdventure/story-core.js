@@ -46,8 +46,8 @@
     bullets:  { name: 'bullet',           desc: 'Brass, cold, finite.' },
     cutters:  { name: 'bolt cutters',     desc: 'Three feet of leverage. Heavy to carry, heavier to leave.' },
     radio:    { name: 'crank radio',      desc: 'It has only ever found one station, and that station only hums.' },
-    photo:    { name: 'photo strip',      desc: 'Four frames of a booth at a county fair. You and June, laughing, laughing, laughing, blurred.' },
-    lighter:  { name: 'lighter',          desc: 'Three quarters of a tank of butane. A sun you can hold.' },
+    photo:    { name: 'photo strip',      desc: 'Four frames in a booth at a county fair. June and me, blurred in the last one.' },
+    lighter:  { name: 'lighter',          desc: 'Three quarters of a tank of butane. I check it every morning.' },
     knife:    { name: 'boning knife',     desc: 'Thin, flexible, made for getting between things.' },
     flask:    { name: 'grain alcohol',    desc: 'Disinfectant. Anaesthetic. Accelerant. Courage. Pick one, it only works once.' },
     badge:    { name: 'Mercy badge',      desc: 'ST AMARANTH MERCY — WARD STAFF. The photograph has been scraped off.' },
@@ -69,7 +69,7 @@
     ring: {
       name: 'a wedding ring on a bootlace',
       of: 'June',
-      desc: 'Worn against the sternum since day nine, when your hands got thin enough to lose it.'
+      desc: 'Worn against my sternum since day nine, when my hands got thin enough to lose it.'
     },
     padpage: {
       name: 'a torn page from a pharmacy pad',
@@ -82,7 +82,7 @@
       desc: 'A 440, worn smooth at the handle. Struck on a knee it still finds the note. That is the trouble with it.'
     },
     facts: {
-      name: 'nine facts in your own handwriting',
+      name: 'nine facts in my handwriting',
       of: "Bram's daughter",
       desc: 'Nine. Asthmatic. Frightened of the hoover. Written down so that one day somebody who is not her father will have them.'
     },
@@ -94,7 +94,7 @@
     manifest: {
       name: 'a strip torn from a delivery manifest',
       of: 'the eleventh of April',
-      desc: 'THEY ARE NOT MEAT. DO NOT OPEN. 11/4. The last thing anyone bothered to write in the old handwriting of the world.'
+      desc: 'THEY ARE NOT MEAT. DO NOT OPEN. 11/4. Written on the day the Hush began.'
     },
     hairslide: {
       name: "a child's hair slide",
@@ -104,7 +104,7 @@
     gauzescrap: {
       name: 'a square of gauze, gone stiff',
       of: 'forty minutes under a lorry',
-      desc: 'He bit through his own lip rather than cough and give all of you away. He never mentioned it. Neither did you.'
+      desc: 'He bit through his own lip rather than cough and give us away. He never mentioned it. Neither did I.'
     },
     label: {
       name: 'a paper label in a neat hand',
@@ -295,7 +295,12 @@
   };
   P.hurt    = function (n) { return this.adj('health', -n); };
   P.heal    = function (n) { return this.adj('health', n); };
-  P.infect  = function (n) { return this.adj('infection', n); };
+  P.infect  = function (n) {
+    if (n > 0 && this.infection === 0 && this.flags.firstInfectionDay === undefined) {
+      this.set('firstInfectionDay', this.day);
+    }
+    return this.adj('infection', n);
+  };
   P.cure    = function (n) { return this.adj('infection', -n); };
   P.harden  = function (n) { return this.adj('humanity', -n); };
   P.soften  = function (n) { return this.adj('humanity', n); };
@@ -380,7 +385,7 @@
     textOf: function (node, s) {
       var t = (typeof node.text === 'function') ? node.text(s) : node.text;
       if (typeof t === 'string') t = [t];
-      return t || [];
+      return node.dateEntry ? [{ c: 'dateline', t: 'Day ' + Math.floor(Number(s.day)) }].concat(t || []) : (t || []);
     },
 
     choicesOf: function (node) {

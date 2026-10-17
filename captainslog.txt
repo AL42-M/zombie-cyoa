@@ -113,18 +113,143 @@ PROJECT CONTEXT
 
 - Repository: AL42-M/zombie-cyoa.
 - Game title: THE HUSH, a choice-driven zombie survival-horror browser game.
-- Active game files are in ZombieChoiceAdventure. The entry point is index.html;
+- Active game files are in ZombieChoiceAdventure. The entry point is play.html;
   style.css controls presentation, engine.js handles gameplay, audio.js handles
   audio, and story-*.js files hold the narrative.
 - The game uses plain HTML, CSS, and JavaScript. Its title screen states that
   progress is stored in the player's browser.
-- _audit.js is an existing Windows Script Host/JScript story validation harness;
-  its header documents running it with cscript //E:JScript.
+- _audit.js is a story validation harness runnable with Node.js on any supported
+  platform or with Windows Script Host/JScript; its header and README document
+  both commands.
 - ZombieChoiceAdventure-1.0-donottouch.zip is the original uploaded archive,
   renamed at the user's request. Preserve it unchanged; do not regenerate or
   overwrite it. Work in the active source folder and use Git for history.
 
 VERSION HISTORY (newest first)
+
+v1.7 - 2026-10-17
+- Matched story days to actual overnights: the opening wait, extended boat stay,
+  morning triage, and next-morning boat departure in the Teddy ending. Hour-long
+  rests, travel routes, and the hill no longer each add an entire day. Reconciled
+  institutional records with day 41 after the April 11 Hush: dated events that
+  had been placed in the future now occur in May, with related dialogue and
+  relative durations corrected. The April 11 manifest is now the first day's
+  warning, not a warning written eleven days after the Hush.
+- Distinct final choices and refusal choices now describe the action and whether
+  it means returning to the hospital. A short surrender route pauses for its
+  immediate human consequence. Refusal reactions distinguish what the narrator
+  actually learned and which companions are present; tightened repetitive prose.
+  A route that finds boat keys without ever seeing the boat now discovers it
+  along the river instead of recognizing it by unexplained prior knowledge.
+- Added targeted chronology, route knowledge, and companion checks alongside the
+  16,000-walk audit. Four contrasting complete story-engine trials found no
+  repeated passages; a boat-knowledge gap exposed by the fourth was corrected.
+  Existing saves still load, but prior saved day counts and recorded journal
+  passages retain their original values; start a new run to experience the
+  corrected chronology from day 41.
+- Current work remains on copilot/improve-story-quality, separate from main.
+  The requested beta branch and public repository visibility require publishing
+  a new branch and changing a GitHub setting; neither was available to this
+  hosted task through its permitted publishing tools. Do not claim either is
+  complete until confirmed in GitHub.
+
+v1.6 - 2026-10-16
+- Five independent AI reader personas completed five story-engine runs each
+  (25 total, on the v1.5 baseline) for a spoiler-free playtest synthesis.
+  Their accounts are simulated passages/choices, not human or verified
+  browser-UI trials.
+- Repaired first-person grammar, equipment and exposure claims that could be
+  false on particular routes, and removed an unexplained day advance at the
+  last decision. The refusal passage distinguishes a boat seen from the bank
+  from one actually boarded.
+- A boat departure without keys now includes a distinct property-room passage
+  before ignition; treated readers cannot choose an ending requiring an active
+  hum, but can take the ledger when leaving. New targeted checks guard these
+  cases; a culvert discovery no longer invents a tower-block conversation.
+  Endings acknowledge surviving companions and Teddy where pertinent. The
+  story audit still checks loops, dead ends and all twelve endings.
+- Other route/day transitions and variable party reactions deserve a dedicated
+  later continuity pass. No user-interface changes or archive changes.
+
+v1.5 - 2026-10-16
+- Added unobtrusive day headings to passages that genuinely follow an overnight
+  wait (the pharmacy, boat, and hospital triage); these use the run's saved day,
+  without adding another state effect. Long ending time jumps use relative
+  headings. Journal summaries still begin with prose, while expanded entries
+  retain their headings. Older saved entries remain as recorded.
+- Editorial review found fixed day references that contradicted longer routes,
+  a medication timeline inconsistent within one ending, group-size prose that
+  assumed four survivors, and an absent Odile administering morphine. Revised
+  those passages and tightened several figurative and repetitive sentences.
+  Choice links, state effects and all twelve endings remain unchanged.
+- The Node audit passed 16,000 walks and targeted heading, date and companion
+  checks. Three contrasting complete trial routes had no repeated nodes or
+  choice sets; browser automation was unavailable during this session.
+
+v1.4 - 2026-10-16
+- Recast the narrative as a first-person found survival journal beginning on
+  day 41. Kept Wren's written notes and spoken dialogue in their original
+  voices; choices still record one irreversible version of the narrator's past.
+- Three editorial passes: journal framing and narrative voice; restrained,
+  concrete line edits at key decisions and revelations; conditional route,
+  keepsake and ending continuity, including stopping first-person testimony
+  before the narrator can no longer plausibly write it. Existing story links,
+  effects, node IDs and twelve endings remain intact.
+- Renamed the browser entry point to play.html and updated the launch
+  instructions and displayed version. The original v1.0 archive is unchanged.
+- The Node story audit completed 16,000 walks with all twelve endings reachable.
+  Three contrasting complete route reads found no repeated passages, choice
+  sets or long dialogue lines; syntax and HTML asset-reference checks passed.
+  Browser automation was unavailable in this session.
+
+v1.3 - 2026-10-16
+- The river/boat, culvert, estate and Marlowe House choices now leave distinct
+  marks at the Mercy gate; waiting with Teddy or taking from the children
+  creates additional arrival dialogue and choices. Major decisions continue
+  to echo at the final choice.
+- Reconciled the extra boat days with the supply count, Teddy's prognosis and
+  dialogue, the timing of triage, and the end-of-story clock. Scouting ahead
+  reunites the group at the Mercy gate; returned supplies and routes without
+  Teddy no longer produce contradictory prose. No ending or existing route
+  has been removed.
+- Added in-game instant/paragraph-paced reveal and larger story text settings
+  saved separately from game progress. The journal now expands entries to show
+  the full text as read at that moment, without advancing or altering state.
+  Older saves retain their existing short journal excerpts.
+- The existing audit runs under Node.js without extra packages, or under
+  Windows Script Host as before; it exits unsuccessfully on failed checks.
+  Route/timeline regression assertions supplement the 16,000 story walks.
+  Chromium trials verified instant reveal, larger text, expanded full journal
+  entries, and restoration of those preferences and passages after Continue.
+- The preserved v1.0 ZIP is untouched.
+
+v1.2 - 2026-10-15
+- Reworked the story into one-way passages: opening conversations now lead to
+  Teddy's council rather than returning to the same stockroom menu; route
+  detours and hospital investigations no longer send the reader back to a
+  passage they have already read in the same run.
+- Added distinct consequences for spending another night on the boat, pausing
+  in the chapel, viewing the ward after treatment, and returning for the keys.
+  The bone-turning ending is reachable through surrender inside the lorry.
+- Preserved the existing cast, endings, save-node identifiers and meaningful
+  choice effects. New entry effects are safe on Continue/Rewind. Existing saves
+  remain usable, though previously visited passages may have new exits.
+- The existing story audit now detects static cycles and repeated passages
+  during its playthroughs. Verified all twelve endings and no reachable
+  loops, dead ends, or missing links in 16,000 simulated walks.
+- Trial runs also exposed inventory-dependent prose errors: the shop's window
+  now offers a weapon the player can actually find, the Ferry Street fight
+  accounts for whether the cutters were collected, and burning the lorry
+  requires both alcohol and a lighter. Leaving Teddy no longer puts the
+  revolver he keeps into the player's inventory.
+- The first exposure day is recorded so triage can acknowledge a late arrival
+  after a long boat stay rather than claiming every infection is three days old.
+- Continue and Rewind now display saved passages without reapplying entry
+  effects (including day advances, wounds and item grants). Ordinary forward
+  choices still apply those effects once. Four deliberately different full
+  routes were trialled; a browser trial confirmed Continue and Rewind leave
+  day, visits and health unchanged, while a new choice still advances.
+- The original v1.0 ZIP remains untouched. No UI changes are included.
 
 v1.1 - 2026-10-15
 - Added the user's directive reserving control of new local repository copies,
