@@ -1139,7 +1139,7 @@
       'white across the opening, the refrigerated lorry waits with its doors shut.',
 
       'Teddy is between me and Odile with an arm over each of our shoulders. He weighs almost nothing. ' +
-      'That is somehow the worst discovery of the night — six weeks of rationing have made a seventy-one ' +
+      'That is somehow the worst discovery of the walk — six weeks of rationing have made a seventy-one ' +
       'year old man into something I can carry one-handed.',
 
       'He is trying very hard not to breathe loudly. I can feel him trying, through my shoulder, ' +

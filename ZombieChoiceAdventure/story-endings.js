@@ -274,6 +274,7 @@
     blurb: 'I carried Teddy the whole way. When he said it was time, I did not argue.',
     tease: 'I want to be the one who says so, and I want one of you to not argue with me.',
     place: 'LUCKY II',
+    enter: function (s) { s.advance(1); },
     text: function (s) {
       var lines = [
         'Teddy Alafuzo gets onto a boat under his own power on the morning of day ' +

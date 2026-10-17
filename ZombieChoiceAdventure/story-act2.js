@@ -1,6 +1,6 @@
 /* ============================================================
    THE HUSH — Act II: the long way round
-   Ferry Street to St Amaranth Mercy. Four miles. One night.
+   Ferry Street to St Amaranth Mercy. Four miles, unless we wait.
    ============================================================ */
 (function () {
   'use strict';
@@ -66,7 +66,7 @@
       { c: 'note', t: 'Clipped to the sun visor, a delivery manifest. 14 TONNES CHILLED. ' +
         'Under it, in biro, in a different hand: THEY ARE NOT MEAT. DO NOT OPEN. 11/4' },
 
-      'Eleven days after the Hush. Somebody wrote that eleven days in and then walked away and ' +
+      'The day the Hush began. Somebody wrote that warning and then walked away and ' +
       'left the trailer sealed, and the trailer has been humming ever since.'
     ],
     choices: [
@@ -88,7 +88,7 @@
         hint: 'the last handwriting of the old world',
         act: function (s) {
           s.set('leftItSealed'); s.scar(4);
-          s.keep('manifest', 'Eleven days in, somebody still believed a warning was a thing worth writing.');
+          s.keep('manifest', 'On the first day, somebody still believed a warning was a thing worth writing.');
         },
         toast: ['THEY ARE NOT MEAT. DO NOT OPEN. 11/4', 'keepsake'] }
     ]
@@ -411,7 +411,7 @@
     id: 'a2_quay',
     chapter: CH,
     place: 'Quay Road',
-    enter: function (s) { s.set('atTheQuay'); s.advance(1); },
+    enter: function (s) { s.set('atTheQuay'); },
     text: function (s) {
       var lines = [
         'Quay Road runs along the water. On my left, the river, black and wide and moving. ' +
@@ -487,9 +487,9 @@
     id: 'a2_rest',
     chapter: CH,
     place: 'Quay Road',
-    enter: function (s) { s.advance(1); s.ease(8); s.heal(6); s.set('rested'); },
+    enter: function (s) { s.ease(8); s.heal(6); s.set('rested'); },
     text: [
-      'I give it an hour in the lee of an overturned skip, and the hour costs me the dark.',
+      'I give it an hour in the lee of an overturned skip, and the hour costs me the last of the dark.',
 
       'Teddy sleeps sitting up against my shoulder and his breathing gets easier for a while, ' +
       'and Odile sleeps for the first time in my presence in forty-one days, which tells me ' +
@@ -545,7 +545,7 @@
     id: 'a2_river',
     chapter: CH,
     place: 'The river path',
-    enter: function (s) { s.set('tookRiver'); s.advance(1); },
+    enter: function (s) { s.set('tookRiver'); },
     text: function (s) {
       var lines = [
         'Wren is right about the water. Twice on the river path I see them at the edge of it — ' +
@@ -790,14 +790,14 @@
     id: 'a2_estate',
     chapter: CH,
     place: 'Fenwick estate',
-    enter: function (s) { s.set('tookEstate'); s.advance(1); },
+    enter: function (s) { s.set('tookEstate'); },
     text: [
       'The precinct is a concrete horseshoe of shuttered units with a dry fountain in the middle, ' +
       'and it is the quietest place I have been in six weeks — not the quiet of nothing here, ' +
       'but the quiet of something holding still.',
 
       'The candle is on the ninth floor of Marlowe House. From the courtyard I can see it moving ' +
-      'about behind the glass: somebody walking from room to room with a light, at two in the morning, ' +
+      'about behind the glass: somebody walking from room to room with a light, ' +
       'in a dead city.',
 
       { c: 'sep', t: '\u2042' },
@@ -970,7 +970,7 @@
     chapter: CH,
     place: 'Fenwick estate',
     text: function (s) {
-      var lines = ['Hands, in a dry fountain, at two in the morning.'];
+      var lines = ['Hands, in a dry fountain, while the precinct holds its breath.'];
       lines.push('Bram: the Mercy. Immediately, without apology.');
       lines.push('Odile: the Mercy, and she says <span class="said">"with my eyes open, and with ' +
         'something sharp in my coat."</span>');
@@ -1007,7 +1007,7 @@
       s.set('gaveThePills');
     },
     text: [
-      'Four capsules of expired amoxicillin go through a letterbox in a tower block at two in the morning.',
+      'Four capsules of expired amoxicillin go through a letterbox in a tower block before we leave.',
 
       'It is not enough for six children. It is not enough for one child, really. I do it anyway, ' +
       'and the foil strip makes a small bright sound on the hall tiles on the other side.',
@@ -1101,7 +1101,7 @@
     place: 'Fenwick estate',
     enter: function (s) { s.scar(10); s.set('shoutedInTheCourtyard'); },
     text: [
-      'I put my head back and I shout up nine floors in a concrete courtyard at two in the morning.',
+      'I put my head back and I shout up nine floors in a concrete courtyard.',
 
       'The candle goes out instantly.',
 
@@ -1321,7 +1321,7 @@
     id: 'a2_culvert',
     chapter: CH,
     place: 'The culvert',
-    enter: function (s) { s.set('tookCulvert'); s.advance(1); s.scar(10); },
+    enter: function (s) { s.set('tookCulvert'); s.scar(10); },
     text: function (s) {
       var lines = [
         'The culvert takes the stream under Quay Road and the railway and comes out, according to ' +
@@ -1442,7 +1442,6 @@
     place: 'St Amaranth Mercy',
     enter: function (s) {
       s.set('atTheMercy');
-      s.advance(1);
       if (s.flag('wentAlone')) s.set('groupCaughtUp');
       if (s.alive('teddy')) s.set('teddyMadeIt');
     },

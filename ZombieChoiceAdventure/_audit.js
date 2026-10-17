@@ -466,9 +466,22 @@ expect('burning the lorry is available with both supplies', String(fireChoice.sh
 
 var sBoat = new Story.GameState();
 var sWait = new Story.GameState();
+var sDirect = new Story.GameState();
+var travelNodes = ['a2_quay', 'a2_rest', 'a2_river', 'a2_estate', 'a2_culvert', 'a2_mercy_approach'];
+for (var ti = 0; ti < travelNodes.length; ti++) {
+  Story.get(travelNodes[ti]).enter(sDirect);
+  expect('travel and one-hour rest do not skip a day at ' + travelNodes[ti],
+    String(sDirect.day), '41');
+}
+Story.get('a3_triage').enter(sDirect);
+expect('direct arrival only advances overnight at triage', String(sDirect.day), '42');
 Story.get('a1_wait').enter(sWait);
 expect('pharmacy wait begins the next dated entry',
   Story.textOf(Story.get('a1_wait'), sWait)[0].t, 'Day 42');
+Story.get('a2_quay').enter(sWait);
+Story.get('a2_estate').enter(sWait);
+Story.get('a2_mercy_approach').enter(sWait);
+expect('pharmacy wait and subsequent estate walk share day 42', String(sWait.day), '42');
 Story.get('a2_boat_hold').enter(sBoat);
 expect('boat wait starts a new dated entry',
   Story.textOf(Story.get('a2_boat_hold'), sBoat)[0].t, 'Day 43');
@@ -476,9 +489,13 @@ night.enter(sBoat);
 expect('last night on the boat uses the next day',
   Story.textOf(night, sBoat)[0].t, 'Day 44');
 Story.get('a2_mercy_approach').enter(sBoat);
-expect('extra night advances chronology', String(sBoat.day), '45');
+expect('walk up the hill does not add a fourth boat night', String(sBoat.day), '44');
+Story.get('end_mercy_teddy').enter(sBoat);
 expect('Teddy ending uses the actual departure day',
   String(Story.textOf(Story.get('end_mercy_teddy'), sBoat).join(' ').indexOf('day 45') >= 0), 'true');
+expect('Teddy boat departure occurs the following morning', String(sBoat.day), '45');
+expect('May hospital records do not refer to June events before day 41',
+  String(Story.textOf(Story.get('a3_pit_read'), sDirect).join(' ').indexOf('June') >= 0), 'false');
 expect('arrival recalls all three boat days',
   String(Story.textOf(Story.get('a2_mercy_approach'), sBoat).join(' ').indexOf('three days') >= 0), 'true');
 expect('boat wait opens a Teddy-specific arrival choice',

@@ -482,11 +482,11 @@
       'and I have earned the right to read it.',
 
       { c: 'note', t: 'FENWICK, ALICE M. \u00b7 D.O.B. 14.09.1951 \u00b7 WARD 11 \u00b7 ' +
-        'ADMITTED 19.04 \u00b7 ENDED 29.05\nYIELD: 11 UNITS \u00b7 TYPE B\n' +
-        'NO NEXT OF KIN TRACED. CHAPEL SERVICE HELD 30.05. \u2014 M.' },
+        'ADMITTED 12.04 \u00b7 ENDED 19.05\nYIELD: 11 UNITS \u00b7 TYPE B\n' +
+        'NO NEXT OF KIN TRACED. CHAPEL SERVICE HELD 20.05. \u2014 M.' },
 
-      'A chapel service. Held. On the thirtieth of May. For a woman they had been draining for ' +
-      'forty days, by the people who drained her, and they wrote it down, ' +
+      'A chapel service. Held. On the twentieth of May. For a woman they had been draining for ' +
+      'more than five weeks, by the people who drained her, and they wrote it down, ' +
       'and they meant it.'
     ],
     choices: [
@@ -508,21 +508,21 @@
       'I read forty-one of them before I stop, and I stop because of the pattern, ' +
       'not because of the horror.',
 
-      'Admitted in April, ended in May. Admitted in April, ended in June. ' +
+      'Admitted in April, ended in May. Admitted in May, ended in May. ' +
       'Yields of nine units, eleven units, six units.',
 
       'And then, further along, in the newest layer, the dates change shape:',
 
-      { c: 'note', t: 'OKONKWO, SAMUEL \u00b7 ADMITTED 02.06 \u00b7 ENDED 04.06\nYIELD: 2 UNITS' },
-      { c: 'note', t: 'PRICE, HEATHER \u00b7 ADMITTED 09.06 \u00b7 ENDED 11.06\nYIELD: 2 UNITS' },
-      { c: 'note', t: 'UNNAMED MALE, APPROX 60 \u00b7 ADMITTED 14.06 \u00b7 ENDED 15.06\nYIELD: 1 UNIT' },
+      { c: 'note', t: 'OKONKWO, SAMUEL \u00b7 ADMITTED 12.05 \u00b7 ENDED 14.05\nYIELD: 2 UNITS' },
+      { c: 'note', t: 'PRICE, HEATHER \u00b7 ADMITTED 17.05 \u00b7 ENDED 19.05\nYIELD: 2 UNITS' },
+      { c: 'note', t: 'UNNAMED MALE, APPROX 60 \u00b7 ADMITTED 19.05 \u00b7 ENDED 20.05\nYIELD: 1 UNIT' },
 
       { c: 'sep', t: '\u2042' },
 
-      'The April ones lasted forty days. The June ones last two.',
+      'The early April ones lasted nearly forty days. The newest barely last two.',
 
       'Which means the April ones were people who turned on their own, out there, and were brought in. ' +
-      'And the June ones were people who <em>arrived well</em>, and were made into donors, ' +
+      'And the newest were people who <em>arrived well</em>, and were made into donors, ' +
       'and did not have forty days in them because being turned on purpose in a bed is not the same ' +
       'as turning in the street.',
 
@@ -774,7 +774,7 @@
 
       'She wrings the sponge out.',
 
-      '<span class="said">"I know what we are. I have known since the fourth of June. ' +
+      '<span class="said">"I know what we are. I have known since the twelfth of May. ' +
       'I am not asking you to think well of me. I am telling you that there is a version of ' +
       'complicity that is just — turning up. Every day. And doing the mouths."</span>'
     ],
@@ -799,7 +799,7 @@
 
       '<span class="said">"There are four of us who would," </span>she says at last, very low. ' +
       '<span class="said">"Pav, and Iris on nights, and the lad on the gate who you probably met. ' +
-      'We have talked about it. We have talked about it for three weeks and we have not done ' +
+      'We have talked about it. We have talked about it for days and we have not done ' +
       'anything, because every version ends with ninety-four people dying of thirst while we argue ' +
       'about who gets the generator."</span>',
 
@@ -839,7 +839,7 @@
 
       'The restraints are newer. The skin is better. The hair has not grown out. ' +
       'And on each chart, where the others say ADMITTED, these say ' +
-      '<span class="wound">CONVERTED</span>, with a date in June, and underneath that, a line ' +
+      '<span class="wound">CONVERTED</span>, with a date in May, and underneath that, a line ' +
       'that the others do not have:',
 
       { c: 'note', t: 'CONSENT: VERBAL, WITNESSED (2)\nCOMPENSATION: FAMILY PLACED, EAST BLOCK. ' +
@@ -1044,7 +1044,7 @@
       { c: 'note', t: 'WAS IT NECESSARY? \u2014 my answer, written the same night, before I slept.' },
 
       'And she has filled it in. Nine hundred times. Nearly all of them say YES. ' +
-      'Some say <em>I think so</em>. Eleven of them, scattered through June, say ' +
+      'Some say <em>I think so</em>. Eleven of them, scattered through May, say ' +
       '<span class="wound">NO</span>, and those eleven have a line ruled under them, ' +
       'and beside each one, in the same hand, a single word:',
 
@@ -1073,7 +1073,7 @@
       { c: 'note', t: 'YIELD CONTINUES TO FALL. 1.2 units/donor and dropping. At this rate the ' +
         'treatment ends in nine weeks whatever we do.\n\nThe arithmetic I have been doing since May ' +
         'only worked while the yield held. It does not hold. Which means every name in this book ' +
-        'after the 4th of June bought nothing, and I signed each one of them YES.\n\n' +
+        'after the 12th of May bought nothing, and I signed each one of them YES.\n\n' +
         'I will tell the next person who walks in here. Whoever they are. I will tell them all of it ' +
         'and I will not shade a word of it, and then I will abide by what they say, because I have ' +
         'proven conclusively that I cannot be trusted to be the one who decides.\n\n' +
@@ -1120,7 +1120,7 @@
         'Every morning at six, the staff draw blood from them.');
       lines.push('Doctor Aytoun uses that blood to make a grey serum. It has stopped the hum in ' +
         'eleven of thirteen people who were bitten. I ask her to repeat the number. She does.');
-      lines.push('<span class="said">"And since the fourth of June," </span>she says, ' +
+      lines.push('<span class="said">"And since the twelfth of May," </span>she says, ' +
         '<span class="said">"when the wards filled and the yield began to fall, we have been asking ' +
         'people to volunteer for the beds. Eleven have. I wrote the words that asked them. ' +
         'I am not going to tell you I was coerced by circumstance, because circumstance does not ' +
@@ -1163,7 +1163,7 @@
       'that person\u2019s blood saves four others. I would do April again tomorrow and ' +
       'twice on Sunday."</span>',
 
-      '<span class="said">"In June I wrote to a man with emphysema and asked him whether he would ' +
+      '<span class="said">"In May I wrote to a man with emphysema and asked him whether he would ' +
       'consider converting, in exchange for a warm room for his daughter. And he said yes. ' +
       'And I notarised it. And I have asked myself every night since whether there is any ' +
       'meaningful distance between what I did and holding a gun to him, and the answer keeps ' +

@@ -94,7 +94,7 @@
     manifest: {
       name: 'a strip torn from a delivery manifest',
       of: 'the eleventh of April',
-      desc: 'THEY ARE NOT MEAT. DO NOT OPEN. 11/4. The last thing anyone bothered to write in the old handwriting of the world.'
+      desc: 'THEY ARE NOT MEAT. DO NOT OPEN. 11/4. Written on the day the Hush began.'
     },
     hairslide: {
       name: "a child's hair slide",
