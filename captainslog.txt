@@ -124,7 +124,38 @@ PROJECT CONTEXT
   renamed at the user's request. Preserve it unchanged; do not regenerate or
   overwrite it. Work in the active source folder and use Git for history.
 
+OPEN ITEMS (agreed with the user; not yet started)
+
+1. Choices need an immediate, visible consequence in the text.
+   - Player feedback: some scenes move on too fast and an action has no
+     discernible effect. The next scene does not reference the choice made.
+   - Example: a1_dispensary (story-act1.js). Pocketing, burning or putting back
+     Rosco's shopping list, or drinking the alcohol, all go straight to a1_hub;
+     only a toast (or nothing) acknowledges the choice before the player moves
+     on to Bram/Teddy content.
+   - Example: a1_radio -> "Hum along with it" -> a1_hum_back. The group
+     confronts the player, then every response returns to a1_hub and the
+     player can go directly to Bram talking about Teddy, with no aftermath.
+   - The user's idea: write each choice into the journal, fitting the game's
+     found-footage-in-written-form theme. Keep the first-person journal voice.
+   - Requirement: an action has an immediate effect in text form, and scene
+     transitions should not jump so plainly. Audit other choices that return
+     to a hub or move on with only a stat change or toast.
+
+2. Research real-life crank radio mechanics.
+   - Determine how hand-crank (dynamo) radios actually work: turns needed and
+     resulting play time, whether they store charge, and typical bands.
+   - Determine whether any radios need no power at all (for example, crystal
+     radios powered only by the received signal) and what they can receive.
+   - Compare with the story's claims (a1_radio: "ninety turns to give you
+     ninety seconds", AM 1476 kHz) and adjust the text if inaccurate.
+
 VERSION HISTORY (newest first)
+
+Open items logged - 2026-10-18
+- Recorded two open items from the user: player feedback on choices lacking
+  immediate textual consequences, and research into crank radio mechanics.
+- Log-only change; no game files modified, so no version increment.
 
 v1.1 - 2026-10-15
 - Added the user's directive reserving control of new local repository copies,
