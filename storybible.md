@@ -25,7 +25,15 @@ choices, hints, pop-ups, keepsakes, endings, and UI copy. Record the user's crea
 ### The truth (never stated outright)
 - It is not a disease. It is a **signal** that recruits people.
 - Once someone is fully taken, the note sustains their body. They need no breath, food, or water.
-  The person is still in there, and still feels.
+- **There is no way back.** A turned person is a host: something that spreads the hum, and nothing
+  more.
+- **Some habits carry over**, such as Holloway tying a sailor's knot in his empty hand, or the blind
+  bass singer's note. Observers and hospital staff take these as signs that the person is still in
+  there. They're wrong, but the story never says so outright.
+- **"It Was Never An Infection"** lets the narrator stay aware after turning. That's a storytelling
+  device so the ending has something to say, not a fact about the turned.
+- **The wider world (background only):** humanity doesn't die out, but it slides back into
+  scavenging and hunting, with the turned as a new predator. This is beyond the scope of this story.
 - The name "infection" is the survivors' mistake. The game uses it because the characters do. The
   Blood status measures how far the note has taken hold.
 
@@ -59,14 +67,25 @@ choices, hints, pop-ups, keepsakes, endings, and UI copy. Record the user's crea
 - **With no sky at all**, they fumble around restlessly, like ordinary zombies.
 
 ### Spreading out
-- In open areas they **spread out**, as if each of them were an access point carrying the hum into
-  every space it can reach. The characters notice this in Act 3.
+- In open areas they **spread out evenly, then stand still**, as if each of them were an access
+  point carrying the hum into every space it can reach. The characters notice this in Act 3.
+- **When one stops humming,** for any reason (killed, crippled, or for no visible reason), the
+  local group shifts until the gaps between them are equal again, as if correcting the spread of
+  the hum. It is quiet and unsettling, never explained.
 - **"It Was Never An Infection" (end_hush):** the line that they stand where they are needed fits
   this rule. Where they stand facing walls or in enclosed spaces, there must still be some glimpse of
   sky.
 
 ### Senses
-- Their eyes have gone milky and unused. **They listen.**
+- **The turned never blink.** That's the first thing a careful observer notices, and Odile is the
+  one to spot it. Without blinking, the eyes dry out:
+  - **Recently turned:** bloodshot, raw, crusted at the rims, pupils still visible.
+  - **Long turned:** the surface scars over to an opaque chalk white, with no pupil.
+- Survivors can read the eyes as a rough clock of how long someone has been turned.
+- **The culvert woman (Act 2)** is a recent one, with red eyes. The group notices and wonders why.
+  If Odile is present and on reasonable terms, she offers the explanation. Later in the game, two or
+  three choices let the narrator comment on a turned's eyes and what they mean.
+- **They don't see; they listen.** Their eyes go unused.
 - Continuous sound draws them more than loud sound: "A scream turns heads. A man coughing all night
   turns a street."
 - When they are drawn to a sound, they leave their idle pose and move toward it. They are fast when
@@ -75,24 +94,51 @@ choices, hints, pop-ups, keepsakes, endings, and UI copy. Record the user's crea
 ## 4. How a person is taken
 
 ### The assault
-- The turned **do not punch, kick, or strike**. Their method is forceful but almost **gentle**:
-  - They restrain the victim.
-  - They take hold of the jaw and pry it open.
-  - They often work together, one holding the arms while another works the jaw.
+- **They are violent, but their violence has one aim.** The turned don't tear people apart, bite
+  out throats, or eat anyone. They want the jaw open and the note going into the mouth. In pursuit
+  of that they are relentless and brutal, the way an assailant is: the violation is the point.
+  - They restrain the victim and take hold of the jaw to pry it open.
+  - They often work together, one pinning the arms while another works the jaw.
   - All of them hum in unison throughout.
+  - They don't punch or kick for the sake of it. The harm comes from grip and force.
+- **They do not let go.** If someone tries to pull them off, they grip harder and use every bit of
+  force their bodies can manage to keep their hold and keep humming into the mouth. They will:
+  - break the jaw itself
+  - break the victim's bones
+  - crush a windpipe when they are holding a throat and the victim is dragged away
+- **Pulling them off or reasoning with them is useless.** Survivors learn that the only way to end a
+  grab is to hurt the turned badly enough that they can't continue, or to kill them. The turned are
+  still alive by the rules of this story, so killing them is a real act, with real weight.
+  - **Treat them as hosts.** Whatever remains of the person has no say in what the body does.
 - **It ends in one of two ways:**
-  - The victim is rescued.
+  - The victim is freed by force.
   - The victim starts humming **in agreement**. They are released at once, and every attacker goes
-    straight back to idle: emotionless, faces to the sky, mouths open, humming.
-- **Victims fight back, so people do get hurt.** The injuries come from the struggle, not from any
-  intent to wound. Examples:
-  - a strip of skin torn from a forearm by a grip that pulled too hard
-  - scratches and bites as faces and hands collide
+    straight back to idle: emotionless, faces tipped up, mouths open, humming.
+- **Injuries are common.** Examples:
+  - a strip of skin torn from a forearm by a grip that wouldn't give
+  - fingers dislocated, a jaw cracked
   - Bram's eye on Ferry Street: a thumb pressed into the socket while one of them tried to grip his
-    face nearly gouged the eye out of its socket
+    face, nearly gouging the eye out
+- **Hospital.** In St. Amaranth Mercy the turned are kept either injured past the point of acting,
+  or strapped securely to beds and chairs. Unstrapping them is dangerous.
+  - **Mouth care.** Ward 11's nurse swabs the turned patients' mouths because the endless humming
+    dries and cracks their lips and throats until they bleed or choke.
+  - **How the turned die.** Hosts outside die the same way, now and then; the nearby group then
+    shifts to even out the gaps. Don't over-explain why they don't all die of it.
+  - **Say "mouth care" sparingly.** Explain it once, in the scene with that nurse; otherwise describe
+    the swabbing.
+- **Their intelligence is the real horror.** The turned seem as dumb as bricks: they hum, chase, and
+  try to sing into you. But they are smart enough to recognize something blocking their way in and
+  remove it the way a person would.
+  - **The key scene:** a host peels the duct tape off Teddy's mouth so it can hum into him. The
+    violence isn't what's frightening; it's the hint of human-level intelligence.
+  - **Teddy is freed within seconds** and is not infected. The bible's "Teddy never infected" still
+    holds.
 - A bite or a wound **does not** spread the hum.
 
 ### What actually takes hold (raises Blood)
+- **The note gets in only through the mouth and ears.** It takes one or more turned humming right
+  at your mouth or into one or both of your ears.
 - **Strongest:** being held with the jaw open while they hum into you.
 - **Willing:** humming along yourself.
 - **Weak:** prolonged or dense exposure, such as standing among a packed crowd of them.
@@ -110,7 +156,7 @@ choices, hints, pop-ups, keepsakes, endings, and UI copy. Record the user's crea
 - **Ordinary survivors believe bites spread it,** because everyone who turned was bitten during the
   struggle. That's why the Marlowe House sign says "IF YOU ARE BITTEN" and the Marlowe House woman
   talks about bites.
-- **Hospital staff know better.** They say "exposed" or "held".
+- **Hospital staff know better.** They say "exposed", "held" or "grabbed".
 - The narrator may notice the difference, but **nobody explains it.**
 
 ### The four-day clock and the cure
@@ -134,6 +180,10 @@ choices, hints, pop-ups, keepsakes, endings, and UI copy. Record the user's crea
   - **Make it weird:** Teddy hears the turned as a musician would. He comments on their note, on how
     perfectly every voice is in tune, and on how much rehearsal a choir needs to manage that, when
     these people do it without effort.
+  - **Only Teddy talks about music in technical terms** (note names, bars, pitch). Everyone else
+    describes the hum in plain, everyday words.
+  - **Odile's diagnosis is hedged.** She says "probably" or "likely" pneumonia, never certain. In the
+    same scene, someone doubts her and is afraid that keeping Teddy puts them all in danger.
 - **Odile Marchetti:** a veterinarian with thirty years in practice. Clinical. She never uses
   contractions.
 - **Bram Kessler:** a corrections officer for eleven years. Procedural and measured. His daughter is
@@ -175,7 +225,11 @@ choices, hints, pop-ups, keepsakes, endings, and UI copy. Record the user's crea
   - American English, and the setting is the US.
   - The game must feel *weird*, not generic zombie fiction.
   - Repetition kills a story. No choice may repeat an action the reader has already been offered
-    in the same run.
+    in the same run. If a choice really must come back later in a run, its label AND hint must be
+    rewritten so that no button ever looks reused, even word for word.
+    - **Landmark names so far:** the Arimathea Chapel, Rockton's Field, Old Cleveholt Road, the Sallow
+      Walk.
+
     - **Words describing the sky-gazing:**
       - Vary them, and don't overuse "sky". Use "faces tipped upward", "chins raised", "staring up
         through the vent", "mouths open to the rain".
@@ -217,3 +271,11 @@ choices, hints, pop-ups, keepsakes, endings, and UI copy. Record the user's crea
   - Keep distinctive proper names, rather than replacing them with generic American ones.
   - The user's chosen exceptions: betting shop, the map of Cornwall, lime trees on the hospital
     avenue (the pits use "quicklime").
+
+## 8. Open items (revisit with the user)
+- **The trailer manifest scene** ("THEY ARE NOT MEAT. DO NOT OPEN.", a2_lorry_cab). The user feels
+  it may read as generic AI writing and wants to rework it personally.
+- **The turned's eyes.** Resolved, see §3 "Senses".
+- **A deep-dive on the hum.** When the user asks, discuss in detail how the hum works, the stages of
+  infection, the four-day clock, the treatment and the serum, and Blood values. Settle the answers
+  here before writing more about them.

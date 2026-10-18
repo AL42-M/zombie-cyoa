@@ -191,6 +191,15 @@ PROJECT CONTEXT
 
 VERSION HISTORY (newest first)
 
+Handoff - 2026-10-18 (after v1.11)
+- The user paused after a long design discussion. storybible.md now holds the
+  settled canon (hosts with no way back, relentless violence, mouth/ear-only
+  insertion, unblinking eyes red-then-white, spreading evenly and re-spacing,
+  intelligence shown by tearing off Teddy's tape, Rockton's Field, etc.).
+- reports/HANDOFF.md lists the approved-but-unbuilt v1.12 queue and pending
+  discussions; reports/ also holds the v1.9-v1.11 reports with the user's
+  answers and the v1.11 per-file notes. Start the next session there.
+
 v1.11 - 2026-10-18
 - Established storybible.md (repo root) as creative canon after a design
   discussion with the user: the hum is a signal with a permanently unexplained
