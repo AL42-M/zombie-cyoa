@@ -12,6 +12,8 @@
 
   var SAVE_KEY = 'hush.save.v1';
   var FOUND_KEY = 'hush.endings.v1';
+  var READING_KEY = 'hush.reading.instant';
+  var LARGE_TEXT_KEY = 'hush.reading.large';
   var MAX_HISTORY = 80;
 
   /* ---------------------------------------------------------- helpers */
@@ -34,7 +36,8 @@
     ['title-screen', 'game-screen', 'end-screen', 'hud-chapter', 'hud-place', 'party-strip',
      'passage', 'choices', 'skip-hint', 'toasts', 'overlay', 'panel-title', 'panel-body',
      'btn-begin', 'btn-continue', 'continue-sub', 'btn-endings-title', 'endings-count',
-     'btn-help-title', 'btn-journal', 'btn-keepsakes', 'btn-sound', 'btn-menu', 'btn-close-panel',
+     'btn-help-title', 'btn-journal', 'btn-keepsakes', 'btn-reading', 'btn-text-size',
+     'btn-sound', 'btn-menu', 'btn-close-panel',
      'end-kicker', 'end-title', 'end-body', 'end-stats', 'end-keepsakes', 'btn-again', 'btn-rewind',
      'btn-endings-end', 'btn-title', 'pulse'].forEach(function (id) {
       el[id] = $(id);
@@ -52,6 +55,30 @@
   var revealing = false;
   var pendingChoices = [];
   var lastSnapshot = null;
+  var instantText = false;
+  var largeText = false;
+
+  function syncReading() {
+    doc.body.classList.toggle('reading-instant', instantText);
+    doc.body.classList.toggle('reading-large', largeText);
+    el['btn-reading'].textContent = 'Text: ' + (instantText ? 'instant' : 'paced');
+    el['btn-reading'].setAttribute('aria-pressed', String(instantText));
+    el['btn-text-size'].textContent = 'Text size: ' + (largeText ? 'large' : 'regular');
+    el['btn-text-size'].setAttribute('aria-pressed', String(largeText));
+  }
+
+  function toggleReading() {
+    instantText = !instantText;
+    store(READING_KEY, instantText ? '1' : '0');
+    syncReading();
+    if (instantText && revealing) skipReveal();
+  }
+
+  function toggleTextSize() {
+    largeText = !largeText;
+    store(LARGE_TEXT_KEY, largeText ? '1' : '0');
+    syncReading();
+  }
 
   /* ---------------------------------------------------------- screens */
   function showScreen(name) {
@@ -92,6 +119,12 @@
   /* Reveal prose one paragraph at a time, then show the choices. */
   function revealPassage(lines) {
     var paras = renderProse(el.passage, lines, true, false);
+    if (instantText || (root.matchMedia && root.matchMedia('(prefers-reduced-motion: reduce)').matches)) {
+      revealing = false;
+      if (el['skip-hint']) el['skip-hint'].hidden = true;
+      showChoices();
+      return;
+    }
     paras.forEach(function (p) { p.style.visibility = 'hidden'; });
 
     el.choices.classList.add('is-hidden');
@@ -251,6 +284,7 @@
     for (k in before.items) seen[k] = true;
     for (k in state.items) seen[k] = true;
     Object.keys(seen).forEach(function (id) {
+      if (id.charAt(0) === '_') return; /* hidden bookkeeping items, never shown */
       var was = before.items[id] || 0, now = state.items[id] || 0;
       if (now === was) return;
       var name = (Story.ITEMS[id] && Story.ITEMS[id].name) || id;
@@ -277,14 +311,38 @@
     if (state.trauma > before.trauma + 12) toast('Something in you gives.', 'weight');
     if (state.humanity < before.humanity - 12) toast('You did not hesitate.', 'bad');
 
-    /* the dead */
-    before._deadCount = before.deaths ? before.deaths.length : 0;
-    if (state.deaths.length > before._deadCount) {
-      var latest = state.deaths[state.deaths.length - 1];
-      var who = (Story.CAST[latest.id] && Story.CAST[latest.id].name) || latest.id;
-      toast(who + ' is gone.', 'bad');
-      Ambience.sting('cold');
+    /* the dead, and those who leave */
+    announceDeaths(before.deaths ? before.deaths.length : 0);
+    announcePartings(peopleStates(before));
+  }
+
+  function peopleStates(s) {
+    var out = {};
+    for (var id in s.people) if (Object.prototype.hasOwnProperty.call(s.people, id)) out[id] = s.people[id].state;
+    return out;
+  }
+
+  /* One journal-style line per character (Story.CAST[id].goneNote) when someone
+     leaves the group alive, from a choice or a passage's enter(). */
+  function announcePartings(prev) {
+    for (var id in state.people) {
+      if (!Object.prototype.hasOwnProperty.call(state.people, id)) continue;
+      if (state.people[id].state === 'gone' && prev[id] !== 'gone') {
+        var c = Story.CAST[id];
+        toast((c && c.goneNote) || ((c ? c.name : id) + ' is gone.'), 'bad');
+      }
     }
+  }
+
+  /* One journal-style line per character (Story.CAST[id].deathNote), for deaths
+     caused by a choice or by a passage's enter(). */
+  function announceDeaths(prevCount) {
+    if (!state.deaths || state.deaths.length <= prevCount) return;
+    for (var i = prevCount; i < state.deaths.length; i++) {
+      var id = state.deaths[i].id, c = Story.CAST[id];
+      toast((c && c.deathNote) || ((c ? c.name : id) + ' is gone.'), 'bad');
+    }
+    Ambience.sting('cold');
   }
 
   /* ---------------------------------------------------------- keepsakes
@@ -307,7 +365,7 @@
       if (announced[id]) continue;
       announced[id] = true;
       var def = Story.MEMENTOS[id];
-      if (def) toast('Kept — ' + def.name, 'keepsake');
+      if (def) toast('Kept: ' + def.name, 'keepsake');
     }
   }
 
@@ -322,21 +380,18 @@
 
   /* ---------------------------------------------------------- journal */
   function logEntry(node, choiceLabel) {
+    var passage = Story.textOf(node, state).map(function (line) {
+      return stripTags(line && typeof line === 'object' ? line.t || '' : String(line));
+    });
     state.log.push({
       day: state.day,
       place: node.place || '',
       chapter: node.chapter || '',
-      text: stripTags(firstLine(node)),
+      text: passage[node.dateEntry ? 1 : 0] || '',
+      passage: passage,
       choice: stripTags(choiceLabel || '')
     });
     if (state.log.length > 120) state.log.shift();
-  }
-
-  function firstLine(node) {
-    var lines = Story.textOf(node, state);
-    if (!lines.length) return '';
-    var l = lines[0];
-    return (l && typeof l === 'object') ? (l.t || '') : String(l);
   }
 
   function stripTags(html) {
@@ -400,14 +455,18 @@
   function goTo(id, skipHistory) {
     if (!Story.has(id)) {
       console.error('[THE HUSH] missing node: "' + id + '"');
-      toast('This path is not written yet.', 'bad');
+      toast('This part of the story is missing.', 'bad');
       return;
     }
     var node = Story.get(id);
     state.node = id;
-    state.visits[id] = (state.visits[id] || 0) + 1;
-
-    if (typeof node.enter === 'function') node.enter(state);
+    if (!skipHistory) {
+      state.visits[id] = (state.visits[id] || 0) + 1;
+      var deadBefore = state.deaths ? state.deaths.length : 0, peopleBefore = peopleStates(state);
+      if (typeof node.enter === 'function') node.enter(state);
+      announceDeaths(deadBefore);
+      announcePartings(peopleBefore);
+    }
     checkKeepsakes();
 
     if (node.isEnding) { showEnding(node); return; }
@@ -461,11 +520,11 @@
   }
 
   function rewind() {
-    if (!history.length) { toast('There is nothing to go back to.', 'bad'); return; }
+    if (!history.length) { toast('There\u2019s no earlier choice to go back to.', 'bad'); return; }
     var snap = history.pop();
     try {
       state = new Story.GameState(JSON.parse(snap));
-    } catch (e) { toast('That memory is gone.', 'bad'); return; }
+    } catch (e) { toast('That step couldn\u2019t be restored.', 'bad'); return; }
     syncAnnounced();
     closePanel();
     goTo(state.node, true);
@@ -482,7 +541,7 @@
     clear(el['end-stats']);
     var survivors = state.party().map(function (id) { return Story.CAST[id].name; });
     var rows = [
-      ['Days', String(state.day)],
+      ['Day', String(state.day)],
       ['Choices', String(state.choicesMade)],
       ['Body', state.word('health')],
       ['Blood', state.word('infection')],
@@ -505,7 +564,7 @@
       var carried = state.carried();
       if (carried.length) {
         var kh = doc.createElement('h3');
-        kh.textContent = 'What you carried out of it';
+        kh.textContent = 'What you carried';
         el['end-keepsakes'].appendChild(kh);
         carried.forEach(function (m) {
           var row = doc.createElement('div');
@@ -546,18 +605,31 @@
     }
     for (var i = state.log.length - 1; i >= 0; i--) {
       var entry = state.log[i];
-      var row = doc.createElement('div');
+      var row = doc.createElement(entry.passage ? 'details' : 'div');
       row.className = 'jrow';
-      var head = doc.createElement('div');
+      var summary = entry.passage ? doc.createElement('summary') : row;
+      var head = doc.createElement('span');
       head.className = 'jhead';
-      head.textContent = 'Day ' + entry.day + (entry.place ? ' · ' + entry.place : '');
-      var text = doc.createElement('div');
+      head.textContent = 'Day ' + entry.day + (entry.chapter ? ' · ' + entry.chapter : '') +
+        (entry.place ? ' · ' + entry.place : '');
+      var text = doc.createElement('span');
       text.className = 'jtext';
       text.textContent = entry.text.length > 180 ? entry.text.slice(0, 180) + '…' : entry.text;
-      var choice = doc.createElement('div');
+      var choice = doc.createElement('span');
       choice.className = 'jchoice';
       choice.textContent = entry.choice;
-      row.appendChild(head); row.appendChild(text); row.appendChild(choice);
+      summary.appendChild(head); summary.appendChild(text); summary.appendChild(choice);
+      if (entry.passage) {
+        row.appendChild(summary);
+        var full = doc.createElement('div');
+        full.className = 'jpassage';
+        entry.passage.forEach(function (line) {
+          var p = doc.createElement('p');
+          p.textContent = line;
+          full.appendChild(p);
+        });
+        row.appendChild(full);
+      }
       body.appendChild(row);
     }
   }
@@ -567,8 +639,8 @@
     var intro = doc.createElement('p');
     intro.className = 'keep-intro';
     intro.textContent = carried.length
-      ? 'Things you have kept for no practical reason. They weigh nothing and you have never once considered putting them down.'
-      : 'You are carrying nothing you did not need. Not yet.';
+      ? 'Things you\u2019ve kept for no practical reason. You can\u2019t use them, and you won\u2019t lose them.'
+      : 'Nothing yet. Some choices let you keep a small thing that mattered to someone.';
     body.appendChild(intro);
 
     carried.forEach(function (m) {
@@ -609,7 +681,7 @@
     var found = foundEndings();
     var intro = doc.createElement('p');
     var have = Object.keys(found).filter(function (k) { return Story.endings[k]; }).length;
-    intro.textContent = have + ' of ' + Story.endingOrder.length + ' endings found. The rest are still out there.';
+    intro.textContent = have + ' of ' + Story.endingOrder.length + ' endings found. Endings you haven\u2019t found show a clue.';
     body.appendChild(intro);
 
     Story.endingOrder.forEach(function (id) {
@@ -650,7 +722,7 @@
     add('How to play', function () { openPanel('How to play', buildHelp); });
     add('Step back one choice', function () { rewind(); });
     add('Abandon this run', function () {
-      if (root.confirm('Abandon this run and return to the title screen? Your progress in this run is lost.')) {
+      if (root.confirm('Abandon this run and return to the title screen? You will lose your progress in this run.')) {
         forget(SAVE_KEY);
         closePanel();
         showScreen('title');
@@ -672,15 +744,19 @@
       '<li><b>Self</b> — how much of the person you were is still driving.</li>' +
       '<li><b>Weight</b> — what you are carrying that cannot be put down.</li>' +
       '</ul>' +
-      '<p>These are shown in words, never numbers. You are not meant to optimise them. ' +
+      '<p>These are shown in words, never numbers. You are not meant to optimize them. ' +
       'You are meant to live with them.</p>' +
       '<h3>Keys</h3>' +
       '<ul><li><b>1</b>–<b>7</b> choose</li><li><b>J</b> journal</li><li><b>K</b> keepsakes</li>' +
-      '<li><b>M</b> ambience</li>' +
-      '<li><b>Esc</b> menu, or close a panel</li><li><b>Space</b> finish the text</li></ul>' +
+      '<li><b>M</b> sound</li>' +
+      '<li><b>Esc</b> menu, or close a panel</li><li><b>Space</b> or <b>Enter</b> finish the text</li></ul>' +
+      '<p>Use Text: paced/instant to control how passages appear and Text size to enlarge ' +
+      'story and journal text. These preferences remain in this browser. Expand a journal ' +
+      'entry to reread the passage without changing your choices. Older saves may have only ' +
+      'a short excerpt.</p>' +
       '<h3>Keepsakes</h3>' +
       '<p>Some choices let you pick up a small thing that is of no use to anybody — a photograph, ' +
-      'a torn page, a tuning fork. They do nothing. They cannot be spent, traded or lost. ' +
+      'a torn page, a tuning fork. They do nothing. They cannot be spent, traded, or lost. ' +
       'They are only a record of who and what you decided was worth carrying, and they are ' +
       'read back to you at the end.</p>' +
       '<h3>Saving</h3>' +
@@ -718,7 +794,7 @@
   }
 
   function toggleSound() {
-    if (!Ambience.supported) { toast('No audio available in this browser.', 'bad'); return; }
+    if (!Ambience.supported) { toast('Sound isn\u2019t available in this browser.', 'bad'); return; }
     Ambience.toggle();
     if (state) Ambience.setIntensity((state.infection * 0.65 + state.trauma * 0.35) / 100);
     syncSoundButton();
@@ -800,6 +876,8 @@
     el['btn-endings-title'].addEventListener('click', function () { openPanel('Endings', buildEndings); });
     el['btn-journal'].addEventListener('click', function () { openPanel('Journal', buildJournal); });
     el['btn-keepsakes'].addEventListener('click', function () { openPanel('Keepsakes', buildKeepsakes); });
+    el['btn-reading'].addEventListener('click', toggleReading);
+    el['btn-text-size'].addEventListener('click', toggleTextSize);
     el['btn-menu'].addEventListener('click', function () { openPanel('Menu', buildMenu); });
     el['btn-sound'].addEventListener('click', toggleSound);
     el['btn-close-panel'].addEventListener('click', closePanel);
@@ -818,6 +896,9 @@
   function init() {
     if (!Story) { console.error('[THE HUSH] story core failed to load.'); return; }
     cacheElements();
+    instantText = recall(READING_KEY) === '1';
+    largeText = recall(LARGE_TEXT_KEY) === '1';
+    syncReading();
     wire();
     auditStory();
     updateEndingCount();

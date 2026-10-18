@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>THE HUSH — A Zombie Apocalypse Adventure</title>
-<meta name="description" content="A choice-driven survival horror narrative set forty-one days after the Hush." />
+<meta name="description" content="A choice-driven survival horror story, told as a found journal, set forty-one days after the Hush." />
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230b0c0b'/%3E%3Ccircle cx='11' cy='13' r='3' fill='%23c9c2b2'/%3E%3Ccircle cx='21' cy='13' r='3' fill='%23c9c2b2'/%3E%3Cpath d='M9 22q7 4 14 0' stroke='%238b2f24' stroke-width='2.2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E" />
 <link rel="stylesheet" href="style.css" />
 </head>
@@ -21,15 +21,7 @@
     <h1 class="game-title" aria-label="The Hush">
       <span class="t-word">THE</span><span class="t-word t-hum">HUSH</span>
     </h1>
-    <p class="subtitle">A choice-driven descent &middot; no right answers &middot; no going back</p>
-
-    <div class="warning" role="note">
-      <h2>Content warning</h2>
-      <p>Graphic violence, body horror, medical and surgical horror, death of adults and children,
-        starvation, coercion, self-mutilation out of necessity, and sustained psychological distress.
-        Several choices are cruel. A few are unforgivable. That is the point of them.</p>
-      <p class="warning-foot">Written for adults. Nothing you choose in here says anything about who you are.</p>
-    </div>
+    <p class="subtitle">A found survival journal &middot; your choices describe what happened</p>
 
     <div class="title-actions">
       <button id="btn-continue" class="btn btn-ghost" type="button" hidden>Continue <span class="btn-sub" id="continue-sub"></span></button>
@@ -38,7 +30,7 @@
       <button id="btn-help-title" class="btn btn-ghost" type="button">How to play</button>
     </div>
 
-    <p class="credit">v1.1 &middot; Plain HTML, CSS and JavaScript. Nothing to install. Progress is stored in this browser only.</p>
+    <p class="credit">v1.11 &middot; Plain HTML, CSS, and JavaScript. Nothing to install. Your progress is saved only in this browser.</p>
   </div>
 </section>
 
@@ -53,7 +45,9 @@
     <div class="hud-right">
       <button class="icon-btn" id="btn-journal" type="button" title="Journal (J)">Journal</button>
       <button class="icon-btn" id="btn-keepsakes" type="button" title="Keepsakes (K)">Keepsakes</button>
-      <button class="icon-btn" id="btn-sound" type="button" title="Ambience (M)" aria-pressed="false">Sound: off</button>
+      <button class="icon-btn" id="btn-reading" type="button" title="Switch between paced and instant text" aria-pressed="false">Text: paced</button>
+      <button class="icon-btn" id="btn-text-size" type="button" title="Switch between regular and large text" aria-pressed="false">Text size: regular</button>
+      <button class="icon-btn" id="btn-sound" type="button" title="Sound (M)" aria-pressed="false">Sound: off</button>
       <button class="icon-btn" id="btn-menu" type="button" title="Menu (Esc)">Menu</button>
     </div>
   </header>
@@ -81,7 +75,7 @@
 
   <main id="stage">
     <article id="passage" aria-live="polite"></article>
-    <button id="skip-hint" class="skip-hint" type="button" hidden>click to finish the text</button>
+    <button id="skip-hint" class="skip-hint" type="button" hidden>click to show the whole passage</button>
     <nav id="choices" aria-label="Your choices"></nav>
   </main>
 

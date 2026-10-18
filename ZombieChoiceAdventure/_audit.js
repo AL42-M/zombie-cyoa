@@ -1,4 +1,11 @@
-/* Temporary validation harness for THE HUSH. Run with cscript //E:JScript. Not part of the game. */
+/* Story validation for THE HUSH. Run with node _audit.js or cscript //E:JScript _audit.js. */
+
+if (typeof WScript === 'undefined') {
+  var WScript = {
+    Echo: function (message) { console.log(message); },
+    Quit: function (code) { process.exit(code); }
+  };
+}
 
 /* ---- ES5 polyfills for the JScript engine ---- */
 if (!Array.prototype.forEach) {
@@ -18,6 +25,9 @@ if (!Object.keys) {
 }
 
 function readFile(path) {
+  if (typeof require === 'function') {
+    return require('fs').readFileSync(path, 'utf8').replace(/^\uFEFF/, '');
+  }
   var st = new ActiveXObject('ADODB.Stream');
   st.Type = 2; st.Charset = 'utf-8'; st.Open(); st.LoadFromFile(path);
   var s = st.ReadText(); st.Close();
@@ -25,7 +35,8 @@ function readFile(path) {
   return s;
 }
 
-var DIR = WScript.ScriptFullName.replace(/\\[^\\]*$/, '\\');
+var DIR = typeof require === 'function' ? __dirname + require('path').sep :
+  WScript.ScriptFullName.replace(/\\[^\\]*$/, '\\');
 var window = {};
 var problems = [];
 var files = ['story-core.js', 'story-act1.js', 'story-act2.js', 'story-act3.js', 'story-endings.js'];
@@ -83,14 +94,53 @@ for (var o = 0; o < Story.order.length; o++) {
   if (!seenStatic[Story.order[o]]) orphans.push(Story.order[o]);
 }
 
+/* A passage may converge with another, but must never lead back to a passage
+   the reader has already seen on this run. Dynamic final destinations are
+   exercised by the walks below. */
+var activePath = {}, finishedPath = {}, cycles = {};
+function checkCycles(id) {
+  activePath[id] = true;
+  var choices = Story.get(id).choices || [];
+  for (var ci = 0; ci < choices.length; ci++) {
+    var next = choices[ci].to;
+    if (typeof next !== 'string' || !Story.has(next)) continue;
+    if (activePath[next]) cycles[id + ' -> ' + next] = true;
+    else if (!finishedPath[next]) checkCycles(next);
+  }
+  delete activePath[id];
+  finishedPath[id] = true;
+}
+checkCycles(Story.START);
+for (var cycle in cycles) if (Object.prototype.hasOwnProperty.call(cycles, cycle)) {
+  problems.push('repeatable story path: ' + cycle);
+}
+
 /* ---------- fuzz walk ---------- */
 var endingsHit = {}, visited = {}, runtimeErrors = [], deadEnds = {}, countBad = {};
 var mementosSeen = {};
 var WALKS = 16000, completed = 0;
 
+/* 32-bit multiply for engines without Math.imul (Windows Script Host) */
+function imul32(a, b) {
+  var ah = (a >>> 16) & 0xffff, al = a & 0xffff, bh = (b >>> 16) & 0xffff, bl = b & 0xffff;
+  return ((al * bl) + ((((ah * bl + al * bh) & 0xffff) << 16) >>> 0)) >>> 0;
+}
+
+/* Seed is scrambled, then xorshift32. The previous linear congruential
+   generator gave correlated first picks across consecutive walks, which
+   skewed coverage toward some opening branches. */
 function rngFactory(seed) {
-  var s = seed >>> 0;
-  return function (n) { s = (s * 1103515245 + 12345) >>> 0; return (s >>> 8) % n; };
+  var x = seed >>> 0;
+  x = (x ^ (x >>> 16)) >>> 0; x = imul32(x, 0x85ebca6b);
+  x = (x ^ (x >>> 13)) >>> 0; x = imul32(x, 0xc2b2ae35);
+  x = (x ^ (x >>> 16)) >>> 0;
+  if (x === 0) x = 0x9e3779b9;
+  return function (n) {
+    x = (x ^ (x << 13)) >>> 0;
+    x = (x ^ (x >>> 17)) >>> 0;
+    x = (x ^ (x << 5)) >>> 0;
+    return x % n;
+  };
 }
 
 function deepCopy(v) {
@@ -117,8 +167,14 @@ for (var w = 0; w < WALKS; w++) {
   var s = new Story.GameState();
   var node = Story.get(Story.START);
   var steps = 0;
+  var seenThisWalk = {};
 
   while (steps++ < 400) {
+    if (seenThisWalk[node.id]) {
+      runtimeErrors.push('revisited "' + node.id + '" in a single run');
+      break;
+    }
+    seenThisWalk[node.id] = true;
     visited[node.id] = true;
     for (var mk = 0; mk < s.keepsakes.length; mk++) mementosSeen[s.keepsakes[mk].id] = true;
     if (node.id === 'a3_final' && s.partyCount() < minPartyAtFinal) minPartyAtFinal = s.partyCount();
@@ -265,6 +321,59 @@ for (var mi = 0; mi < mementoIds.length; mi++) {
 }
 dump('mementos never obtainable', unobtainable);
 
+/* ---------- reachability frequency ----------
+   Story structure standard (captainslog.txt): every passage must appear in at
+   least 1% of uniformly random playthroughs. RARE_OK lists exceptions the user
+   has approved, with the reason. */
+var REACH_WALKS = 10000, REACH_MIN = 1.0;
+var RARE_OK = {};
+var reachHits = {};
+for (var rw = 0; rw < REACH_WALKS; rw++) {
+  var rrnd = rngFactory(rw * 2246822519 + 3266489917);
+  var rs = new Story.GameState();
+  var rnode = Story.get(Story.START), rsteps = 0, rseen = {};
+  while (rsteps++ < 400) {
+    if (!rseen[rnode.id]) { rseen[rnode.id] = true; reachHits[rnode.id] = (reachHits[rnode.id] || 0) + 1; }
+    if (rnode.isEnding) break;
+    var rraw = rnode.choices || [], ropen = [];
+    try {
+      for (var rk = 0; rk < rraw.length; rk++) {
+        var rdef = rraw[rk];
+        if (typeof rdef.show === 'function' && !rdef.show(rs)) continue;
+        if (typeof rdef.when === 'function' && !rdef.when(rs)) continue;
+        ropen.push(rdef);
+      }
+      if (!ropen.length) break;
+      var rpick = ropen[rrnd(ropen.length)];
+      rs.choicesMade++;
+      if (typeof rpick['act'] === 'function') rpick['act'](rs);
+      if (rs.infection > 0 && rs.infection < 100 && !rs.flag('arrested')) {
+        rs.bump('_creep');
+        if (rs.val('_creep') % 2 === 0) rs.infect(1 + Math.floor(rs.infection / 34));
+      }
+      var rdest = (typeof rpick.to === 'function') ? rpick.to(rs) : rpick.to;
+      if (rs.health <= 0 && Story.has('end_body_failed')) rdest = 'end_body_failed';
+      else if (rs.infection >= 100 && Story.has('end_turned')) rdest = 'end_turned';
+      if (!Story.has(rdest)) break;
+      rs.node = rdest; rs.visits[rdest] = (rs.visits[rdest] || 0) + 1;
+      rnode = Story.get(rdest);
+      if (typeof rnode.enter === 'function') rnode.enter(rs);
+    } catch (er) { break; }
+  }
+}
+var rareList = [], rareAllowed = [];
+for (var ri = 0; ri < Story.order.length; ri++) {
+  var rid = Story.order[ri], pct = (reachHits[rid] || 0) * 100 / REACH_WALKS;
+  if (pct >= REACH_MIN) continue;
+  var rlabel = rid + ' ' + pct.toFixed(2) + '%';
+  if (Object.prototype.hasOwnProperty.call(RARE_OK, rid)) rareAllowed.push(rlabel + ' (approved: ' + RARE_OK[rid] + ')');
+  else rareList.push(rlabel);
+}
+WScript.Echo('');
+WScript.Echo('--- reachability (' + REACH_WALKS + ' uniformly random walks, minimum ' + REACH_MIN + '%) ---');
+dump('passages below the minimum', rareList);
+if (rareAllowed.length) dump('approved rare passages', rareAllowed);
+
 /* ---------- targeted checks on the branching logic ---------- */
 WScript.Echo('');
 WScript.Echo('--- targeted checks ---');
@@ -287,12 +396,13 @@ if (!boat) {
 } else {
   var sAlone = new Story.GameState();
   sAlone.part('odile'); sAlone.part('bram'); sAlone.part('wren'); sAlone.part('teddy');
-  sAlone.set('knowsBoat');
+  sAlone.set('knowsBoat'); sAlone.give('keys');
   expect('nobody left -> end_boat_alone', boat.to(sAlone), 'end_boat_alone');
   expect('boat choice visible with knowsBoat', String(boat.show(sAlone)), 'true');
 
   var sTog = new Story.GameState();
   sTog.part('teddy');
+  sTog.give('keys');
   expect('companions alive -> slipway decision', boat.to(sTog), 'a3_boat_who');
 
   /* the slipway is the only way end_boat_alone can be chosen rather than defaulted into */
@@ -317,11 +427,39 @@ if (!boat) {
   }
 
   var sComp = new Story.GameState();
-  sComp.set('theCompact');
+  sComp.set('theCompact'); sComp.give('keys');
   expect('teddy + compact -> end_mercy_teddy', boat.to(sComp), 'end_mercy_teddy');
 
   var sNoBoat = new Story.GameState();
   expect('boat choice hidden without knowsBoat', String(boat.show(sNoBoat)), 'false');
+
+  var sMissingKeys = new Story.GameState();
+  sMissingKeys.set('knowsBoat');
+  expect('boat without keys -> property room, not ignition', boat.to(sMissingKeys), 'a3_boat_lastkeys');
+  var lastKeys = Story.get('a3_boat_lastkeys');
+  lastKeys.enter(sMissingKeys);
+  expect('property room supplies the missing boat keys', String(sMissingKeys.has('keys')), 'true');
+  expect('keys route from inside Mercy stays inside until leaving',
+    String(Story.textOf(lastKeys, sMissingKeys)[0].indexOf('service corridor') >= 0), 'true');
+  expect('reader without Holloway clue searches for the keys',
+    String(Story.textOf(lastKeys, sMissingKeys)[1].indexOf('work through the April cards') >= 0), 'true');
+  expect('property room onward path reaches the slipway', lastKeys.choices[0].to(sMissingKeys), 'a3_boat_who');
+  lastKeys.enter(sMissingKeys);
+  expect('returning to property room does not duplicate keys',
+    String(sMissingKeys.count('keys')), '1');
+
+  var sTreated = new Story.GameState();
+  sTreated.infect(30);
+  Story.get('a3_matron_treat').enter(sTreated);
+  expect('treatment arrests the infection', String(sTreated.flag('arrested') && sTreated.infection === 0), 'true');
+  expect('treated reader cannot surrender to an active note',
+    String(fin.choices[fin.choices.length - 1].show(sTreated)), 'false');
+  var ledgerChoice = fin.choices.filter(function (choice) {
+    return choice.to === 'end_ledger' && choice.show(sTreated);
+  });
+  expect('treated reader can take the ledger on leaving', String(ledgerChoice.length), '1');
+  ledgerChoice[0].act(sTreated);
+  expect('ledger ending receives the book', String(sTreated.has('ledger')), 'true');
 }
 
 /* companions you have alienated should actually leave at the last node */
@@ -335,6 +473,7 @@ var sLoyal = new Story.GameState();
 sLoyal.set('atTheMercy');
 fin.enter(sLoyal);
 expect('loyal companions stay at a3_final', String(sLoyal.partyCount()), '4');
+expect('final decision does not invent an overnight stay', String(sLoyal.day), '41');
 
 /* a3_final must always offer a legal number of choices, even with nothing in your pockets */
 var sBare = new Story.GameState();
@@ -349,8 +488,170 @@ for (var fb = 0; fb < fin.choices.length; fb++) {
 WScript.Echo('  ' + (shownBare >= 3 ? 'pass' : 'FAIL') + '  worst-case a3_final shows ' + shownBare + ' choices (min 3)');
 if (shownBare < 3) targeted.push('a3_final worst case shows only ' + shownBare + ' choices');
 
+var sResume = new Story.GameState();
+var night = Story.get('a2_boat_lastnight');
+night.enter(sResume);
+var nightDay = sResume.day;
+night.enter(sResume);
+expect('continuing the last boat night does not advance again', String(sResume.day), String(nightDay));
+
+var source = Story.get('a3_treatment_source');
+source.enter(sResume);
+var sourceTrauma = sResume.trauma;
+source.enter(sResume);
+expect('continuing the ward visit does not scar again', String(sResume.trauma), String(sourceTrauma));
+
+var keys = Story.get('a3_refuse_keys');
+keys.enter(sResume);
+keys.enter(sResume);
+expect('continuing after finding the keys does not duplicate them', String(sResume.count('keys')), '1');
+
+var sLate = new Story.GameState();
+sLate.infect(8);
+sLate.advance(5);
+Story.get('a3_triage').enter(sLate);
+expect('triage is dated to the morning after arrival',
+  Story.textOf(Story.get('a3_triage'), sLate)[0].t, 'Day ' + sLate.day);
+expect('delayed triage acknowledges late infection',
+  String(Story.textOf(Story.get('a3_triage'), sLate).join(' ').indexOf('Beyond four days') >= 0), 'true');
+expect('first exposure day survives the delay', String(sLate.val('firstInfectionDay')), '41');
+
+var sOutsideBoat = new Story.GameState();
+sOutsideBoat.set('knowsBoat');
+var refuseText = Story.textOf(Story.get('a3_refuse'), sOutsideBoat).join(' ');
+expect('boat seen from shore has no invented fuel or cabin knowledge',
+  String(refuseText.indexOf('three-quarters of a tank') >= 0 ||
+    refuseText.indexOf('empty ignition barrel') >= 0), 'false');
+var sNoCutters = new Story.GameState();
+expect('estate door does not claim absent bolt cutters',
+  String(Story.textOf(Story.get('a2_estate_up'), sNoCutters).join(' ').indexOf('I have bolt cutters') >= 0), 'false');
+sNoCutters.give('cutters');
+expect('one available tool permits hotwire attempt',
+  String(Story.get('a2_boat').choices[2].show(sNoCutters)), 'true');
+
+var sRefuse = new Story.GameState();
+Story.get('a3_refuse').enter(sRefuse);
+expect('refusing at the gate does not invent a conversation with Matron',
+  String(Story.textOf(Story.get('a3_refuse'), sRefuse).join(' ').indexOf('I never went in') >= 0), 'true');
+var sBackRefuse = new Story.GameState();
+Story.get('a3_back').enter(sBackRefuse);
+Story.get('a3_refuse').enter(sBackRefuse);
+expect('leaving through the back acknowledges entering the building',
+  String(Story.textOf(Story.get('a3_refuse'), sBackRefuse).join(' ').indexOf('I never went in') >= 0), 'false');
+expect('refusal final choice makes the return to the hospital explicit',
+  String(fin.choices[1].label(sRefuse).indexOf('Go back') >= 0), 'true');
+expect('choosing boat without keys names key retrieval',
+  String(fin.choices[3].label(sRefuse).indexOf('Fetch the boat keys') >= 0), 'true');
+var sUnknownBoat = new Story.GameState();
+sUnknownBoat.give('keys');
+expect('keys without prior sighting prompt a boat search',
+  String(Story.get('a3_refuse').choices[0].label(sUnknownBoat).indexOf('Find the boat') >= 0), 'true');
+expect('slipway introduces an unvisited boat',
+  String(Story.textOf(Story.get('a3_boat_who'), sUnknownBoat)[0].indexOf('follow the river') >= 0), 'true');
+expect('solitary departure discovers an unvisited boat',
+  String(Story.textOf(Story.get('end_boat_alone'), sUnknownBoat)[0].indexOf('search the sailing club') >= 0), 'true');
+var sSpokeToMatron = new Story.GameState();
+sSpokeToMatron.set('metTheMatron');
+Story.get('a3_refuse').enter(sSpokeToMatron);
+expect('Teddy responds to what Matron actually said',
+  String(Story.textOf(Story.get('a3_refuse'), sSpokeToMatron).join(' ').indexOf('One or two units') >= 0), 'true');
+var sWithoutOdileOnExit = new Story.GameState();
+sWithoutOdileOnExit.part('odile'); sWithoutOdileOnExit.set('tookTheTreatment');
+expect('departing with treatment does not invent an absent Odile',
+  String(Story.textOf(Story.get('a3_refuse'), sWithoutOdileOnExit).join(' ').indexOf('Odile sees the dinosaur') >= 0), 'false');
+var sSoloWard = new Story.GameState();
+sSoloWard.set('wentInAlone'); sSoloWard.set('sawWard11');
+expect('solo ward visit reports what Wren was told, not what she saw',
+  String(Story.textOf(Story.get('a3_refuse'), sSoloWard).join(' ').indexOf('I tell Wren what I saw') >= 0), 'true');
+var sSurrender = new Story.GameState();
+sSurrender.set('letTheNoteIn');
+expect('abrupt surrender route pauses for the companion left behind',
+  String(Story.textOf(Story.get('end_turned'), sSurrender)[0].indexOf('Bram still has') >= 0), 'true');
+
+var sFire = new Story.GameState();
+var fireChoice = Story.get('a2_lorry_open').choices[1];
+expect('burning the lorry needs accelerant', String(fireChoice.show(sFire)), 'false');
+sFire.give('flask');
+expect('burning the lorry is available with both supplies', String(fireChoice.show(sFire)), 'true');
+
+var sBoat = new Story.GameState();
+var sWait = new Story.GameState();
+var sDirect = new Story.GameState();
+var travelNodes = ['a2_quay', 'a2_rest', 'a2_river', 'a2_estate', 'a2_culvert', 'a2_mercy_approach'];
+for (var ti = 0; ti < travelNodes.length; ti++) {
+  Story.get(travelNodes[ti]).enter(sDirect);
+  expect('travel and one-hour rest do not skip a day at ' + travelNodes[ti],
+    String(sDirect.day), '41');
+}
+Story.get('a3_triage').enter(sDirect);
+expect('direct arrival only advances overnight at triage', String(sDirect.day), '42');
+Story.get('a1_wait').enter(sWait);
+expect('pharmacy wait begins the next dated entry',
+  Story.textOf(Story.get('a1_wait'), sWait)[0].t, 'Day 42');
+Story.get('a2_quay').enter(sWait);
+Story.get('a2_estate').enter(sWait);
+Story.get('a2_mercy_approach').enter(sWait);
+expect('pharmacy wait and subsequent estate walk share day 42', String(sWait.day), '42');
+Story.get('a2_boat_hold').enter(sBoat);
+expect('boat wait starts a new dated entry',
+  Story.textOf(Story.get('a2_boat_hold'), sBoat)[0].t, 'Day 43');
+night.enter(sBoat);
+expect('last night on the boat uses the next day',
+  Story.textOf(night, sBoat)[0].t, 'Day 44');
+Story.get('a2_mercy_approach').enter(sBoat);
+expect('walk up the hill does not add a fourth boat night', String(sBoat.day), '44');
+Story.get('end_mercy_teddy').enter(sBoat);
+expect('Teddy ending uses the actual departure day',
+  String(Story.textOf(Story.get('end_mercy_teddy'), sBoat).join(' ').indexOf('day 45') >= 0), 'true');
+expect('Teddy boat departure occurs the following morning', String(sBoat.day), '45');
+sBoat.set('wrenSpoke');
+expect('Wren does not speak for the first time twice',
+  String(Story.textOf(Story.get('end_mercy_teddy'), sBoat).join(' ').indexOf('the first sound she has made') >= 0), 'false');
+expect('May hospital records do not refer to June events before day 41',
+  String(Story.textOf(Story.get('a3_pit_read'), sDirect).join(' ').indexOf('June') >= 0), 'false');
+expect('arrival recalls all three boat days',
+  String(Story.textOf(Story.get('a2_mercy_approach'), sBoat).join(' ').indexOf('three days') >= 0), 'true');
+expect('boat wait opens a Teddy-specific arrival choice',
+  String(Story.get('a2_mercy_approach').choices[5].show(sBoat)), 'true');
+var sScout = new Story.GameState();
+sScout.set('heldAtTheBoat'); sScout.set('wentAlone');
+expect('scout cannot request a bed for an absent Teddy',
+  String(Story.get('a2_mercy_approach').choices[5].show(sScout)), 'false');
+Story.get('a2_mercy_approach').enter(sScout);
+expect('party rejoins the scout at the gate', String(sScout.flag('groupCaughtUp')), 'true');
+var sEstate = new Story.GameState();
+sEstate.set('tookFromTheChildren');
+var sTagOnly = new Story.GameState();
+sTagOnly.set('knowsTheWards');
+expect('culvert tag does not invent a warning from the tower',
+  String(Story.textOf(Story.get('a2_mercy_approach'), sTagOnly).join(' ').indexOf('A woman in a high-rise told me') >= 0), 'false');
+expect('estate route opens a distinct confession',
+  String(Story.get('a2_mercy_approach').choices[6].show(sEstate)), 'true');
+expect('estate route recalls the children in the final decision',
+  String(Story.textOf(fin, sEstate).join(' ').indexOf('six children') >= 0), 'true');
+sEstate.set('gaveItBack');
+expect('returned supplies are not described as carried to the Mercy',
+  String(Story.textOf(Story.get('a2_mercy_approach'), sEstate).join(' ').indexOf('looks at the cans') >= 0), 'false');
+var sWithoutTeddy = new Story.GameState();
+sWithoutTeddy.part('teddy'); sWithoutTeddy.set('heldAtTheBoat');
+expect('boat search counts only present companions',
+  String(Story.textOf(Story.get('a2_boat_search'), sWithoutTeddy)[0].indexOf('4 of us') >= 0), 'true');
+expect('final boat reflection does not describe an absent Teddy breathing',
+  String(Story.textOf(fin, sWithoutTeddy).join(' ').indexOf('Teddy\u2019s breathing') >= 0), 'false');
+var sWithoutOdile = new Story.GameState();
+sWithoutOdile.part('odile'); sWithoutOdile.give('morphine');
+expect('Teddy ending does not assign medicine to an absent Odile',
+  String(Story.textOf(Story.get('end_mercy_teddy'), sWithoutOdile).join(' ').indexOf('Odile has the ampoule') >= 0), 'false');
+expect('door ending acknowledges Teddy when he came along',
+  String(Story.textOf(Story.get('end_door'), new Story.GameState()).join(' ').indexOf('Teddy comes with us') >= 0), 'true');
+expect('door ending does not invent an absent Teddy',
+  String(Story.textOf(Story.get('end_door'), sWithoutTeddy).join(' ').indexOf('Teddy comes with us') >= 0), 'false');
+expect('serum ending acknowledges surviving companions',
+  String(Story.textOf(Story.get('end_serum'), new Story.GameState()).join(' ').indexOf('others fall into step') >= 0), 'true');
+
 WScript.Echo('');
 var total = probList.length + errList.length + deadList.length + countList.length +
             trulyUnreachable.length + missingEndings.length + targeted.length +
-            unobtainable.length;
+            unobtainable.length + rareList.length;
 WScript.Echo(total === 0 ? 'RESULT: clean' : 'RESULT: ' + total + ' issue(s)');
+if (total > 0) WScript.Quit(1);

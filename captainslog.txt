@@ -19,7 +19,68 @@ Working with the user
 - Ask only when a meaningful choice substantially affects behavior, safety, or
   maintainability, or when work cannot proceed safely.
 
+Reports to the user
+- After meaningful work, give the user a detailed report of ALL changes made,
+  with exactly two sections, in this order:
+  1. PENDING YOUR REVIEW (top of the report). Every item that needs the user's
+     decision, approval or permission, and nothing else. Number items
+     hierarchically by topic (1.1, 1.2, 2.1, ...) so the user can answer
+     "yes 1.1, no 2.3". Each item must state very clearly: what was changed or
+     is proposed, why, what happens if the user says yes or no, and what stays
+     in place if they do not answer. No decision may be hidden in section 2.
+     After every item in this section, add an empty answer box for the user
+     to fill in, as a one-row table:
+       | Answer |
+       |--------|
+       |        |
+     Do not add answer boxes to the changelog.
+  2. CHANGELOG. Everything else, written as a game changelog: version heading,
+     then grouped entries (Added / Changed / Fixed / Removed), concise and
+     player-facing, with concrete before/after examples where useful.
+
+Story bible
+- storybible.md (repo root) is the creative canon: what the hum is, how the
+  turned behave, how people are taken, characters, key images, naming. Consult
+  it before writing or editing ANY creative or player-facing text, and record
+  the user's creative revisions there.
+- If a user proposal contradicts the bible or the existing story, tell the
+  user clearly, with options, before acting. Be a competent collaborator, not
+  an agreeable one.
+- No repeated actions: a run must never offer the reader essentially the same
+  action twice; vary or remove duplicates.
+
+Writing standards (all player-facing text: story, choices, hints, toasts,
+keepsakes, endings, menus, help, title screen, and documentation)
+- American English: American spelling, vocabulary, punctuation and date format
+  (M/D). The user does not want British English.
+- Setting: the game takes place in the United States (relocated in v1.9). Keep
+  distinctive, cool-sounding proper names (characters, towns, streets,
+  buildings such as Thornbury, Ferry Street, Marlowe House, St. Amaranth Mercy)
+  rather than replacing them with generic American ones. The user chose to keep
+  a few British-flavored terms: "betting shop", the map of Cornwall, and lime
+  trees on the hospital avenue.
+- Natural, idiomatic prose; vivid but restrained description; distinct
+  character voices; no cliches, repetitive phrasing or melodrama.
+- No obvious AI phrasing: "it's not X, it's Y" / "not X but Y" reveals,
+  "not X, not Y - Z" triads, paradoxes that sound deep but mean nothing (for
+  example "a kindness shaped like abandonment"), "something like", "a kind of",
+  stacked "the way a ..." similes, aphoristic one-line closers.
+- Choice hints and italic text must be plain and concrete, never edgy or
+  riddling: a hint tells the player something real about the choice.
+- Prose must stay true on every route that can reach it: never reference
+  events, people, items or knowledge the reader may not have in that run.
+
+Story structure standard
+- Every passage must be reachable through a sensible route and appear in at
+  least 1% of uniformly random playthroughs. Rarer passages are allowed only
+  as exceptions the user has approved; record approved exceptions here and in
+  the audit's allowlist.
+
 General behavior
+- At the start of every session, read reports/HANDOFF.md (if present) and tell
+  the user about every pending item and every decision they need to make for
+  the project, before starting new work. Keep HANDOFF.md current when work is
+  completed or new decisions are queued.
 - When a change is requested, inspect the project, determine the best
   implementation, make the change, and verify that it works.
 - Before editing, read this file, inspect relevant project files, and check
@@ -43,7 +104,8 @@ Versioning
 - Never reuse or overwrite a previous version number.
 - When incrementing, update any version displayed or stored by the application,
   if applicable, and add a corresponding entry to this log.
-- Commit completed changes with a concise description.
+- Commit completed changes using the commit-naming rule under "Git and source
+  control".
 - Do not make duplicate versioned or backup project files (for example,
   game-v1.2.html or game-final-final.html). Git history preserves prior versions.
 
@@ -61,6 +123,12 @@ Maintaining this log
 Git and source control
 - Use Git as the authoritative project history.
 - Create clear, concise commits representing completed logical changes.
+- Commit naming: the commit subject (first line) is the project version the
+  commit contains, exactly as written in this log, e.g. "v1.8". Put the
+  description of the change in the commit body, not the subject. If a commit
+  does not introduce a new version (log-only or other unversioned changes), use
+  the current version followed by a short parenthesised label, e.g.
+  "v1.8 (captain's log)". Do not use free-form or descriptive-only subjects.
 - Do not rewrite or destroy useful history without explicit user permission.
 - Never merge branches without explicit user authorization.
 - Never force-push without explicit user authorization.
@@ -113,49 +181,291 @@ PROJECT CONTEXT
 
 - Repository: AL42-M/zombie-cyoa.
 - Game title: THE HUSH, a choice-driven zombie survival-horror browser game.
-- Active game files are in ZombieChoiceAdventure. The entry point is index.html;
+- Active game files are in ZombieChoiceAdventure. The entry point is play.html;
   style.css controls presentation, engine.js handles gameplay, audio.js handles
   audio, and story-*.js files hold the narrative.
 - The game uses plain HTML, CSS, and JavaScript. Its title screen states that
   progress is stored in the player's browser.
-- _audit.js is an existing Windows Script Host/JScript story validation harness;
-  its header documents running it with cscript //E:JScript.
+- _audit.js is a story validation harness runnable with Node.js on any supported
+  platform or with Windows Script Host/JScript; its header and README document
+  both commands.
 - ZombieChoiceAdventure-1.0-donottouch.zip is the original uploaded archive,
   renamed at the user's request. Preserve it unchanged; do not regenerate or
   overwrite it. Work in the active source folder and use Git for history.
 
-OPEN ITEMS (agreed with the user; not yet started)
-
-1. Choices need an immediate, visible consequence in the text.
-   - Player feedback: some scenes move on too fast and an action has no
-     discernible effect. The next scene does not reference the choice made.
-   - Example: a1_dispensary (story-act1.js). Pocketing, burning or putting back
-     Rosco's shopping list, or drinking the alcohol, all go straight to a1_hub;
-     only a toast (or nothing) acknowledges the choice before the player moves
-     on to Bram/Teddy content.
-   - Example: a1_radio -> "Hum along with it" -> a1_hum_back. The group
-     confronts the player, then every response returns to a1_hub and the
-     player can go directly to Bram talking about Teddy, with no aftermath.
-   - The user's idea: write each choice into the journal, fitting the game's
-     found-footage-in-written-form theme. Match the existing narration voice.
-   - Requirement: an action has an immediate effect in text form, and scene
-     transitions should not jump so plainly. Audit other choices that return
-     to a hub or move on with only a stat change or toast.
-
-2. Research real-life crank radio mechanics.
-   - Determine how hand-crank (dynamo) radios actually work: turns needed and
-     resulting play time, whether they store charge, and typical bands.
-   - Determine whether any radios need no power at all (for example, crystal
-     radios powered only by the received signal) and what they can receive.
-   - Compare with the story's claims (a1_radio: "ninety turns to give you
-     ninety seconds", AM 1476 kHz) and adjust the text if inaccurate.
-
 VERSION HISTORY (newest first)
 
-Open items logged - 2026-10-18
-- Recorded two open items from the user: player feedback on choices lacking
-  immediate textual consequences, and research into crank radio mechanics.
-- Log-only change; no game files modified, so no version increment.
+Handoff - 2026-10-18 (after v1.11)
+- The user paused after a long design discussion. storybible.md now holds the
+  settled canon (hosts with no way back, relentless violence, mouth/ear-only
+  insertion, unblinking eyes red-then-white, spreading evenly and re-spacing,
+  intelligence shown by tearing off Teddy's tape, Rockton's Field, etc.).
+- reports/HANDOFF.md lists the approved-but-unbuilt v1.12 queue and pending
+  discussions; reports/ also holds the v1.9-v1.11 reports with the user's
+  answers and the v1.11 per-file notes. Start the next session there.
+
+v1.11 - 2026-10-18
+- Established storybible.md (repo root) as creative canon after a design
+  discussion with the user: the hum is a signal with a permanently unexplained
+  source; the turned idle with faces tipped upward and need a glimpse of open
+  space (else they fumble), spread out in open areas, take people by holding
+  the jaw open while humming (no strikes; injuries are incidental), release a
+  victim who hums in agreement; bites are a survivor myth (staff say
+  "exposed"); Teddy has pneumonia and was never infected; narrator stays
+  ungendered. Captain's log now requires consulting the bible and flagging
+  contradictions, bans repeated actions within a run, and asks for an Answer
+  box after every pending-review item.
+- Story: Teddy's choirmaster ear (names the note; they never breathe); blind
+  man on Quay Road (Teddy's old bass, "finally hitting his note"); trailer roof
+  vent and coincidental shoe (sawTheShoe); daytime telescope (sawTelescope) and
+  a small aliens beat in Act 3; signal explained via records OR radio, never
+  both (signalClue); spreading-out observation; Bram's eye (bramEye) with later
+  choices; Ward 11 window beds; daylight variants through Act 3/endings; Wren's
+  Mercy knowledge echoes; unstrapping single entry with collapse gate 70;
+  serum self-dose fails past the threshold; Blood values re-derived (Ward 11
+  visit 4 -> 0); landmark names (Arimathea Chapel, Sexton's Field, Old
+  Cleveholt Road, Sallow Walk); ~20 repeated choices removed; radio pulse
+  variants deleted. Engine: unique goneNote/deathNote toasts; hidden "_" items
+  are never toasted.
+- Verified: audit clean; every passage/ending >= 1.34% of 20,000 uniform runs;
+  "sky" ~1 per run; three browser playthroughs with no errors.
+- Open: Act 3 hub re-offers (report 4.3) need a structural pass; 31 review
+  items in session file V1.11_REPORT.md.
+
+v1.10 - 2026-10-18
+- Applied the user's answers to the v1.9 report (decision record:
+  session file DECISIONS_v110.md; report V1.10_REPORT.md).
+- Language/setting: Rosco's is "the store"/"drugstore"; kept British-flavored
+  names the user likes: betting shop, Cornwall; lime trees restored (pits use
+  "quicklime"); baseball team photo; "hairclip" replaces barrette; ledger fourth
+  column is filled "on every line" (characters wouldn't count to 900).
+- Reachability: every passage and every ending >= 1% of uniform random runs;
+  RARE_OK is empty again. New routes: ward overexertion -> end_body_failed
+  (health < 65 when choosing "Keep going"), treatment failure -> end_turned
+  (more than 4 days infected OR infection >= 34); Matron's duplicate ledger
+  makes end_ledger's spare-copy branch reachable (0.3%, a branch, not a node).
+- Reverts per user: tool-free hotwire and no-Teddy Marlowe House plea removed
+  (replaced by a knife/cutters-only wiring attempt at the dock and a Teddy-only
+  knock from the courtyard); help text, toasts and title kicker restored to
+  v1.8 wording (American spelling; key names corrected); content warning
+  removed from the title screen at the user's request.
+- New: daylight variants for Act 2 after dawn departures (helper daylight());
+  the road atlas reveals a railroad-cut exit from the culvert; the narrator
+  notices the donor's pre-Hush scars; the pillow attempt on Holloway fails (the
+  hum doesn't need breath); Wren's pad notes use class 'pad' with their own
+  style (style.css has a note to revisit when the game font changes); unique
+  journal-style death lines per character (CAST deathNote), now also shown for
+  deaths applied in enter().
+- Status words reordered (health 0 now shows "Dying"; Blood: In your bones /
+  Losing yourself) and Weight tops out at Overencumbered / Impossible.
+- Open (see report): Act 3/endings may still read as night after a dawn
+  departure; end_serum self-dose ignores the new treatment-failure rule.
+
+v1.9 - 2026-10-17
+- Language and setting: all player-facing text rewritten in American English
+  and the story relocated to the US (user decision). Kept distinctive names
+  (characters, Thornbury, Ferry Street, Marlowe House, St. Amaranth Mercy);
+  "Matron" kept as the staff's title, glossed as head of nursing. Lime trees
+  became lindens (US readers read "lime" as citrus); the estate is the Fenwick
+  Houses; dates are M/D (manifest 4/11); 400 L became 100 gallons.
+- Second editorial pass removing AI-style phrasing ("it's not X, it's Y",
+  triads, paradox hints such as "a kindness shaped like abandonment"); two
+  reviewers checked every hint, toast, italic aside, keepsake note and ending
+  blurb/tease. UI text (help, menus, toasts, stat words, content warning,
+  keepsakes, items) follows the same rules.
+- Discrepancies: prose made true on every route, using new flags where needed
+  (Act 1: bramIntro, calledTogether, askedTeddy, atTheGlass, sawTheYard,
+  breached, wentToTeddy, barricaded, teddyMorphine; Act 2: bramHasRailing,
+  sentThemToWater; Act 3: heardNineWeeks, pressedTheDesk, keysFromLocker,
+  hollowayMethod). No node, item, flag or memento ids were renamed or removed.
+- Reachability standard adopted (see Story structure standard). Routing was
+  reworked in all three acts; uniformly random play went from 1 unreachable +
+  19 other passages under 1% to 0 unreachable and only end_body_failed (0.02%)
+  and end_turned (0.32%) under 1%. Both are in the audit's RARE_OK list as
+  PENDING the user's approval (v1.9 report items 1.1/1.2); remove them from
+  RARE_OK if the user declines and the endings are made more reachable.
+- Audit: fuzz RNG replaced (old LCG gave correlated opening picks); new
+  reachability section (10,000 uniform walks, fails below 1% unless in
+  RARE_OK); British anchor phrases updated ("looks at the cans", "A woman in a
+  high-rise told me"). Audit clean; four browser playthroughs reached four
+  different endings with no errors.
+- Kept "She has filled it in nine hundred times" in a3_office (40 pages can
+  hold 900 entries; the number echoes the ledger's nine hundred names).
+- Open decisions and every applied change needing approval are in the v1.9
+  report's PENDING YOUR REVIEW section (session file V1.9_REPORT.md). Notable
+  open questions: rare endings, "shop" vs "store" for Rosco's, Act 2 still
+  reads as night on dawn routes, the no-op atlas choice, a dead choice in
+  a1_wren_wants, distinct styling for Wren's pad notes, and the missing
+  "X is dead" toast for deaths applied in enter().
+- Saves: existing saves load (ids unchanged; new flags default to false). A
+  run started in an older version may show text written for routes it did not
+  take until the next passage; start a new run for full consistency.
+
+v1.8 - 2026-10-17
+- Full prose line edit of all player-facing story text (story-act1/2/3, endings,
+  and displayed strings in story-core) for natural British English, a restrained
+  found-journal voice, and distinct character voices. Only string-literal prose
+  changed: a tokenizer check confirmed every file's code skeleton (ids, flags,
+  conditions, choice targets/tones, paragraph and choice counts) is identical to
+  v1.7, and the 16,000-walk audit passes, including all prose anchor phrases.
+- Voice rules: narrator uses contractions and present tense; Odile and the
+  Matron speak formally without contractions; Bram is clipped and procedural;
+  Teddy speaks in short breaths and sometimes calls the narrator "child"; Wren's
+  pad notes and in-world documents ({c:'note'}) are unchanged. Choice labels,
+  hints and toasts remain second person; keepsake notes are first person.
+- Fixed in prose: pronoun/person slips left from the old second-person draft,
+  Americanisms (Bram is now a "prison officer"), and contradictions in prose
+  (31 vs "fifty" at the window, "three people" left in the shop, a cooling
+  radiator without power, "thirty days" in a trailer sealed on 11 April, two
+  months in a locked ward for a man admitted 23 April, statements that were
+  false on some routes). Cut repetitive tics ("That is the thing/part...",
+  "somehow", "every single", future-tense foreshadowing).
+- Code-level continuity issues the editors found but did not change are in the
+  session report; notable ones: Act 1 "leave Teddy" from the breach still reads
+  as unhurried; a3_ask_east/treatment/decides "leave" labels go to a3_back;
+  a3_boat_who pronoun for Odile/Bram is "them"; duplicate key grants in
+  a3_chapel_keys/a3_property; a2_boat_search "go alone" leads to the group boat
+  wait; end_boat_alone never mentions companions left on the slip.
+- Saves: existing runs keep their recorded journal text and keepsake notes;
+  new passages appear from the next passage onward.
+- Added the commit-naming rule (subject = version number) at the user's
+  request; this is the first commit to follow it. Git identity on the user's
+  computer is set globally to AL42-M <arislab42@gmail.com>.
+
+Pages custom-domain removal - 2026-10-17
+- Removed the root CNAME file declaring www.thehush.com at the user's request.
+  The intended address is https://al42-m.github.io/zombie-cyoa/; the publishing
+  branch should remain beta. No gameplay or version-label changes.
+- This change is prepared on copilot/wwwthehushbeta, not directly on beta.
+  Pages settings were inaccessible through the hosted tools, so removal of the
+  live custom domain and successful deployment are not confirmed. Apply the
+  CNAME deletion to the publishing branch and verify Settings > Pages shows
+  no custom domain. The game entry point remains ZombieChoiceAdventure/play.html;
+  there is no root index.html.
+
+v1.7 - 2026-10-17
+- Matched story days to actual overnights: the opening wait, extended boat stay,
+  morning triage, and next-morning boat departure in the Teddy ending. Hour-long
+  rests, travel routes, and the hill no longer each add an entire day. Reconciled
+  institutional records with day 41 after the April 11 Hush: dated events that
+  had been placed in the future now occur in May, with related dialogue and
+  relative durations corrected. The April 11 manifest is now the first day's
+  warning, not a warning written eleven days after the Hush.
+- Distinct final choices and refusal choices now describe the action and whether
+  it means returning to the hospital. A short surrender route pauses for its
+  immediate human consequence. Refusal reactions distinguish what the narrator
+  actually learned and which companions are present; tightened repetitive prose.
+  A route that finds boat keys without ever seeing the boat now discovers it
+  along the river instead of recognizing it by unexplained prior knowledge.
+- Added targeted chronology, route knowledge, and companion checks alongside the
+  16,000-walk audit. Four contrasting complete story-engine trials found no
+  repeated passages; a boat-knowledge gap exposed by the fourth was corrected.
+  Existing saves still load, but prior saved day counts and recorded journal
+  passages retain their original values; start a new run to experience the
+  corrected chronology from day 41.
+- Current work remains on copilot/improve-story-quality, separate from main.
+  The requested beta branch and public repository visibility require publishing
+  a new branch and changing a GitHub setting; neither was available to this
+  hosted task through its permitted publishing tools. Do not claim either is
+  complete until confirmed in GitHub.
+
+v1.6 - 2026-10-16
+- Five independent AI reader personas completed five story-engine runs each
+  (25 total, on the v1.5 baseline) for a spoiler-free playtest synthesis.
+  Their accounts are simulated passages/choices, not human or verified
+  browser-UI trials.
+- Repaired first-person grammar, equipment and exposure claims that could be
+  false on particular routes, and removed an unexplained day advance at the
+  last decision. The refusal passage distinguishes a boat seen from the bank
+  from one actually boarded.
+- A boat departure without keys now includes a distinct property-room passage
+  before ignition; treated readers cannot choose an ending requiring an active
+  hum, but can take the ledger when leaving. New targeted checks guard these
+  cases; a culvert discovery no longer invents a tower-block conversation.
+  Endings acknowledge surviving companions and Teddy where pertinent. The
+  story audit still checks loops, dead ends and all twelve endings.
+- Other route/day transitions and variable party reactions deserve a dedicated
+  later continuity pass. No user-interface changes or archive changes.
+
+v1.5 - 2026-10-16
+- Added unobtrusive day headings to passages that genuinely follow an overnight
+  wait (the pharmacy, boat, and hospital triage); these use the run's saved day,
+  without adding another state effect. Long ending time jumps use relative
+  headings. Journal summaries still begin with prose, while expanded entries
+  retain their headings. Older saved entries remain as recorded.
+- Editorial review found fixed day references that contradicted longer routes,
+  a medication timeline inconsistent within one ending, group-size prose that
+  assumed four survivors, and an absent Odile administering morphine. Revised
+  those passages and tightened several figurative and repetitive sentences.
+  Choice links, state effects and all twelve endings remain unchanged.
+- The Node audit passed 16,000 walks and targeted heading, date and companion
+  checks. Three contrasting complete trial routes had no repeated nodes or
+  choice sets; browser automation was unavailable during this session.
+
+v1.4 - 2026-10-16
+- Recast the narrative as a first-person found survival journal beginning on
+  day 41. Kept Wren's written notes and spoken dialogue in their original
+  voices; choices still record one irreversible version of the narrator's past.
+- Three editorial passes: journal framing and narrative voice; restrained,
+  concrete line edits at key decisions and revelations; conditional route,
+  keepsake and ending continuity, including stopping first-person testimony
+  before the narrator can no longer plausibly write it. Existing story links,
+  effects, node IDs and twelve endings remain intact.
+- Renamed the browser entry point to play.html and updated the launch
+  instructions and displayed version. The original v1.0 archive is unchanged.
+- The Node story audit completed 16,000 walks with all twelve endings reachable.
+  Three contrasting complete route reads found no repeated passages, choice
+  sets or long dialogue lines; syntax and HTML asset-reference checks passed.
+  Browser automation was unavailable in this session.
+
+v1.3 - 2026-10-16
+- The river/boat, culvert, estate and Marlowe House choices now leave distinct
+  marks at the Mercy gate; waiting with Teddy or taking from the children
+  creates additional arrival dialogue and choices. Major decisions continue
+  to echo at the final choice.
+- Reconciled the extra boat days with the supply count, Teddy's prognosis and
+  dialogue, the timing of triage, and the end-of-story clock. Scouting ahead
+  reunites the group at the Mercy gate; returned supplies and routes without
+  Teddy no longer produce contradictory prose. No ending or existing route
+  has been removed.
+- Added in-game instant/paragraph-paced reveal and larger story text settings
+  saved separately from game progress. The journal now expands entries to show
+  the full text as read at that moment, without advancing or altering state.
+  Older saves retain their existing short journal excerpts.
+- The existing audit runs under Node.js without extra packages, or under
+  Windows Script Host as before; it exits unsuccessfully on failed checks.
+  Route/timeline regression assertions supplement the 16,000 story walks.
+  Chromium trials verified instant reveal, larger text, expanded full journal
+  entries, and restoration of those preferences and passages after Continue.
+- The preserved v1.0 ZIP is untouched.
+
+v1.2 - 2026-10-15
+- Reworked the story into one-way passages: opening conversations now lead to
+  Teddy's council rather than returning to the same stockroom menu; route
+  detours and hospital investigations no longer send the reader back to a
+  passage they have already read in the same run.
+- Added distinct consequences for spending another night on the boat, pausing
+  in the chapel, viewing the ward after treatment, and returning for the keys.
+  The bone-turning ending is reachable through surrender inside the lorry.
+- Preserved the existing cast, endings, save-node identifiers and meaningful
+  choice effects. New entry effects are safe on Continue/Rewind. Existing saves
+  remain usable, though previously visited passages may have new exits.
+- The existing story audit now detects static cycles and repeated passages
+  during its playthroughs. Verified all twelve endings and no reachable
+  loops, dead ends, or missing links in 16,000 simulated walks.
+- Trial runs also exposed inventory-dependent prose errors: the shop's window
+  now offers a weapon the player can actually find, the Ferry Street fight
+  accounts for whether the cutters were collected, and burning the lorry
+  requires both alcohol and a lighter. Leaving Teddy no longer puts the
+  revolver he keeps into the player's inventory.
+- The first exposure day is recorded so triage can acknowledge a late arrival
+  after a long boat stay rather than claiming every infection is three days old.
+- Continue and Rewind now display saved passages without reapplying entry
+  effects (including day advances, wounds and item grants). Ordinary forward
+  choices still apply those effects once. Four deliberately different full
+  routes were trialled; a browser trial confirmed Continue and Rewind leave
+  day, visits and health unchanged, while a new choice still advances.
+- The original v1.0 ZIP remains untouched. No UI changes are included.
 
 v1.1 - 2026-10-15
 - Added the user's directive reserving control of new local repository copies,
