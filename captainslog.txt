@@ -137,7 +137,7 @@ OPEN ITEMS (agreed with the user; not yet started)
      confronts the player, then every response returns to a1_hub and the
      player can go directly to Bram talking about Teddy, with no aftermath.
    - The user's idea: write each choice into the journal, fitting the game's
-     found-footage-in-written-form theme. Keep the first-person journal voice.
+     found-footage-in-written-form theme. Match the existing narration voice.
    - Requirement: an action has an immediate effect in text form, and scene
      transitions should not jump so plainly. Audit other choices that return
      to a hub or move on with only a stat change or toast.
