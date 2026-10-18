@@ -77,6 +77,10 @@ Story structure standard
   the audit's allowlist.
 
 General behavior
+- At the start of every session, read reports/HANDOFF.md (if present) and tell
+  the user about every pending item and every decision they need to make for
+  the project, before starting new work. Keep HANDOFF.md current when work is
+  completed or new decisions are queued.
 - When a change is requested, inspect the project, determine the best
   implementation, make the change, and verify that it works.
 - Before editing, read this file, inspect relevant project files, and check
