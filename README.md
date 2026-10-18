@@ -1,5 +1,5 @@
 # zombie-cyoa
-Current game version: **v1.10**.
+Current game version: **v1.11**.
 
 A game I made with Copilot: a choose-your-own-adventure zombie game for the browser, like the ones from the dial-up days.
 

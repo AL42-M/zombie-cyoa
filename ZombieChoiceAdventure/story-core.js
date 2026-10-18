@@ -15,28 +15,32 @@
       full: 'Odile Marchetti',
       role: 'veterinarian',
       blurb: 'Thirty years as a veterinarian, putting animals down gently and telling farmers the truth. Steady hands.',
-      deathNote: 'We lost Odile. Nobody left to tell us the truth about our chances.'
+      deathNote: 'We lost Odile. Nobody left to tell us the truth about our chances.',
+      goneNote: 'Odile has gone her own way. She didn\u2019t say goodbye; she never did.'
     },
     bram: {
       name: 'Bram',
       full: 'Bram Kessler',
       role: 'corrections officer',
       blurb: 'Eleven years as a corrections officer. He keeps the count and the rations, and he wants to leave.',
-      deathNote: 'Bram won\u2019t make it to Thornbury now.'
+      deathNote: 'Bram won\u2019t make it to Thornbury now.',
+      goneNote: 'Bram has gone east, toward Thornbury. One fewer of us to count.'
     },
     wren: {
       name: 'Wren',
       full: 'Wren',
       role: 'fourteen',
       blurb: 'Hasn\u2019t made a sound since the third day. Writes on a pharmacy pad when she has to.',
-      deathNote: 'Wren\u2019s pad stays blank from here on.'
+      deathNote: 'Wren\u2019s pad stays blank from here on.',
+      goneNote: 'Wren has gone. For once she didn\u2019t leave a note.'
     },
     teddy: {
       name: 'Teddy',
       full: 'Teodor Alafuzo',
       role: 'retired choirmaster',
       blurb: 'Seventy-one, with one working lung. His breathing is loud, and the sound carries.',
-      deathNote: 'Teddy\u2019s breathing has stopped. The room is too quiet.'
+      deathNote: 'The room is quiet. Teddy didn\u2019t make it.',
+      goneNote: 'We left Teddy behind. I keep listening for his breathing.'
     }
   };
 

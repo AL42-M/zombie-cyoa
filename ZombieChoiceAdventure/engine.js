@@ -284,6 +284,7 @@
     for (k in before.items) seen[k] = true;
     for (k in state.items) seen[k] = true;
     Object.keys(seen).forEach(function (id) {
+      if (id.charAt(0) === '_') return; /* hidden bookkeeping items, never shown */
       var was = before.items[id] || 0, now = state.items[id] || 0;
       if (now === was) return;
       var name = (Story.ITEMS[id] && Story.ITEMS[id].name) || id;
@@ -310,8 +311,27 @@
     if (state.trauma > before.trauma + 12) toast('Something in you gives.', 'weight');
     if (state.humanity < before.humanity - 12) toast('You did not hesitate.', 'bad');
 
-    /* the dead */
+    /* the dead, and those who leave */
     announceDeaths(before.deaths ? before.deaths.length : 0);
+    announcePartings(peopleStates(before));
+  }
+
+  function peopleStates(s) {
+    var out = {};
+    for (var id in s.people) if (Object.prototype.hasOwnProperty.call(s.people, id)) out[id] = s.people[id].state;
+    return out;
+  }
+
+  /* One journal-style line per character (Story.CAST[id].goneNote) when someone
+     leaves the group alive, from a choice or a passage's enter(). */
+  function announcePartings(prev) {
+    for (var id in state.people) {
+      if (!Object.prototype.hasOwnProperty.call(state.people, id)) continue;
+      if (state.people[id].state === 'gone' && prev[id] !== 'gone') {
+        var c = Story.CAST[id];
+        toast((c && c.goneNote) || ((c ? c.name : id) + ' is gone.'), 'bad');
+      }
+    }
   }
 
   /* One journal-style line per character (Story.CAST[id].deathNote), for deaths
@@ -442,9 +462,10 @@
     state.node = id;
     if (!skipHistory) {
       state.visits[id] = (state.visits[id] || 0) + 1;
-      var deadBefore = state.deaths ? state.deaths.length : 0;
+      var deadBefore = state.deaths ? state.deaths.length : 0, peopleBefore = peopleStates(state);
       if (typeof node.enter === 'function') node.enter(state);
       announceDeaths(deadBefore);
+      announcePartings(peopleBefore);
     }
     checkKeepsakes();
 

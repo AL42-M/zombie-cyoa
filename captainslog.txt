@@ -28,9 +28,26 @@ Reports to the user
      "yes 1.1, no 2.3". Each item must state very clearly: what was changed or
      is proposed, why, what happens if the user says yes or no, and what stays
      in place if they do not answer. No decision may be hidden in section 2.
+     After every item in this section, add an empty answer box for the user
+     to fill in, as a one-row table:
+       | Answer |
+       |--------|
+       |        |
+     Do not add answer boxes to the changelog.
   2. CHANGELOG. Everything else, written as a game changelog: version heading,
      then grouped entries (Added / Changed / Fixed / Removed), concise and
      player-facing, with concrete before/after examples where useful.
+
+Story bible
+- storybible.md (repo root) is the creative canon: what the hum is, how the
+  turned behave, how people are taken, characters, key images, naming. Consult
+  it before writing or editing ANY creative or player-facing text, and record
+  the user's creative revisions there.
+- If a user proposal contradicts the bible or the existing story, tell the
+  user clearly, with options, before acting. Be a competent collaborator, not
+  an agreeable one.
+- No repeated actions: a run must never offer the reader essentially the same
+  action twice; vary or remove duplicates.
 
 Writing standards (all player-facing text: story, choices, hints, toasts,
 keepsakes, endings, menus, help, title screen, and documentation)
@@ -173,6 +190,34 @@ PROJECT CONTEXT
   overwrite it. Work in the active source folder and use Git for history.
 
 VERSION HISTORY (newest first)
+
+v1.11 - 2026-10-18
+- Established storybible.md (repo root) as creative canon after a design
+  discussion with the user: the hum is a signal with a permanently unexplained
+  source; the turned idle with faces tipped upward and need a glimpse of open
+  space (else they fumble), spread out in open areas, take people by holding
+  the jaw open while humming (no strikes; injuries are incidental), release a
+  victim who hums in agreement; bites are a survivor myth (staff say
+  "exposed"); Teddy has pneumonia and was never infected; narrator stays
+  ungendered. Captain's log now requires consulting the bible and flagging
+  contradictions, bans repeated actions within a run, and asks for an Answer
+  box after every pending-review item.
+- Story: Teddy's choirmaster ear (names the note; they never breathe); blind
+  man on Quay Road (Teddy's old bass, "finally hitting his note"); trailer roof
+  vent and coincidental shoe (sawTheShoe); daytime telescope (sawTelescope) and
+  a small aliens beat in Act 3; signal explained via records OR radio, never
+  both (signalClue); spreading-out observation; Bram's eye (bramEye) with later
+  choices; Ward 11 window beds; daylight variants through Act 3/endings; Wren's
+  Mercy knowledge echoes; unstrapping single entry with collapse gate 70;
+  serum self-dose fails past the threshold; Blood values re-derived (Ward 11
+  visit 4 -> 0); landmark names (Arimathea Chapel, Sexton's Field, Old
+  Cleveholt Road, Sallow Walk); ~20 repeated choices removed; radio pulse
+  variants deleted. Engine: unique goneNote/deathNote toasts; hidden "_" items
+  are never toasted.
+- Verified: audit clean; every passage/ending >= 1.34% of 20,000 uniform runs;
+  "sky" ~1 per run; three browser playthroughs with no errors.
+- Open: Act 3 hub re-offers (report 4.3) need a structural pass; 31 review
+  items in session file V1.11_REPORT.md.
 
 v1.10 - 2026-10-18
 - Applied the user's answers to the v1.9 report (decision record:

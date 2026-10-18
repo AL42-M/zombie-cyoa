@@ -20,7 +20,8 @@
 
       'I\u2019m awake because Teddy is drowning again. He\u2019s three feet away in the dark, dragging ' +
       'each breath through the fluid in his chest. Seventy-one, one working lung, a choirmaster for ' +
-      'most of his life. His breathing carries the length of the room.',
+      'most of his life. Six weeks of nights on a concrete floor have gone into that lung and stayed ' +
+      'there. His breathing carries the length of the room.',
 
       { c: 'hum', t: 'h m m m m m m m' },
 
@@ -48,12 +49,12 @@
       'stacked incontinence pads into a mattress. On the wall, in grease pencil, DAY 41 sits under ' +
       'DAY 40, under thirty-nine more.',
       'I wake the others. Bram brings the crank flashlight; Wren brings her pad. Teddy breathes, and ' +
-      'the street breathes back. I haven\u2019t worked out what to say.'
+            'the street answers. I haven\u2019t worked out what to say.'
     ],
     choices: [
       { label: 'Let Teddy speak before anyone votes.', tone: 'kind', to: 'a1_teddy_votes' },
-      { label: 'Tell them you\u2019ll carry him out tonight.', to: 'a1_depart',
-        act: function (s) { s.set('tookTeddy'); s.set('route', 'together'); s.trust('teddy', 15); } },
+      { label: 'Say nothing. Let Bram start.', hint: 'Bram makes his case first',
+        to: 'a1_council', act: function (s) { s.set('letBramStart'); } },
       { label: 'Put every option on the table. Even the worst one.', to: 'a1_council' }
     ]
   });
@@ -62,7 +63,7 @@
     id: 'a1_teddy',
     chapter: CH,
     place: PLACE,
-    enter: function (s) { s.set('spokeToTeddy'); },
+    enter: function (s) { s.set('spokeToTeddy'); s.set('heardTeddyEar'); },
     text: [
       'He\u2019s propped against the shelving; lying flat fills his chest faster. In the dark his face ' +
       'is a pale smudge with wet eyes. He lifts one hand and turns it palm-down, an old conductor asking ' +
@@ -76,7 +77,18 @@
 
       '<span class="said">"Forty years I taught children to breathe from here."</span> He taps his ' +
       'belly. The tap turns into a cough, and he forces it down with both hands over his mouth. ' +
-      'Outside, the street shifts like a field in the wind.'
+      'Out in the street, heads come down and turn toward the shutter, all together, like wheat going ' +
+      'over in a gust.',
+
+      'When it passes, he takes a tuning fork from his coat pocket, taps it on his knee, and presses ' +
+      'the stem to the bone behind his ear, so it rings inside his skull and nowhere else. He listens to ' +
+      'the street against it with his eyes shut.',
+
+      '<span class="said">"D flat,"</span> he whispers. <span class="said">"A hair under. Every one of ' +
+      'them under by the same hair. I never got a choir to agree on a pitch for one whole bar, and ' +
+      'nobody rehearsed these people."</span> He puts the fork away. <span class="said">"There\u2019s ' +
+      'a woman out there in a bathrobe, singing bass. And not one of them has stopped to breathe. ' +
+      'I\u2019ve been listening for six weeks."</span>'
     ],
     choices: [
       { label: 'Tell him he\u2019s coming with you, whatever it costs.', tone: 'kind',
@@ -84,9 +96,9 @@
         act: function (s) { s.set('promisedTeddy'); s.soften(5); s.trust('teddy', 20); s.scar(4); },
         toast: ['You promised.', 'good'] },
       { label: 'Ask him what he wants.', hint: 'he may ask for something hard', to: 'a1_teddy_wants' },
-      { label: 'Say nothing. Hold his hand until the fit passes.', tone: 'kind',
+      { label: 'Say nothing. Hold his hand.', tone: 'kind',
         to: 'a1_hub', act: function (s) { s.soften(3); s.trust('teddy', 10); },
-        toast: ['Eventually, he stops shaking.', 'good'] },
+        toast: ['His hand is cold, and he lets you keep it.', 'good'] },
       { label: 'Tell him the truth: he\u2019s going to get everyone killed.', tone: 'cruel',
         to: 'a1_hub', act: function (s) { s.harden(9); s.scar(6); s.trust('teddy', -25); s.set('toldTeddyTruth'); },
         toast: ['He nods. He already knew.', 'bad'] }
@@ -117,13 +129,16 @@
     },
     choices: [
       { label: 'Take the badge. Promise him you\u2019ll all go together.', tone: 'kind',
+        show: function (s) { return !s.flag('spokeToTeddy'); },
         to: 'a1_hub',
         act: function (s) { s.give('badge'); s.set('knowsMercy'); s.set('promisedTeddy'); s.soften(4); s.trust('teddy', 18); } },
       { label: 'Take the badge. Promise nothing.', to: 'a1_hub',
         act: function (s) { s.give('badge'); s.set('knowsMercy'); s.harden(3); } },
       { label: 'Refuse it. A dead man\u2019s errand is still an errand.', tone: 'cruel',
         to: 'a1_hub', act: function (s) { s.harden(7); s.trust('teddy', -15); s.scar(3); } },
-      { label: 'Ask what "something" means.', to: 'a1_teddy_something' }
+      { label: 'Ask what "something" means.', to: 'a1_teddy_something' },
+      { label: 'Take the badge across to Wren. She heard most of that.', to: 'a1_wren_wants',
+        act: function (s) { s.give('badge'); s.set('knowsMercy'); s.set('badgeToWren'); s.set('wrenHeardTeddy'); } }
     ]
   });
 
@@ -142,11 +157,12 @@
       '<span class="said">"Whatever it is, child, it comes out of somebody. Everything does now."</span>'
     ],
     choices: [
-      { label: 'Take it. You\u2019ll all go together.', tone: 'kind', to: 'a1_hub',
-        act: function (s) { s.give('badge'); s.set('knowsMercy'); s.set('promisedTeddy'); s.soften(4); s.trust('teddy', 18); } },
+      { label: 'Take it, and ask him about his niece.', tone: 'kind', to: 'a1_hub',
+        act: function (s) { s.give('badge'); s.set('knowsMercy'); s.set('askedAboutNiece'); s.soften(4); s.trust('teddy', 12); },
+        toast: ['She sang alto for him at twelve, a little flat. He never once told her.', 'good'] },
       { label: 'Take it, and keep the Mercy to yourself for now.', to: 'a1_hub',
         act: function (s) { s.give('badge'); s.set('knowsMercy'); s.set('hidMercy'); s.harden(4); } },
-      { label: 'Take it, and go sit with Wren for a minute.', to: 'a1_wren_wants',
+      { label: 'Take it to Wren. She should see it.', to: 'a1_wren_wants',
         act: function (s) { s.give('badge'); s.set('knowsMercy'); s.set('badgeToWren'); } },
       { label: 'Take it and tell him plainly you may leave him behind.', tone: 'cruel',
         to: 'a1_hub',
@@ -163,7 +179,9 @@
       'snoring through the stockroom wall. Her eyes open before I reach her.',
 
       '<span class="said">"Four days. Perhaps,"</span> she says, before I can ask. <span class="said">' +
-      '"Fluid. I hear it shift when he turns over. I put down a collie last spring that sounded better ' +
+      '"It is pneumonia, in the only lung he has. The other came out years ago; he showed me the scar. ' +
+      'Six weeks on a cold floor did the rest. I have no stethoscope. I have my ear against his back, and ' +
+      'I hear the fluid shift when he turns over. I put down a collie last spring that sounded better ' +
       'than he does."</span>',
 
       'Thirty years of telling farmers the truth about their animals. She sees no reason to stop now.',
@@ -231,8 +249,6 @@
         toast: ['She doesn\u2019t believe you, but she lets you say it.', 'good'] },
       { label: 'Ask her to do it tonight.', tone: 'cruel', to: 'a1_hub',
         act: function (s) { s.set('askedOdileToKill'); s.harden(12); s.scar(7); s.trust('odile', -12); } },
-      { label: 'Ask her to teach you instead.', tone: 'cruel', to: 'a1_hub',
-        act: function (s) { s.set('learnedTheHands'); s.harden(10); s.scar(8); s.trust('odile', 8); } },
       { label: 'Go ask Teddy what he wants.', tone: 'kind', to: 'a1_teddy_wants' },
       { label: 'Leave her to it.', to: 'a1_hub' }
     ]
@@ -277,7 +293,7 @@
       { label: 'Drink some of the alcohol.', tone: 'risk', to: 'a1_hub',
         act: function (s) { s.ease(8); s.hurt(4); s.take('flask'); s.set('drankIt'); },
         toast: ['It takes the edge off and burns your throat raw.', 'weight'] },
-      { label: 'Check the back of the store while you\u2019re up.', to: 'a1_backdoor' }
+      { label: 'Check the back of the drugstore while you\u2019re up.', to: 'a1_backdoor' }
     ]
   });
 
@@ -304,7 +320,6 @@
         act: function (s) { s.set('liedToWren'); } },
       { label: 'Write back: "They want to leave Teddy."', tone: 'risk', to: 'a1_wren_truth',
         act: function (s) { s.set('toldWrenTruth'); s.soften(4); } },
-      { label: 'Ask her what she wants.', tone: 'kind', to: 'a1_wren_wants' },
       { label: 'Hand the pad back and sit with her in silence.', tone: 'kind', to: 'a1_hub',
         act: function (s) { s.trust('wren', 12); s.soften(3); s.ease(4); },
         toast: ['It\u2019s the first real rest either of you has had in days.', 'good'] }
@@ -348,9 +363,7 @@
         act: function (s) { s.trust('wren', 4); } },
       { label: 'Tell her that\u2019s a child\u2019s way of thinking.', tone: 'cruel', to: 'a1_hub',
         act: function (s) { s.harden(10); s.trust('wren', -20); s.scar(5); } },
-      { label: 'Ask her what she wants.', to: 'a1_wren_wants' },
-      { label: 'Go ask Bram what he\u2019s been saying.', tone: 'risk', to: 'a1_bram',
-        act: function (s) { s.set('bramIntro', 'wren'); } },
+      { label: 'Ask her what she wants.', show: function (s) { return !s.flag('liedToWren'); }, to: 'a1_wren_wants' },
       { label: 'Go ask Teddy what he wants.', tone: 'kind', to: 'a1_teddy_wants' }
     ]
   });
@@ -361,12 +374,16 @@
     place: PLACE,
     text: function (s) {
       var lines = [];
-      if (s.flag('badgeToWren')) {
-      lines.push(s.flag('sawWren')
-        ? 'I go back to Wren with the badge shut in my fist. Before I tell her anything, I ask her ' +
-          'what she wants.'
-        : 'I cross the stockroom with the badge shut in my fist and sit down beside Wren. Before I tell ' +
-          'her anything, I ask her what she wants.');
+      if (s.flag('wrenHeardTeddy')) {
+        lines.push((s.flag('sawWren') ? 'I go back to Wren. ' : 'I cross the stockroom to Wren. ') +
+          'She heard most of what Teddy said; I can tell by how carefully she doesn\u2019t look at the ' +
+          'badge in my fist. Before I tell her anything, I ask her what she wants.');
+      } else if (s.flag('badgeToWren')) {
+        lines.push(s.flag('sawWren')
+          ? 'I go back to Wren with the badge shut in my fist. Before I tell her anything, I ask her ' +
+            'what she wants.'
+          : 'I cross the stockroom with the badge shut in my fist and sit down beside Wren. Before I tell ' +
+            'her anything, I ask her what she wants.');
       }
       lines.push('The pencil hovers for a long time.');
       lines.push({ c: 'pad', t: 'i want to go somewhere with a door that locks from the inside' });
@@ -384,11 +401,15 @@
         toast: ['She tears the page off and folds it into your hand.', 'keepsake'] },
       { label: 'Tell her there\u2019s no such place left.', tone: 'cruel', to: 'a1_hub',
         act: function (s) { s.harden(8); s.trust('wren', -14); } },
-      { label: 'Tell her about St. Amaranth Mercy.', show: function (s) { return s.flag('knowsMercy'); },
+      { label: function (s) {
+          return s.flag('wrenHeardTeddy') ? 'Show her the badge. Tell her the rest about St. Amaranth Mercy.'
+            : 'Tell her about St. Amaranth Mercy.';
+        }, show: function (s) { return s.flag('knowsMercy'); },
         to: 'a1_hub', act: function (s) { s.set('wrenKnowsMercy'); s.trust('wren', 10); },
         toast: ['She reads the badge twice before she hands it back.', 'good'] },
-      { label: 'Say nothing. Sit with her.', tone: 'kind', to: 'a1_hub',
-        act: function (s) { s.trust('wren', 8); s.ease(4); } }
+      { label: 'Write back: "Me too."', tone: 'kind', to: 'a1_hub',
+        act: function (s) { s.trust('wren', 8); s.ease(4); },
+        toast: ['She looks at it for a long time, then puts the pad face down between you.', 'good'] }
     ]
   });
 
@@ -397,35 +418,29 @@
     chapter: CH,
     place: PLACE,
     enter: function (s) { s.bump('windowChecks'); },
-    text: function (s) {
-      var n = s.val('windowChecks');
-      var lines = [
-        'Rosco pulled the security shutter down forty-one days ago, and nobody has raised it since. ' +
-        'Through the slats, Ferry Street is silver with moonlight and full of people standing still.'
-      ];
-      if (n <= 1) {
-        lines.push('I count. I always count. Thirty-one between the betting shop and the bus stop, ' +
-          'six more than this morning. They aren\u2019t milling around. Every head is tilted a few ' +
-          'degrees toward this window, like compass needles.');
-      } else if (n === 2) {
-        lines.push('Forty now. The new ones have come up from the river end. One of them is wearing a ' +
-          'safety vest, and every time the moon comes out, its reflective strip flashes.');
-      } else {
-        lines.push('I give up counting somewhere past fifty. They\u2019re standing shoulder to shoulder. ' +
-          'When Teddy breathes in, the whole street breathes in half a second later, like a choir ' +
-          'dragging behind its conductor.');
-      }
-      lines.push({ c: 'hum', t: 'h m m m m m m m' });
-      lines.push('None of them is looking at me. Their heads are tipped to listen, and their eyes have ' +
-        'gone milky and loose, as if they stopped needing them weeks ago.');
-      return lines;
-    },
+    text: [
+      'Rosco pulled the security shutter down forty-one days ago, and nobody has raised it since. ' +
+      'Through the slats, Ferry Street is silver with moonlight and full of people standing still.',
+
+      'I count. I always count. Thirty-one between the betting shop and the bus stop, six more than ' +
+      'this morning. One of the new ones is wearing a safety vest, and its reflective strip flashes ' +
+      'whenever the moon clears the clouds. Their heads are tipped back and their mouths hang open, ' +
+      'and every one of them is humming.',
+
+      'Behind me, Teddy drags in a breath. Thirty-one faces come down out of the moonlight and swing ' +
+      'toward this window, all together, like compass needles. When his breath goes out, they stay ' +
+      'on us a while longer before the chins lift again.',
+
+      { c: 'hum', t: 'h m m m m m m m' },
+
+      'None of them is looking at me, exactly. Their eyes have gone milky and loose, as if they ' +
+      'stopped needing them weeks ago. They\u2019re listening.'
+    ],
     choices: [
       { label: 'Keep watching. Learn how they move.', to: 'a1_window_study' },
-      { label: 'Check the back of the store for another way out.', to: 'a1_backdoor' },
+      { label: 'Check the back of the drugstore for another way out.', to: 'a1_backdoor' },
       { label: 'Give Bram the count.', to: 'a1_bram',
         act: function (s) { s.set('bramIntro', 'window'); } },
-      { label: 'Go back to the others.', to: 'a1_hub' },
       { label: 'Tap the glass. You need to know how fast they are.', tone: 'risk', to: 'a1_window_tap' }
     ]
   });
@@ -442,20 +457,28 @@
       { c: 'note', t: 'ONE. They go wherever the sound is. A sound is a drain and they are water.' },
       { c: 'note', t: 'TWO. A continuous sound pulls harder than a loud one. A scream turns heads. ' +
         'A man coughing all night turns a street.' },
-      { c: 'note', t: 'THREE. When they hum together they stop moving. Whatever that is for, it is not for us.' },
+      { c: 'note', t: 'THREE. When nothing is calling them, they stand still, put their heads back, and hum ' +
+        'with their mouths open. They did it through the rain on day thirty and never closed their ' +
+        'mouths. Whatever that is for, it is not for us.' },
 
-      'The third is the one I keep turning over. By the end of the hour there are nearly fifty of ' +
-      'them, motionless, all holding the same note. They\u2019re as patient as people in a waiting room ' +
-      'who know their names will be called, and I don\u2019t think they\u2019re waiting for me.'
+      'The third is the one I keep turning over. Twice in the hour Teddy slips into a shallower sleep ' +
+      'and his breathing eases, and both times I watch the street let go of us. The heads leave the ' +
+      'window one by one and tip back until every face is turned up into the dark, all holding the ' +
+      'same note. They\u2019re as patient as people in a waiting room who know their names will be ' +
+      'called, and I don\u2019t think they\u2019re waiting for me.',
+
+      'Then Teddy wakes coughing, and nearly fifty faces come down at once.'
     ],
     choices: [
-      { label: 'Go tell the others what you learned.', to: 'a1_bram',
-        act: function (s) { s.trust('bram', 10); s.trust('odile', 8); s.set('bramIntro', 'study'); },
+      { label: 'Tell the others what you learned.', to: 'a1_hub',
+        act: function (s) { s.trust('bram', 10); s.trust('odile', 8); s.set('sharedWhatILearned'); },
         toast: ['For once, Bram really listens.', 'good'] },
       { label: 'Keep what you learned to yourself.', tone: 'cruel', to: 'a1_hub',
         act: function (s) { s.harden(7); s.set('hoardedKnowledge'); } },
-      { label: 'Check the back of the store.', to: 'a1_backdoor' },
-      { label: 'Go back and call everyone together.', to: 'a1_hub' }
+      { label: 'Copy the three notes onto a page for Wren.', tone: 'kind', to: 'a1_hub',
+        hint: 'only Wren gets them',
+        act: function (s) { s.trust('wren', 8); s.soften(2); },
+        toast: ['She reads them twice and puts the page inside her shoe.', 'good'] }
     ]
   });
 
@@ -468,9 +491,9 @@
       'I put one knuckle to the glass and knock. Once, not loud: the knock I\u2019d use on a bathroom ' +
       'door in someone else\u2019s house.',
 
-      'Thirty-one heads turn at once, and thirty-one people draw a breath together. Then the nearest ' +
-      'is at the shutter. It\u2019s <span class="wound">fast</span>. Its face pushes between the slats ' +
-      'until its cheekbones jam, and there it stays, straining, mouth working, milk-white eyes pointing ' +
+      'Thirty-one faces come down at once and turn to the glass. Then the nearest is at the shutter. ' +
+      'It\u2019s <span class="wound">fast</span>. Its face pushes between the slats until its ' +
+      'cheekbones jam, and there it stays, straining, mouth open on the note, milk-white eyes pointing ' +
       'two different ways.',
 
       'I\u2019m close enough to smell it: wet copper and sugar, like a butcher\u2019s dumpster in July.',
@@ -497,7 +520,7 @@
     id: 'a1_hum_back',
     chapter: CH,
     place: PLACE,
-    enter: function (s) { s.set('hummedBack'); s.infect(8); },
+    enter: function (s) { s.set('hummedBack'); s.infect(12); },
     text: function (s) {
       var atGlass = s.flag('atTheGlass');
       return [
@@ -505,8 +528,9 @@
 
         atGlass
           ? 'The note rises out of me, low and even, and the one pressed against the shutter stops ' +
-            'straining. Its jaw slackens. Its head tips, and out in the street the others tip too, one ' +
-            'after another, like passengers nodding off on a night bus.'
+            'straining. Its jaw slackens. Its head tips back, mouth open, and out in the street the others ' +
+            'tip back too, one after another, until every face is turned up again, as if I had given the ' +
+            'right answer.'
           : 'The note rises out of me, low and even, and settles onto the one coming out of the radio. ' +
             'Out in the street, the crowd\u2019s note shifts to meet it, until the radio, the street, and ' +
             'I are holding the same sound.',
@@ -558,9 +582,7 @@
       { label: 'Test the door. Quietly.', tone: 'risk', to: 'a1_backdoor_test' },
       { label: 'Leave it all. Tell no one this door exists.', tone: 'cruel', to: 'a1_hub',
         act: function (s) { s.set('secretDoor'); s.harden(9); },
-        toast: ['As far as you know, nobody else has seen it.', 'bad'] },
-      { label: 'Go back inside and tell Bram.', to: 'a1_bram',
-        act: function (s) { s.set('bramIntro', 'yard'); } }
+        toast: ['As far as you know, nobody else has seen it.', 'bad'] }
     ]
   });
 
@@ -580,8 +602,10 @@
       'in lettering somebody once thought cheerful: <em>FRESH DAILY</em>.'
     ],
     choices: [
-      { label: 'Take the bolt cutters and go back in.', to: 'a1_hub',
-        act: function (s) { s.give('cutters'); s.set('scoutedLane'); } },
+      { label: 'Stand in the empty lane for a minute before you go back in.', tone: 'kind', to: 'a1_hub',
+        hint: 'the bolt cutters stay in the yard',
+        act: function (s) { s.set('scoutedLane'); s.ease(5); },
+        toast: ['The hum still comes over the roofs, but nothing in the lane is making it.', 'good'] },
       { label: 'Go back in and tell everyone. This is the way out.', to: 'a1_bram',
         act: function (s) { s.set('scoutedLane'); s.set('sharedTheLane'); s.trust('bram', 14); s.trust('odile', 10); s.set('bramIntro', 'lane'); } },
       { label: 'Go back in and say nothing about the lane.', tone: 'cruel', to: 'a1_hub',
@@ -594,42 +618,22 @@
     chapter: CH,
     place: PLACE,
     enter: function (s) { s.bump('radioTries'); },
-    text: function (s) {
-      var n = s.val('radioTries');
-      if (n <= 1) {
-        return [
-          'Ninety turns of the handle for ninety seconds of radio. I\u2019ve done it every night for ' +
-          'thirty-eight nights, and I do it again tonight.',
-          'Static, static, static. Then, at 1476 kHz, where there used to be nothing, the sound ' +
-          'that\u2019s always there now:',
-          { c: 'hum', t: 'h m m m m m m m' },
-          'The same note, broadcast. Something out there is <em>transmitting</em> it, on a fixed ' +
-          'frequency, with power, when nothing has had power for six weeks.'
-        ];
-      }
-      if (n === 2) {
-        return [
-          'Ninety turns. Ninety seconds.',
-          'Tonight there\u2019s something under the hum: a faint rhythm I\u2019d call a metronome if ' +
-          'I were feeling generous, and a pulse if I weren\u2019t.',
-          { c: 'hum', t: 'h m m \u00b7 h m m \u00b7 h m m' },
-          'Odile comes and stands behind me without a word and listens to all ninety seconds. Then ' +
-          'she goes back to her corner and lies down facing the wall.'
-        ];
-      }
-      return [
-        'Ninety turns. Ninety seconds.',
-        'The rhythm is a little quicker than it was, like a heartbeat near the end of a held breath.',
-        { c: 'hum', t: 'hm \u00b7 hm \u00b7 hm \u00b7 hm' },
-        'I switch it off before the ninety seconds are up, which I\u2019ve never done, and sit in the ' +
-        'dark with my hand still on the crank.'
-      ];
-    },
+    text: [
+      'Ninety turns of the handle for ninety seconds of radio. I\u2019ve done it every night for ' +
+      'thirty-eight nights, and I do it again tonight.',
+      'Static, static, static. Then, at 1476 kHz, where there used to be nothing, the sound ' +
+      'that\u2019s always there now:',
+      { c: 'hum', t: 'h m m \u00b7 h m m \u00b7 h m m' },
+      'The same note, broadcast. Under it there\u2019s a slow pulse, about fifty beats to the ' +
+      'minute. I time it against my watch every night. It has never changed.',
+      'Something out there is <em>transmitting</em> this, on a fixed frequency, with power, when ' +
+      'nothing has had power for six weeks.'
+    ],
     choices: [
       { label: 'Wind it again. Bram hears you and comes over.', to: 'a1_bram',
         act: function (s) { s.set('bramIntro', 'radio'); } },
-      { label: 'Put it away and go sit with Wren.', tone: 'kind', to: 'a1_wren' },
-      { label: 'Put it away and call everyone together.', to: 'a1_council' },
+      { label: 'Write 1476 on the wall, under the day count.', to: 'a1_hub',
+        hint: 'then wake the others' },
       { label: 'Hum along with it, quietly, just to see.', tone: 'rot',
         show: function (s) { return !s.flag('hummedBack'); }, to: 'a1_hum_back' }
     ]
@@ -652,23 +656,12 @@
       } else if (from === 'window') {
         lines.push('He\u2019s sitting up with his back to the shelves, where he can see the shutter. I give ' +
           'him the count. He doesn\u2019t ask me to repeat it, and when he speaks, he doesn\u2019t look at me.');
-      } else if (from === 'study') {
-        lines.push('I tell them what I learned at the window. Bram listens with his back to the shelves ' +
-          'and his eyes on the shutter, and for a while afterward he says nothing. When he does speak, ' +
-          'he doesn\u2019t look at me.');
-      } else if (from === 'yard') {
-        lines.push('He\u2019s sitting up with his back to the shelves, where he can see the shutter. When I ' +
-          'tell him about the fire door and the yard, he only nods. When he speaks, he doesn\u2019t look at me.');
       } else if (from === 'lane') {
         lines.push('Bram is the first one I tell. He hears me out with his back to the shelves and his ' +
           'eyes on the shutter, and he doesn\u2019t look at me when he answers.');
         lines.push('<span class="said">"I know about the lane,"</span> he says. <span class="said">"I\u2019ve ' +
           'been out there myself. It doesn\u2019t change anything. He\u2019ll be just as loud out there as ' +
           'he is in here."</span>');
-      } else if (from === 'wren') {
-        lines.push('He\u2019s sitting with his back to the shelves, where he can see the shutter. When I ask ' +
-          'him what he\u2019s been saying, he doesn\u2019t pretend not to understand, and he doesn\u2019t ' +
-          'look at me when he answers.');
       } else {
         lines.push('He\u2019s awake, sitting with his back to the shelves and the shutter in his line of ' +
           'sight, as he is every night. He doesn\u2019t look at me when he speaks.');
@@ -688,7 +681,7 @@
       { label: '"You want to kill him. Say it. In those words."', tone: 'risk', to: 'a1_bram_sayit' },
       { label: '"You\u2019re right."', tone: 'cruel', to: 'a1_bram_agree' },
       { label: 'Ask him about his daughter.', tone: 'kind', to: 'a1_bram_daughter' },
-      { label: 'Walk away from him. Go to Teddy.', to: 'a1_teddy',
+      { label: 'Get up and walk away while he\u2019s still talking.', to: 'a1_hub',
         act: function (s) { s.trust('bram', -10); } }
     ]
   });
@@ -704,7 +697,7 @@
       'something more patient. I preferred the first face.',
       '<span class="said">"I\u2019m not a monster. I want you to hear that before I say the next part. ' +
       'You know I\u2019ve got a daughter in Thornbury, if there\u2019s still a Thornbury. Every night I ' +
-      'don\u2019t leave this store, I\u2019m choosing a man I met six weeks ago over her. I\u2019ve done ' +
+      'don\u2019t leave this drugstore, I\u2019m choosing a man I met six weeks ago over her. I\u2019ve done ' +
       'that forty times. I\u2019m asking you to notice I\u2019ve done it forty times."</span>'
     ],
     choices: [
@@ -713,8 +706,7 @@
       { label: '"Go to Thornbury, then. Alone. Tonight."', tone: 'cruel', to: 'a1_hub',
         act: function (s) { s.trust('bram', -30); s.harden(8); s.set('toldBramToGo'); } },
       { label: '"Give me until morning."', to: 'a1_hub',
-        act: function (s) { s.set('untilMorning'); s.trust('bram', 8); } },
-      { label: 'Ask about his daughter.', tone: 'kind', to: 'a1_bram_daughter' }
+        act: function (s) { s.set('untilMorning'); s.trust('bram', 8); } }
     ]
   });
 
@@ -797,7 +789,7 @@
       'later."</span>',
       'He pauses, just long enough for me to know it\u2019s deliberate.',
       '<span class="said">"Then I want to walk to Thornbury, hold my daughter, and never think about ' +
-      'this store again. I won\u2019t get that last part. I know. I want it anyway."</span>'
+      'this drugstore again. I won\u2019t get that last part. I know. I want it anyway."</span>'
     ],
     choices: [
       { label: '"No. And if you touch him, I\u2019ll stop you."', tone: 'kind', to: 'a1_hub',
@@ -807,8 +799,7 @@
       { label: '"Then it\u2019s all of us, it\u2019s Odile, and it\u2019s tonight."', tone: 'cruel',
         to: 'a1_hub', act: function (s) { s.set('agreedWithBram'); s.trust('bram', 25); s.harden(15); s.scar(10); } },
       { label: '"I\u2019ll do it myself. Leave Odile out of it."', tone: 'cruel', to: 'a1_hub',
-        act: function (s) { s.set('claimedTheKilling'); s.trust('bram', 12); s.harden(18); s.scar(14); } },
-      { label: 'Ask about his daughter.', tone: 'kind', to: 'a1_bram_daughter' }
+        act: function (s) { s.set('claimedTheKilling'); s.trust('bram', 12); s.harden(18); s.scar(14); } }
     ]
   });
 
@@ -844,6 +835,10 @@
     enter: function (s) { s.set('toldAboutTeddy'); s.set('foundBackDoor'); },
     text: function (s) {
       var lines = [];
+      if (s.flag('toldBramToGo')) {
+        lines.push('Bram is still here. After I told him to go, he packed his bag, set it by the fire door, ' +
+          'and sat back down with the shutter in his line of sight. Neither of us has mentioned it.');
+      }
       if (s.flag('planLane')) {
         lines.push('Bram points the crank flashlight at the floor and tells them about the back way: the ' +
           'fire door behind the staff restroom, the yard, the wall, the lane. He and I have already been ' +
@@ -874,6 +869,12 @@
       } else if (s.flag('promisedTeddy')) {
         lines.push('I do the talking. I say <em>together</em>, watch Bram\u2019s jaw set, and ' +
           'keep going.');
+      } else if (s.flag('letBramStart')) {
+        lines.push('I don\u2019t say anything, and Bram takes that as permission. He never uses the word. ' +
+          'He says <em>options</em>, and every time he says it, he looks at Odile.');
+      } else if (s.flag('calledTogether')) {
+        lines.push('I put all of it on the table, the worst of it included, and then I run out of words. ' +
+          'Nobody wants to go next. The silence goes on until Teddy has to end it himself.');
       } else {
         lines.push('Nobody wants to go first. The silence goes on until Teddy has to end it himself, and ' +
           'none of us stops him.');
@@ -884,10 +885,21 @@
       lines.push('He has to stop twice to get through the rest.');
       lines.push('<span class="said">"Dying, I can face. Being the reason, I can\u2019t. Only one of ' +
         'those is yours to fix."</span>');
+      if (!s.flag('heardTeddyEar')) {
+        lines.push('Nobody answers him. He turns his head toward the shutter and listens to the street ' +
+          'with his eyes half shut, the way he must have listened to forty years of warm-ups.');
+        lines.push('<span class="said">"They\u2019re all on the same pitch,"</span> he says, to nobody in ' +
+          'particular. <span class="said">"Every one of them. I never had a choir that could hold that ' +
+          'for a whole bar."</span>');
+      }
       return lines;
     },
     choices: [
-      { label: 'All five of you go out the back tonight. He\u2019s carried if he needs carrying.',
+      { label: function (s) {
+          return s.flag('promisedTeddy')
+            ? 'Keep your promise. All five of you go out the back tonight, and he\u2019s carried if he needs it.'
+            : 'All five of you go out the back tonight. He\u2019s carried if he needs carrying.';
+        },
         tone: 'kind', hint: 'slow and loud, and everyone is exposed',
         show: function (s) { return s.flag('foundBackDoor'); },
         to: 'a1_depart',
@@ -906,9 +918,16 @@
         show: function (s) { return s.flag('learnedTheHands') || s.has('morphine') || s.flag('claimedTheKilling'); },
         to: 'a1_smother',
         act: function (s) { s.set('route', 'killed'); s.set('byMyHand'); } },
-      { label: 'Put it to Teddy. His lungs, his vote.', hint: 'let him decide what happens to him',
+      { label: function (s) {
+          return s.flag('teddyDecides') ? 'Do what you told Bram. Let Teddy decide, in front of everyone.'
+            : 'Put it to Teddy. His lungs, his vote.';
+        }, hint: 'let him decide what happens to him',
+        show: function (s) { return !s.flag('calledTogether'); },
         to: 'a1_teddy_votes' },
-      { label: 'Refuse to decide. Wait for morning.', hint: 'morning is four hours away',
+      { label: function (s) {
+          return s.flag('untilMorning') ? 'Take the night you asked Bram for. Nothing happens before morning.'
+            : 'Refuse to decide. Wait for morning.';
+        }, hint: 'morning is four hours away',
         to: 'a1_wait' }
     ]
   });
@@ -971,6 +990,9 @@
       'For a moment all I can hear is the shutter ticking in the cold and Teddy trying to breathe. ' +
       'The last time the world went this quiet was the Hush.',
 
+      'Teddy lifts one hand off the blanket and closes it on nothing, the gesture a conductor uses to ' +
+      'end a held note. <span class="said">"Nobody gave them the cutoff,"</span> he whispers.',
+
       'Wren is already up with her shoes on.'
     ],
     choices: [
@@ -986,7 +1008,7 @@
         to: 'a1_shutter' },
       { label: 'Go to the window and look.', tone: 'risk', to: 'a1_shutter',
         act: function (s) { s.set('lookedFirst'); s.scar(5); } },
-      { label: 'Go to Teddy. Whatever happens next, don\u2019t let it happen to him alone.',
+      { label: 'Stay at Teddy\u2019s side. Whatever happens next, don\u2019t let it happen to him alone.',
         tone: 'kind', show: function (s) { return s.alive('teddy'); }, to: 'a1_shutter',
         act: function (s) { s.soften(8); s.trust('teddy', 20); s.scar(4); s.set('wentToTeddy'); } },
       { label: 'Get everyone into the stockroom and put the shelving across the door.',
@@ -1005,6 +1027,8 @@
         '<em>window frame</em>, working as one machine, and tear the whole aluminum assembly out of ' +
         'forty-year-old brick. It\u2019s the loudest thing I\u2019ve heard since the world ended.' +
         (s.flag('lookedFirst') ? ' I\u2019m close enough to feel the grit hit my face.' : ''));
+      lines.push('The note comes in with them, every throat starting on the same beat, and every face ' +
+        'in the room turns to the corner where Teddy is breathing.');
       lines.push((s.flag('barricaded')
           ? 'The shelving we dragged across the stockroom door goes over in the first rush.'
           : 'Bram has the shelving over before I\u2019ve finished turning around.') +
@@ -1035,21 +1059,25 @@
     chapter: CH,
     place: PLACE,
     enter: function (s) {
-      s.hurt(18); s.scar(14); s.infect(10);
+      s.hurt(18); s.scar(14); s.infect(16);
       s.set('heldTheDoor');
       s.trust('bram', 20); s.trust('wren', 20); s.trust('odile', 15); s.trust('teddy', 20);
     },
     text: [
       'I brace my back against the stockroom doorframe, plant my boots, and make myself into the door.',
 
-      'Up close, it\u2019s hands first. Dozens of them pull at my coat, my hair, my jaw, all of them ' +
-      'trying to turn me around and quiet me and make me part of it. Something takes a strip off my ' +
-      'forearm. Something presses its open mouth to my ear and <em>hums</em>, straight into my skull, ' +
-      'and for one bright second I want to let go.',
+      'They don\u2019t hit me. Two of them take my wrists and fold my arms down to my sides, firmly, ' +
+      'the way a nurse holds a child still for a shot. A third puts its fingers in the corner of my ' +
+      'mouth and works my jaw open, patient, a little at a time, and all three hum the same note into ' +
+      'my face, close enough that I feel it in my fillings.',
 
-      'Then Bram has my belt in his fist and hauls. The fire door bangs shut, and I\u2019m on my ' +
-      'hands and knees in the yard, being sick onto flattened cardboard, while the steel door bulges ' +
-      'in its frame and holds.',
+      'I wrench my right arm back. The grip on it doesn\u2019t give, and a strip of skin comes off my ' +
+      'forearm in its fingers. The note goes into my open mouth and down, and for one bright second I ' +
+      'want to <em>answer</em> it.',
+
+      'Then Bram has my belt in his fist and hauls, and their hands let go of me one finger at a time. ' +
+      'The fire door bangs shut, and I\u2019m on my hands and knees in the yard, being sick onto ' +
+      'flattened cardboard, while the steel door bulges in its frame and holds.',
 
       { c: 'hum', t: 'h m m m m m m m' }
     ],
@@ -1058,8 +1086,8 @@
         act: function (s) { s.set('route', 'together'); s.set('tookTeddy'); } },
       { label: 'Check your arm first.', to: 'a1_depart',
         act: function (s) { s.set('route', 'together'); s.set('tookTeddy'); s.set('sawTheWound'); s.scar(6); },
-        toast: ['Four parallel grazes, beaded with blood. Shallow, but the skin is broken.', 'rot'] },
-      { label: 'Say nothing about the humming in your ear. Ever.', tone: 'cruel',
+        toast: ['A strip of skin two fingers wide is gone from your forearm. It bleeds more than it hurts.', 'rot'] },
+      { label: 'Say nothing about what they hummed into you. Ever.', tone: 'cruel',
         to: 'a1_depart',
         act: function (s) { s.set('route', 'together'); s.set('tookTeddy'); s.set('hidTheHum'); s.harden(6); s.scar(8); } }
     ]
@@ -1164,9 +1192,9 @@
       lines.push({ c: 'sep', t: '\u2042' });
       lines.push('Wren watches from the doorway. None of us notices her in time to send her away. Of ' +
         'everything we did tonight, that is the part I can\u2019t excuse.');
-      lines.push('Within a minute the humming outside drops, and the crowd in the street goes slack. ' +
-        'Through the slats I watch their heads turn away from our window, one after another, until none ' +
-        'of them is facing us.');
+      lines.push('Within a minute the humming outside settles, and the crowd in the street goes slack. ' +
+        'Through the slats I watch their heads come away from our window and tip back, one after another, ' +
+        'until every face in the street is turned up and none of them is facing us.');
       return lines;
     },
     choices: [
@@ -1237,7 +1265,7 @@
       var lines = [];
       if (s.flag('breached')) {
         lines.push('There\u2019s no time to be careful with him. Behind us the fire door shudders every ' +
-          'time they hit it. Odile goes up the yard wall first and hauls Teddy by his coat while Bram ' +
+                  'time they lean their weight into it. Odile goes up the yard wall first and hauls Teddy by his coat while Bram ' +
           'shoves from below. He scrapes over the top and drops, and none of us stops to ask what it cost him.');
         lines.push((s.flag('wrenFirst')
             ? 'Wren is already over; I put her there before anything else.'
@@ -1249,7 +1277,7 @@
         lines.push('Nobody waits to be ready. Odile goes up the yard wall first and reaches down for Teddy, ' +
           'Bram shoves him up from below, and he comes over in one bad, scraping minute, biting down on ' +
           'every sound it costs him.');
-        lines.push('Wren is over before I am. Behind us, the store stays silent.');
+        lines.push('Wren is over before I am. Behind us, the drugstore stays silent.');
       } else {
         if (!s.flag('foundBackDoor')) {
           lines.push('Bram knows the way out. He\u2019s been through the fire door behind the staff restroom ' +

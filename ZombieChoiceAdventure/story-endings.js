@@ -55,6 +55,14 @@
     return s.flag('wentInAlone') && !s.flag('wasTriaged') && !s.flag('refusedTheMercy');
   }
 
+  /* Act 2's daylight test: a dawn departure reached the hospital by day. If nobody slept
+     there, everything after is the same afternoon and evening, so departures fall at dusk. */
+  function byDay(s) {
+    return (s.flag('waited') || s.flag('satWithHim')) && !s.flag('heldAtTheBoat') && !s.flag('wasTriaged');
+  }
+
+  function bramSeesBadly(s) { return s.flag('bramEye') && s.alive('bram'); }
+
   /* ---------------------------------------------------------- 1 */
   S.ending({
     id: 'end_burn',
@@ -63,7 +71,7 @@
     tag: 'THE FIRE',
     blurb: 'I burned St. Amaranth Mercy with its patients still in their beds. The smoke hung over the county for two days.',
     tease: 'Somewhere in this county, a generator still has a full tank of diesel.',
-    place: 'The north field',
+    place: 'Sexton\u2019s Field',
     text: function (s) {
       var names = survivors(s);
       var lines = [];
@@ -73,7 +81,7 @@
         'A hospital is a building full of oxygen tanks. I don\u2019t have to be clever about ' +
         'any of it.');
       if (names.length) {
-        lines.push('I get ' + listOf(names) + ' out to the north field first.');
+        lines.push('I get ' + listOf(names) + ' out to Sexton\u2019s Field first.');
       }
       if (!s.flag('cameInTheBack')) {
         lines.push('By the east-wing doors there is a whiteboard: WARD 11 \u00b7 OCCUPANCY 94/96. ' +
@@ -89,7 +97,7 @@
           'for somebody from outside to make the decision for them.');
       }
       lines.push({ c: 'sep', t: '\u2042' });
-      lines.push('It catches at ten after five. From the north field I see the first window go, ' +
+      lines.push('It catches at ten after five. From Sexton\u2019s Field I see the first window go, ' +
         'then the others, one after another along the east wing.');
       lines.push(s.seen('a2_burn_lorry')
         ? 'For about ninety seconds, over the roar, I can hear ' + wardCount(s) + ' people holding the note ' +
@@ -181,6 +189,11 @@
             'She leaves her pad open on my desk.');
           lines.push({ c: 'pad', t: 'you said youd find me a door that locks from the inside' });
           lines.push({ c: 'pad', t: 'you found one. you just stood on the wrong side of it' });
+        } else if (s.flag('wrenKnowsMercy')) {
+          lines.push('Wren leaves in the sixth week, without any fuss. ' +
+            'She leaves her pad open on my desk.');
+          lines.push({ c: 'pad', t: 'you told me about this place at roscos' });
+          lines.push({ c: 'pad', t: 'i thought it was the door' });
         } else {
           lines.push('Wren leaves in the sixth week, without any fuss. She doesn\u2019t leave a note.');
         }
@@ -201,23 +214,23 @@
     tag: 'THE WITNESS',
     blurb: 'I carried the ledger out and spent years reading the names in it aloud, one town at a time.',
     tease: 'Nine hundred names in a neat hand, each with a date and a yield.',
-    place: 'The road west',
+    place: 'Old Cleveholt Road',
     text: function (s) {
       var lines = [];
       if (s.flag('burnedTheLedger')) {
         lines.push('Burning her ledger changed nothing. She had copied every page into a box file ' +
           'under her desk, and when I ask for it she gives it to me without a word.');
-        lines.push('I take the road west at dawn with the box file under my arm. Nobody tries to stop me. ' +
+        lines.push('I take Old Cleveholt Road west at dawn with the box file under my arm. Nobody tries to stop me. ' +
           'I think the woman who wrote it has been waiting six weeks for someone to take it off her.');
       } else {
         lines.push((s.flag('foundTheOffice') ? '' :
           'I ask the Matron for her ledger, and she gives it to me without a word. ') +
-          'I take the road west at dawn with four inches of hardback ledger inside my coat. ' +
+          'I take Old Cleveholt Road west at dawn with four inches of hardback ledger inside my coat. ' +
           'Nobody tries to stop me. I think the woman who wrote it has been waiting six weeks ' +
           'for someone to take it off her.');
       }
       if (s.flag('tookTheEffects')) {
-        lines.push('I take what was on the chapel table too: nine hundred-odd watches, rings, and ' +
+        lines.push('I take what was on the table in the Arimathea Chapel too: nine hundred-odd watches, rings, and ' +
           'hairclips in four pillowcases. They weigh more than the book.');
       }
       lines.push({ c: 'sep', t: '\u2042' });
@@ -259,10 +272,12 @@
         lines.push('Downriver, the keys led me to a sailing club, and to LUCKY II ' +
           'tied up on the slip.');
       }
+      var dusk = byDay(s);
       lines.push('I turn the key. The forty-year-old diesel catches on the fourth try, and across ' +
-        'the water at five in the morning it is the loudest thing I have heard in weeks, and the best.');
+        'the water at ' + (dusk ? 'six in the evening' : 'five in the morning') +
+        ' it is the loudest thing I have heard in weeks, and the best.');
       var edge = s.seen('a2_ask') ? ', as Wren said they would,'
-        : (s.flag('tookRiver') ? ', as they did along the river path,' : ',');
+        : (s.flag('tookRiver') ? ', as they did along the Sallow Walk,' : ',');
       lines.push('Both banks fill up. Hundreds of them come out of the reeds and the boatyards and ' +
         'down the slipway. They wade in shin-deep and stop' + edge + ' facing us, holding the note ' +
         'as we go past.');
@@ -285,20 +300,33 @@
           : 'It is the first sound I have ever heard her make. ') +
           'It is cracked and rough and about four words long, and the engine is too loud for me ' +
           'to catch any of them. She won\u2019t repeat it, then or since.');
+        if (s.flag('wrenKnowsMercy')) {
+          lines.push('At Rosco\u2019s I told her about a hospital that takes in all who come. ' +
+            'She doesn\u2019t look back at the hill once.');
+        }
       }
       if (s.alive('odile')) {
         lines.push('Odile finds a half bottle of supermarket ros\u00e9 in the galley locker ' +
-          'and opens it at six in the morning. She sets out an enamel mug for everyone aboard.');
+          'and opens it ' + (dusk ? 'as the sun goes down' : 'at six in the morning') +
+          '. She sets out an enamel mug for everyone aboard.');
       }
       if (s.alive('bram')) {
+        if (bramSeesBadly(s)) {
+          lines.push('Bram keeps watch from the stern' +
+            (s.flag('bramEyeTreated') ? ', with Dr. Aytoun\u2019s dressing taped over one eye,' : '') +
+            ' and twice asks me what is moving on the left bank.');
+        }
         lines.push('Bram asks once about the road east to Thornbury' +
           (knowsDaughter(s) ? '' : ', where his daughter is') +
           '. Then he looks at the water and doesn\u2019t ask again that day. He asks again a week ' +
           'later. I will go with him. Not yet, but I will.');
       }
       lines.push({ c: 'sep', t: '\u2042' });
-      lines.push('The estuary opens out at about seven, and the sky over the sea turns the pink ' +
-        'of any ordinary morning. ' +
+      lines.push((dusk
+        ? 'The estuary opens out at about eight, and the light over the sea goes the orange ' +
+          'of any ordinary evening. '
+        : 'The estuary opens out at about seven, and the sky over the sea turns the pink ' +
+          'of any ordinary morning. ') +
         'The fuel gauge reads three-quarters of a tank, which is enough to get somewhere. ' +
         'Nobody on this boat knows where, and for the first time since the Hush ' +
         'that is a <em>pleasant</em> thing not to know.');
@@ -363,7 +391,9 @@
           ' I don\u2019t see what happens to ' + (slip.length === 1 ? OBJ[slipIds[0]] : 'them') +
           ' after that.');
       }
-      lines.push('I take a twenty-six-foot cabin cruiser down a black river at five in the morning, alone.');
+      lines.push(byDay(s)
+        ? 'I take a twenty-six-foot cabin cruiser down a brown river at six in the evening, alone.'
+        : 'I take a twenty-six-foot cabin cruiser down a black river at five in the morning, alone.');
       lines.push('Both banks fill up. They hold the note and stop at the waterline, and I pass ' +
         'close enough to see faces. There is nobody aboard whose hand I have to hold while it happens.');
       lines.push({ c: 'hum', t: 'h m m m m m m m' });
@@ -389,7 +419,8 @@
           'in a long while, and there is nobody aboard to pretend not to hear.');
       }
       lines.push({ c: 'sep', t: '\u2042' });
-      lines.push('The estuary opens at seven. The fuel gauge reads three-quarters of a tank, ' +
+      lines.push('The estuary opens at ' + (byDay(s) ? 'eight' : 'seven') +
+        '. The fuel gauge reads three-quarters of a tank, ' +
         'which is enough to get somewhere.');
       lines.push('There is no hum out here, and there is nobody else either. ' +
         'After a few weeks I stop listening for either one.');
@@ -557,7 +588,7 @@
           'two signatures.');
         var signed = 0;
         if (s.alive('odile')) {
-          lines.push('Odile signs with a steady hand. Afterward she goes out to the north field ' +
+          lines.push('Odile signs with a steady hand. Afterward she goes out to Sexton\u2019s Field ' +
             'alone for two hours.');
           signed++;
         }
@@ -572,6 +603,8 @@
           if (s.flag('promisedTheDoor')) {
             lines.push({ c: 'pad', t: 'you promised me a door that locks from the inside' });
             lines.push({ c: 'pad', t: 'you didnt say youd be the lock' });
+          } else if (s.flag('wrenKnowsMercy')) {
+            lines.push({ c: 'pad', t: 'you told me about this place like it was good news' });
           }
         } else if (signed < 2) {
           lines.push('They find ' + pav + (signed === 1 ? ' to be the second witness.' : ' and a night nurse called Iris to sign.'));
@@ -634,6 +667,11 @@
       }
       if (s.alive('bram')) {
         lines.push('Bram goes east to Thornbury in the third week' +
+          (bramSeesBadly(s)
+            ? (s.flag('bramEyeTreated')
+              ? ', with a clean dressing over his eye and two spares in his pocket'
+              : ', on one good eye, turning his whole head at every corner')
+            : '') +
           (knowsDaughter(s) ? '. ' : '. He has a daughter there; he tells me so the night before he leaves. ') +
           'He comes back in the fifth week with a nine-year-old girl on his shoulders, wheezing, ' +
           'and a look on his face I have never seen there. All he says is: ' +
@@ -650,6 +688,12 @@
       if (s.flag('promisedTheDoor')) {
         lines.push('On the first night of this journal I promised her this door. Whatever else ' +
           'I got wrong, I kept that one.');
+      } else if (s.flag('wrenKnowsMercy')) {
+        lines.push(s.seen('a1_wren_wants')
+          ? 'At Rosco\u2019s, when she asked me for a door, I told her about a hospital that ' +
+            'takes in all who come. It was the wrong answer, and she has been kind enough never to say so.'
+          : 'At Rosco\u2019s I told her about a hospital that takes in all who come. ' +
+            'This is what she wanted instead, and she has been kind enough never to say so.');
       } else if (s.seen('a1_wren_wants')) {
         lines.push('On the first night of this journal she wrote down what she wanted. ' +
           'I didn\u2019t promise her anything then. I found it anyway.');
@@ -686,7 +730,8 @@
         { c: 'hum', t: 'h m m m m m m m' },
 
         'The note comes up out of me, low and even, and goes on without any need for breath. ' +
-        'Within four minutes they begin to arrive out of the dark ' +
+        'Within four minutes they begin to arrive ' +
+        (byDay(s) ? 'out of the hedges and the low ground ' : 'out of the dark ') +
         'from every direction, unhurried, like people coming off a train.'
       ];
       lines.push({ c: 'sep', t: '\u2042' });
@@ -695,7 +740,7 @@
       lines.push('They have been assembling all along. Each of them holds a position in something ' +
         'huge and unfinished that has been under construction since the nine seconds on April 11. ' +
         'The humming holds it together. They stand in trailers and culverts and shallow water, ' +
-        'facing walls, because that is where they are needed.');
+        'tipped to whatever opening they can find, because that is where they are needed.');
       lines.push('I can feel the whole of it from inside, the way you can feel how big a cathedral ' +
         'is with your eyes shut. It is about eleven weeks from finished.');
       lines.push({ c: 'sep', t: '\u2042' });
@@ -712,8 +757,8 @@
           'I just don\u2019t put any of them above the work anymore.');
       }
       lines.push('By morning I am standing in eight inches of water in a culvert, ' +
-        'facing a wall, in exactly the right place. For the first time since the Hush, ' +
-        'I am not afraid.');
+        'my face tipped to the bright round mouth of it, in exactly the right place. ' +
+        'For the first time since the Hush, I am not afraid.');
       return lines;
     }
   });
@@ -733,8 +778,10 @@
       /* Act 3 routes: the dose failed (a3_matron_treat choices), or it happened on the
          ward floor straight after a3_ward_unstrap */
       var failed = !inside && s.flag('treatmentFailed');
-      var ward = !inside && !failed && s.flag('stillOnTheWard');
-      var away = !inside && othersAway(s);
+      /* walked out with all nine vials, past the point where a dose can work */
+      var serum = !inside && !failed && s.flag('serumFailed');
+      var ward = !inside && !failed && !serum && s.flag('stillOnTheWard');
+      var away = !inside && !serum && othersAway(s);
       if (inside) {
         lines.push('At the trailer doors I stop. Bram still has my collar in his fist. ' +
           'I put my hand over his and loosen his fingers one by one. ' +
@@ -758,8 +805,19 @@
           : '<span class="said">"It had gone further in you than the days would suggest," </span>she says. ' +
             '<span class="said">"That happens. I am sorry."</span>');
         lines.push({ c: 'sep', t: '\u2042' });
+      } else if (serum) {
+        var doser = s.alive('odile') ? 'Odile' : '';
+        lines.push('I walk down the lime avenue with ' + num(s.count('vial')) + ' vials knocking ' +
+          'together inside my coat. The Matron watches me go from the steps and says nothing.');
+        lines.push((doser ? 'Odile puts the first one into the back of my hand'
+          : 'I put the first one into the back of my own hand') +
+          ' that night, by flashlight, and ' + (s.partyCount() ? 'we wait' : 'I wait') +
+          ' for the quiet. Nothing goes quiet anywhere.');
+        lines.push((doser ? 'She tries a second an hour later' : 'I try a second an hour later') +
+          ', and a third before morning. They go in gray and do nothing at all.');
+        lines.push({ c: 'sep', t: '\u2042' });
       } else if (ward) {
-        lines.push('Whatever got into the scratch on my arm doesn\u2019t wait. I am still on the pine ' +
+        lines.push('What they hummed into me on the ward floor doesn\u2019t wait. I am still on the pine ' +
           'floor of Ward Eleven, between two beds, when it starts.');
         lines.push({ c: 'sep', t: '\u2042' });
       }
@@ -819,6 +877,12 @@
         lines.push('The woman with the sponge kneels beside me and doesn\u2019t back away. She asks my ' +
           'name, so that she can use it later, and writes it on the chart of the empty bed at the end ' +
           'of the row.');
+      } else if (serum) {
+        var left = Math.max(0, s.count('vial') - 3);
+        lines.push('There are ' + num(left) + ' vials left in my coat. ' +
+          (s.alive('odile')
+            ? 'Odile has the coat now. I hope she carries them back up the hill.'
+            : 'I hope whoever takes the coat off me carries them back up the hill.'));
       }
       lines.push({ c: 'sep', t: '\u2042' });
       var last = 'My last private thought isn\u2019t about June or the photo strip, ' +
