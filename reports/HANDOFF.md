@@ -78,3 +78,56 @@ The v1.11 answer boxes are filled in. A blank box means the default stays.
 - **The hum in depth (bible §8):** how it works, the stages of infection, the four-day clock, the
   treatment and serum, and Blood values.
 - **The "THEY ARE NOT MEAT" scene:** the user will rework it.
+
+## C. Open items to work on (added 2026-10-18 by the user; not yet built)
+
+These are new open items from the user. Discuss the approach with the user before building them.
+
+1. **Choices need an immediate, visible effect (player feedback).**
+   - **The problem:** some choices move straight on to an unrelated scene, so nothing seems to happen.
+     - In the drugstore dispensary (`a1_dispensary`, story-act1.js), pocketing, burning or putting back Rosco's grocery
+       list, or drinking the grain alcohol, all go straight back to `a1_hub`, and the next scene (for
+       example Bram talking) never mentions what was done.
+     - On the radio (`a1_radio`), humming along leads to `a1_hum_back`, where the group confronts the
+       narrator, and the story then jumps straight to Bram talking about Teddy.
+   - **The goal:** every action has an immediate effect in text, and scenes don't jump plainly from
+     one to the next.
+   - **The user's idea:** each choice writes itself into the journal, which suits the game's theme of
+     found footage in written form. Questions to settle with the user: whether this is a short
+     first-person line after every choice, or only after choices that would otherwise go unmentioned;
+     whether it appears at the top of the next passage, as its own short passage, or both; and how it
+     fits with the existing journal screen and toasts.
+   - **Then:** audit every choice whose destination ignores it (starting with returns to hubs) and
+     add the missing beat. Keep the bible, the writing standards and the "no repeated actions" rule.
+
+2. **Research crank radios: do radios that need no power exist?**
+   - The narrator's radio is a crank radio (`radio` item in story-core.js; `a1_radio`: "Ninety turns
+     of the handle for ninety seconds of radio"). Bram also has a crank flashlight.
+   - Starting notes for the discussion (to be checked before any story change):
+     - Hand-crank radios are real. They turn a small generator (a dynamo) that charges a built-in
+       battery or capacitor. The Freeplay wind-up radio from the 1990s made them well known; modern
+       emergency radios usually also have a solar panel. A minute of cranking typically gives several
+       minutes or more of listening, so "ninety turns for ninety seconds" is on the stingy side but
+       believable for a worn or cheap set.
+     - Truly unpowered radios also exist: a crystal radio (and the wartime "foxhole radio") runs only
+       on the energy of the received signal. It needs a long wire antenna and a ground, plays faintly
+       through an earpiece, and only picks up strong AM stations. 1476 kHz is in the AM band, so a
+       crystal set could hear the hum broadcast.
+     - Either way, the receiver needing no mains power is realistic. The open mystery stays the
+       transmitter, which needs real power.
+   - **Decide with the user:** keep the crank radio, adjust the crank-to-listening ratio, or add a
+     crystal or foxhole radio somewhere in the story.
+
+3. **Restructure the project files.**
+   - **The problem:** the user finds the current file layout confusing.
+   - **The current layout:** root has `README.md`, `captainslog.txt`, `storybible.md`,
+     `ZombieChoiceAdventure-1.0-donottouch.zip`, `reports/` (handoff, reports and notes from several
+     versions) and `ZombieChoiceAdventure/` (the game: `play.html`, `style.css`, `engine.js`,
+     `audio.js`, `story-core.js`, `story-act1.js` to `story-act3.js`, `story-endings.js`, and the
+     helper scripts `_audit.js` and `_lens.js`).
+   - **The goal:** a thorough restructure so a human can find things: game files, tools, documentation,
+     reports and archives clearly separated, with a short map of the folders in the README.
+   - **Before moving anything:** propose the new layout to the user and get approval. Moving files
+     changes paths used by GitHub Pages (`ZombieChoiceAdventure/play.html`), the README, the audit
+     command, `.github/copilot-instructions.md`, this handoff and the captain's log. The preserved
+     ZIP must stay unchanged (it can be moved only with the user's permission).

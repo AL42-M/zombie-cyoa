@@ -195,6 +195,13 @@ PROJECT CONTEXT
 
 VERSION HISTORY (newest first)
 
+Open items added - 2026-10-18 (after v1.11)
+- At the user's request, added three open items to reports/HANDOFF.md section
+  C (not yet built): choices must have an immediate visible effect (player
+  feedback; the user suggests each choice writes itself into the journal),
+  research on crank and unpowered radios, and a thorough restructure of the
+  project files. Each needs the user's agreement on approach before building.
+
 Handoff - 2026-10-18 (after v1.11)
 - The user paused after a long design discussion. storybible.md now holds the
   settled canon (hosts with no way back, relentless violence, mouth/ear-only
