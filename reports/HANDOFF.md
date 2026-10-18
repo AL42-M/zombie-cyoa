@@ -78,3 +78,27 @@ The v1.11 answer boxes are filled in. A blank box means the default stays.
 - **The hum in depth (bible §8):** how it works, the stages of infection, the four-day clock, the
   treatment and serum, and Blood values.
 - **The "THEY ARE NOT MEAT" scene:** the user will rework it.
+
+## C. New open items (raised by the user on 2026-10-18; not yet planned or approved to build)
+1. **Choices need an immediate, visible effect in the text.**
+   - **Player feedback:** some scenes move on too fast, and an action has no discernible effect.
+     The next scene doesn't reference the choice.
+   - **Example, a1_dispensary:** keeping, putting back or burning Rosco's shopping list, or drinking
+     the alcohol, all go straight to a1_hub. At most a toast acknowledges it, and the player moves
+     on to Bram/Teddy content.
+   - **Example, a1_radio → "Hum along" → a1_hum_back:** the group confronts the narrator, then every
+     reply returns to a1_hub, and the player can go straight to Bram talking about Teddy with no
+     aftermath.
+   - **The user's idea:** each choice writes itself into the journal, which fits the found-footage-in-
+     written-form theme (first-person journal voice).
+   - **Requirement:** an action has an immediate effect in text, and scenes don't jump so plainly.
+     Audit every choice that returns to a hub or moves on with only a stat change or toast.
+2. **Research real crank radio mechanics.**
+   - How hand-crank (dynamo) radios work: turns vs. play time, stored charge, typical bands.
+   - Whether any radio needs no power at all (e.g. crystal radios, powered by the received signal)
+     and what it can pick up.
+   - Check the story's claims against this: a1_radio's "ninety turns of the handle for ninety seconds
+     of radio", AM 1476 kHz, and the crank flashlight. Adjust the text if they're inaccurate.
+3. **A proper prologue.** The game currently opens directly on Day 41 in the stockroom (`start`,
+   story-act1.js). Discuss with the user what the prologue covers and how it fits the journal framing
+   and storybible.md before writing it.

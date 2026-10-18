@@ -195,6 +195,13 @@ PROJECT CONTEXT
 
 VERSION HISTORY (newest first)
 
+Open items - 2026-10-18 (after v1.11)
+- Added section C to reports/HANDOFF.md with three new open items from the user:
+  choices need an immediate textual effect (player feedback; idea: write each
+  choice into the journal), research real crank radio mechanics, and add a
+  proper prologue. Not yet planned or approved to build. No game files changed,
+  so no version increment.
+
 Handoff - 2026-10-18 (after v1.11)
 - The user paused after a long design discussion. storybible.md now holds the
   settled canon (hosts with no way back, relentless violence, mouth/ear-only
